@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POLubvi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Анимированный фон на весь сайт -->
+    <div class="floating-background">
+        <div class="organic-shapes-container">
+            <div class="organic-shape shape-1"></div>
+            <div class="organic-shape shape-2"></div>
+            <div class="organic-shape shape-3"></div>
+            <div class="organic-shape shape-4"></div>
+            <div class="organic-shape shape-5"></div>
+            <div class="organic-shape shape-6"></div>
+        </div>
+    </div>
+
+    <!-- Главная навигация -->
+    <nav class="section-nav">
+        <div class="nav-progress">
+            <div class="progress-bar" id="progressBar" style="height: 0%;"></div>
+        </div>
+        <div class="nav-dots">
+            <div class="nav-dot active" data-section="0"></div>
+            <div class="nav-dot" data-section="1"></div>
+            <div class="nav-dot" data-section="2"></div>
+        </div>
+        <div class="nav-controls">
+            <button class="nav-arrow prev" id="prevSection" disabled="">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+                </svg>
+            </button>
+            <button class="nav-arrow next" id="nextSection">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <nav class="nav">
+                <div class="nav-left">
+                    <a href="#" class="logo">POLubvi</a>
+                </div>
+                <div class="nav-right">
+                    <button class="nav-button">Recipes</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="home" class="hero section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="title-line">Кулинарная книга</span>
+                        <span class="title-line">Polkovniki Lubvi</span>
+                        <span class="title-line">We cook</span>
+                        <span class="title-line">Рецепты</span>
+                        <span class="title-line">We love</span>
+                    </h1>
+                    <div class="hero-subtitle">
+                        <span class="subtitle-line">тёплые семейные рецепты</span>
+                        <span class="subtitle-line">рецепты для счастья</span>
+                        <span class="subtitle-line">папа может</span>
+                        <span class="subtitle-line"></span>
+                        <span class="subtitle-line">i kiss you</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Showcase -->
+        <section id="projects" class="project-showcase section" id="project-showcase">
+            <div class="project-showcase-container">
+                <div class="project-showcase-header">
+                    <div class="showcase-eyebrow">WE</div>
+                    <h2 class="showcase-heading">Категории рецептов</h2>
+                </div>
+                
+                <div class="project-showcase-scroll">
+                    <div class="project-showcase-items">
+                        <!-- Project 1 -->
+                        <div class="project-showcase-item" data-index="0">
+                            <div class="project-showcase-card">
+                                <a href="menu.html#zavtrak" class="project-showcase-card-inner">
+                                    <div class="project-showcase-image">
+                                        <img src="soup.webp.png" alt="Mercedes-Benz Museum">
+                                    </div>
+                                    <div class="project-showcase-content">
+                                        <div class="project-showcase-title">
+                                            <h3 class="project-opportunity">Первые блюда</h3>
+                                        </div>
+                                        <div class="project-showcase-footer">
+                                            <h3 class="project-counter">Согревающие супы и бульоны</h3>
+                                            <button class="project-button">all recipes</button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Project 2 -->
+                        <div class="project-showcase-item" data-index="1">
+                            <div class="project-showcase-card">
+                                <a href="menu.html#salatypoke" class="project-showcase-card-inner">
+                                    <div class="project-showcase-image">
+                                        <img src="Plate.webp.png" alt="Booking.com City Campus">
+                                    </div>
+                                    <div class="project-showcase-content">
+                                        <div class="project-showcase-title">
+                                            <h3 class="project-opportunity">Вторые блюда</h3>
+                                        </div>
+                                        <div class="project-showcase-footer">
+                                            <h3 class="project-counter">Основные блюда на каждый день</h3>
+                                            <button class="project-button">all recipes</button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Project 3 -->
+                        <div class="project-showcase-item" data-index="2">
+                            <div class="project-showcase-card">
+                                <a href="menu.html#sytnye-kruassany" class="project-showcase-card-inner">
+                                    <div class="project-showcase-image">
+                                        <img src="cake.webp.png" alt="Doha Metro Network">
+                                    </div>
+                                    <div class="project-showcase-content">
+                                        <div class="project-showcase-title">
+                                            <h3 class="project-opportunity">Выпечка и десерты</h3>
+                                        </div>
+                                        <div class="project-showcase-footer">
+                                            <p class="project-counter">Сладкие удовольствия</p>
+                                            <button class="project-button">all recipes</button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Project 4 -->
+                        <div class="project-showcase-item" data-index="3">
+                            <div class="project-showcase-card">
+                                <a href="menu.html#sladkie-kruassany" class="project-showcase-card-inner">
+                                    <div class="project-showcase-image">
+                                        <img src="salad.webp.png" alt="WestK Performing Arts Centre">
+                                    </div>
+                                    <div class="project-showcase-content">
+                                        <div class="project-showcase-title">
+                                            <h3 class="project-opportunity">Салаты</h3>
+                                        </div>
+                                        <div class="project-showcase-footer">
+                                            <p class="project-counter">Свежие и вкусные сочетания</p>
+                                            <button class="project-button">all recipes</button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Project 5 -->
+                        <div class="project-showcase-item" data-index="4">
+                            <div class="project-showcase-card">
+                                <a href="menu.html#kofe" class="project-showcase-card-inner">
+                                    <div class="project-showcase-image">
+                                        <img src="drink.webp.png" alt="WestK Performing Arts Centre">
+                                    </div>
+                                    <div class="project-showcase-content">
+                                        <div class="project-showcase-title">
+                                            <h3 class="project-opportunity">Напитки</h3>
+                                        </div>
+                                        <div class="project-showcase-footer">
+                                            <p class="project-counter">Освежающие и согревающие</p>
+                                            <button class="project-button">all recipes</button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Project 6 -->
+                        <div class="project-showcase-item" data-index="5">
+                            <div class="project-showcase-card">
+                                <a href="menu.html#ne-kofe" class="project-showcase-card-inner">
+                                    <div class="project-showcase-image">
+                                        <img src="Snack.webp.png" alt="WestK Performing Arts Centre">
+                                    </div>
+                                    <div class="project-showcase-content">
+                                        <div class="project-showcase-title">
+                                            <h3 class="project-opportunity">Закуски</h3>
+                                        </div>
+                                        <div class="project-showcase-footer">
+                                            <p class="project-counter">Быстрые и вкусные идеи</p>
+                                            <button class="project-button">all recipes</button>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
