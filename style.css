@@ -94,7 +94,7 @@ body {
     left: -100px;
     background: radial-gradient(circle, #b6bf4c 0%, rgba(182, 191, 76, 0) 70%);
     animation: float1 25s ease-in-out infinite, pulse1 8s ease-in-out infinite;
-    opacity: 0.6 !important;
+    opacity: 0.3 !important;
 }
 
 .shape-2 {
