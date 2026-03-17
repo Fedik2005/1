@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кулинарная книга</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Главная навигация -->
+    <nav class="section-nav">
+        <div class="nav-progress">
+            <div class="progress-bar" id="progressBar" style="height: 0%;"></div>
+        </div>
+        <div class="nav-dots">
+            <div class="nav-dot active" data-section="1"></div>
+            <div class="nav-dot" data-section="2"></div>
+        </div>
+        <div class="nav-controls">
+            <button class="nav-arrow prev" id="prevSection" disabled="">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+                </svg>
+            </button>
+            <button class="nav-arrow next" id="nextSection">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Анимированный фон на весь сайт -->
+    <div class="floating-background">
+        <div class="organic-shapes-container">
+            <div class="organic-shape shape-1"></div>
+            <div class="organic-shape shape-2"></div>
+            <div class="organic-shape shape-3"></div>
+            <div class="organic-shape shape-4"></div>
+            <div class="organic-shape shape-5"></div>
+            <div class="organic-shape shape-6"></div>
+        </div>
+    </div>
+
+    <!-- Главная страница -->
+    <section id="home" class="section">
+        <div class="hero-content">
+            <h1 class="main-title">Кулинарная книга</h1>
+            <p class="subtitle">Тёплые рецепты для души</p>
+            <div class="scroll-indicator">
+                <div class="scroll-arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Страница рецептов -->
+    <section id="recipes" class="section">
+        <div class="recipes-container">
+            <div class="recipes-header">
+                <h2 class="recipes-title">Категории рецептов</h2>
+                <p class="recipes-subtitle">Откройте мир вкусных открытий</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="card-content">
+                        <div class="category-icon">
+                            <img src="soup.webp.png" alt="Первые блюда">
+                        </div>
+                        <h3>Первые блюда</h3>
+                        <p>Согревающие супы и бульоны</p>
+                        <div class="card-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-content">
+                        <div class="category-icon">
+                            <img src="Plate.webp.png" alt="Вторые блюда">
+                        </div>
+                        <h3>Вторые блюда</h3>
+                        <p>Основные блюда на каждый день</p>
+                        <div class="card-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-content">
+                        <div class="category-icon">
+                            <img src="cake.webp.png" alt="Выпечка и десерты">
+                        </div>
+                        <h3>Выпечка и десерты</h3>
+                        <p>Сладкие удовольствия</p>
+                        <div class="card-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-content">
+                        <div class="category-icon">
+                            <img src="salad.webp.png" alt="Салаты">
+                        </div>
+                        <h3>Салаты</h3>
+                        <p>Свежие и вкусные сочетания</p>
+                        <div class="card-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-content">
+                        <div class="category-icon">
+                            <img src="drink.webp.png" alt="Напитки">
+                        </div>
+                        <h3>Напитки</h3>
+                        <p>Освежающие и согревающие</p>
+                        <div class="card-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-content">
+                        <div class="category-icon">
+                            <img src="Snack.webp.png" alt="Закуски">
+                        </div>
+                        <h3>Закуски</h3>
+                        <p>Быстрые и вкусные идеи</p>
+                        <div class="card-hover-effect"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
