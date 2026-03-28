@@ -7,6 +7,12 @@
 @font-face {
     font-family: 'New';
     src: url('newyorkerc.ttf') format('truetype');
+    
+
+}
+@font-face {
+    font-family: 'Mon';
+    src: url('mon.ttf') format('truetype');
 }
 /* ОБЫЧНЫЙ РЕЖИМ (без фиксированного позиционирования) */
 html, body {
@@ -28,7 +34,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: 0;
-    filter: blur(10px);
+    filter: blur(50px);
     pointer-events: none;
     background-color: #fefaf5;
 }
@@ -40,7 +46,7 @@ body {
     will-change: transform;
 }
 
-.circle-1 {
+.circle-1 { /* вверхний слева */
     width: 360px;
     height: 406px;
     top: 22%;
@@ -186,10 +192,10 @@ body {
 /* ФОТО — БЕЗ КРУГА */
 .photo {
     position: absolute;
-    top: 70px;
+    top: 100px;
     left: 50px;
-    width: 280px;
-    height: 280px;
+    width: 780px;
+    height: 780px;
     object-fit: cover;
     opacity: 0.8;
     pointer-events: none;
@@ -237,6 +243,20 @@ body {
         left: max(24px, env(safe-area-inset-left));
     }
 }
+/* АВТОР */
+.author {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-family: 'New', -apple-system, 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #5a3921;
+    opacity: 0.6;
+    letter-spacing: 0.5px;
+    z-index: 20;
+    pointer-events: none;
+}
 
 /* АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ */
 @media (max-width: 768px) {
@@ -248,21 +268,65 @@ body {
     .button { bottom: 20px; left: 16px; font-size: 16px; }
 }
 
+
 /* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ */
 @media (max-width: 480px) {
+    /* Убираем общее размытие у контейнера */
+    .blurred-circles {
+        filter: blur(20px) !important;
+    }
+    
+    /* Индивидуальные настройки для каждой фигуры */
+    .circle-1 {
+        filter: blur(10px);
+        opacity: 0.4 !important;
+    }
+    
+    .circle-2 {
+        filter: blur(12px);
+        opacity: 0.85 !important;
+    }
+    
+    .circle-3 {
+        filter: blur(5px);
+        opacity: 0.5 !important;
+    }
+    
+    .circle-4 {
+        filter: blur(15px);
+        opacity: 0.7 !important;
+    }
+    
+    .circle-5 {
+        filter: blur(40px);
+        opacity: 0.5 !important;
+    }
+    
+    .circle-6 {
+        filter: blur(20px);
+        opacity: 0.15 !important;
+    }
+    
+    /* Остальные ваши настройки для телефона */
     .text-line-1 { font-size: 43px; }
     .text-line-2 { font-size: 30px;  }
     .text-line-3 { font-size: 24px;  }
-    .texts { right: 12px; top: 200px; }
+    .texts { right: 12px; top: 130px; }
     .photo { width: 660px; height: 860px; top: 10px; left: 10px; right: 550px; }
-    .button { bottom: 16px; left: 22px;top: 20px; font-size: 16px; width: 160px; }
+    .button { bottom: 26px; left: 12px;top: 20px; font-size: 16px; width: 160px; }
     
     .circle-1 { width: 250px; height: 280px; }
     .circle-2 { width: 270px; height: 360px; }
     .circle-3 { width: 320px; height: 330px; }
     .circle-4 { width: 280px; height: 430px; }
-    .circle-5 { width: 240px; height: 520px; }
+    .circle-5 { width: 240px; height: 220px; }
     .circle-6 { width: 300px; height: 350px; }
+    .author {
+        bottom: 15px;
+        right: 100px;
+        font-size: 21px;
+        opacity: 0.7;
+    }
 }
 
 /* АНИМАЦИЯ ПОЯВЛЕНИЯ ТЕКСТА */
