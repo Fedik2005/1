@@ -285,4 +285,193 @@ body {
     .circle-4 { width: 280px; height: 430px; }
     .circle-5 { width: 240px; height: 220px; }
     .circle-6 { width: 300px; height: 350px; }
+  /* КОНТЕЙНЕР ДЛЯ КНОПОК-КАТЕГОРИЙ */
+.categories-wrapper {
+    width: 100%;
+    margin-top: 40px;
+    position: relative;
+}
+
+.categories-scroll {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* скрываем полосу прокрутки в Firefox */
+    padding-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.categories-scroll::-webkit-scrollbar {
+    display: none; /* скрываем полосу прокрутки в Chrome/Safari */
+}
+
+/* КНОПКИ-КАТЕГОРИИ (ТОЧНО КАК КНОПКА НА ГЛАВНУЮ) */
+.cat-btn {
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 12px 28px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #5a3921;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Mon', -apple-system, sans-serif;
+    border-radius: 40px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.cat-btn:active {
+    transform: scale(0.96);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ */
+@media (max-width: 480px) {
+    .categories-wrapper {
+        margin-top: 30px;
+    }
+    
+    .cat-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .categories-scroll {
+        gap: 12px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+/* СТОПКА КАРТОЧЕК РЕЦЕПТОВ */
+.cards-stack {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-height: 400px;
+}
+
+.card-stack-container {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    height: 400px;
+    margin: 0 auto;
+}
+
+.recipe-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.card-content {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+/* Позиции карточек в стопке */
+.recipe-card[data-index="0"] {
+    top: 0;
+    left: 0;
+    z-index: 3;
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-card[data-index="1"] {
+    top: 15px;
+    left: 12px;
+    z-index: 2;
+    opacity: 0.7;
+    filter: blur(4px);
+    transform: translateY(-5px) scale(0.96);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.recipe-card[data-index="2"] {
+    top: 30px;
+    left: 24px;
+    z-index: 1;
+    opacity: 0.4;
+    filter: blur(8px);
+    transform: translateY(-10px) scale(0.92);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Анимация прокрутки */
+.recipe-card.swipe-up {
+    animation: swipeUp 0.4s ease forwards;
+}
+
+.recipe-card.swipe-down {
+    animation: swipeDown 0.4s ease forwards;
+}
+
+@keyframes swipeUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-150px) scale(0.8);
+        opacity: 0;
+    }
+}
+
+@keyframes swipeDown {
+    0% {
+        transform: translateY(-150px) scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Адаптация для телефонов */
+@media (max-width: 480px) {
+    .cards-stack {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        min-height: 350px;
+    }
+    
+    .card-stack-container {
+        max-width: 280px;
+        height: 350px;
+    }
+    
+    .recipe-card[data-index="1"] {
+        top: 12px;
+        left: 8px;
+    }
+    
+    .recipe-card[data-index="2"] {
+        top: 24px;
+        left: 16px;
+    }
+}
+
 }
