@@ -10,7 +10,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Рецепты | Polkovniki Lubvi</title>
-    <link rel="stylesheet" href="menu.css?v=1">
+    <link rel="stylesheet" href="menu.css?v=3">
 </head>
 <body>
     <div class="blurred-circles">
@@ -27,8 +27,42 @@
         <div class="placeholder-text">
             на каждый день
         </div>
+
+        <!-- ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ С КНОПКАМИ-КАТЕГОРИЯМИ -->
+        <div class="categories-wrapper">
+            <div class="categories-scroll">
+                <button class="cat-btn" data-category="first">Первое</button>
+                <button class="cat-btn" data-category="second">Второе</button>
+                <button class="cat-btn" data-category="sweet">Сладкое</button>
+                <button class="cat-btn" data-category="salads">Салаты</button>
+                <button class="cat-btn" data-category="drinks">Напитки</button>
+                <button class="cat-btn" data-category="snacks">Закуски</button>
+                <button class="cat-btn" data-category="preps">Заготовки</button>
+                <button class="cat-btn" data-category="combo">Комбо</button>
+            </div>
+        </div>
+
+        <!-- СТОПКА КАРТОЧЕК РЕЦЕПТОВ -->
+        <div class="cards-stack">
+            <div class="card-stack-container">
+                <div class="card recipe-card" data-index="0">
+                    <div class="card-content">
+                        <!-- Здесь будет содержимое рецепта -->
+                    </div>
+                </div>
+                <div class="card recipe-card" data-index="1">
+                    <div class="card-content"></div>
+                </div>
+                <div class="card recipe-card" data-index="2">
+                    <div class="card-content"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <a href="index.html" class="back-button">← На главную</a>
+
+    <script src="menu.js?v=3"></script>
+  
 </body>
 </html>
