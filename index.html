@@ -2,10 +2,15 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="theme-color" content="#fefaf5">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Polkovniki Lubvi</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
     <div class="blurred-circles">
@@ -27,6 +32,27 @@
         <img class="photo" id="photo" src="l888.png" alt="photo">
 
         <button class="button" id="recipeButton">...</button>
+        <div class="author">Автор: Настенька</div>
+    </div>
+
+    <!-- Навигация с точками (только для веб) -->
+    <div class="section-nav" id="sectionNav" style="display: none;">
+        <div class="nav-progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="nav-dots" id="navDots"></div>
+        <div class="nav-controls">
+            <button class="nav-arrow prev" id="prevSection">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+                </svg>
+            </button>
+            <button class="nav-arrow next" id="nextSection">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <script src="script.js"></script>
