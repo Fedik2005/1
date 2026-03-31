@@ -6,18 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Данные для разных категорий с названиями, описаниями и фото
     const recipesByCategory = {
         first: [
-            { name: "Суп Фо бо", description: "Ароматный бульон, нежная говядина, свежий лайм и охлаждающая мята создают невероятный баланс — насыщенный, яркий и гармоничный. Это не просто суп, это кулинарное путешествие во Вьетнам!", image: "l4.png" },
-            { name: "Борщ", description: "Наваристый красный борщ со сметаной и пампушками", image: "l4.png" },
-            { name: "Тыквенный крем-суп", description: "Нежный крем-суп из печёной тыквы со сливочными нотками", image: "l4.png" }
+            { name: "Суп Фо бо", description: "Ароматный бульон, нежная говядина, свежий лайм и охлаждающая мята создают невероятный баланс — насыщенный, яркий и гармоничный. Это не просто суп, это кулинарное путешествие во Вьетнам!", image: "1.png" },
+            { name: "Борщ", description: "Наваристый красный борщ со сметаной и пампушками", image: "2.png" },
+            { name: "Тыквенный крем-суп", description: "Нежный крем-суп из печёной тыквы со сливочными нотками", image: "3.png" }
         ],
         second: [
-            { name: "Чахохбили", description: "Острое грузинское блюдо из курицы с томатами и специями", image: "l4.png" },
-            { name: "Минтай с черри", description: "Нежная рыба, запечённая с черри и пряными травами", image: "l4.png" },
-            { name: "Курочка в кисло-сладком", description: "Хрустящая курочка в ароматном кисло-сладком соусе", image: "l4.png" }
+            { name: "Чахохбили ", description: "Простое, но очень вкусное грузинское блюдо - курочка, тушёная с помидорами и специями. Мясо получается мягким и сочным, а томатный соус - ароматным. Хмели-сунели, кориандр и зелень добавляют характерный грузинский колорит.", image: "4.png" },
+            { name: "Минтай с черри помидорками", description: "Нежное филе минтая, обжаренное до золотистой корочки, сочетается с яркими черри-томатами, которые лопаются во рту, оставляя сладковатый след. Лёгкая лимонная нотка завершает вкус — свежо, просто и изысканно.", image: "l5.png" },
+            { name: "Курочка в кисло-сладком соусе", description: "Нежная курочка по-гонконгски в хрустящей корочке, политая кисло-сладким соусом с кусочками спелого ананаса. Взрыв вкуса: острое, сладкое и пикантное в каждом укусе. Просто бомба!", image: "l6.png" }
+            
         ],
         sweet: [
-            { name: "Тирамису", description: "Классический итальянский десерт с маскарпоне и кофе", image: "l4.png" },
-            { name: "Калинка-малинка", description: "Нежный десерт с фисташковым кремом и малиновым кюли", image: "l4.png" },
+            { name: "Мясная пицца", description: "Нежное филе грудки индейки, ароматный бекон и тягучая моцарелла на томатном соусе. Итальянские травы раскрывают каждый вкус, создавая идеальную гармонию. Настоящая мясная бомба!", image: "8.png" },
+            { name: "Пицца камамбер", description: "Нежная груша, томленый камамбер с благородной плесенью и горный мёд создают гармонию сладкого, пикантного и сливочного. Хрустящая основа, тающая начинка – это не просто пицца, а десерт для гурманов!", image: "9.png" },
             { name: "Лимончелло", description: "Освежающий десерт с лимонным кремом и обожжённой меренгой", image: "l4.png" }
         ],
         salads: [
@@ -50,20 +51,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentRecipes = recipesByCategory.first;
     
     // Функция отображения карточки по индексу
-    function showCard(index) {
-        const recipe = currentRecipes[index];
-        const cardContent = document.querySelector('.card-content');
-        
-        if (cardContent && recipe) {
-            cardContent.innerHTML = `
-                <div style="display: flex; flex-direction: column; height: 100%;">
-                    <h3 style="font-family: 'New', sans-serif; color: #5a3921; margin-bottom: 8px; font-size: 20px; margin-top: 5px;">${recipe.name}</h3>
-                    <p style="font-family: system-ui; color: #5a3921; opacity: 0.8; font-size: 13px; line-height: 1.4; margin-bottom: 12px;">${recipe.description}</p>
-                    <img src="${recipe.image}" style="width: 100%; height: 140px; object-fit: cover; border-radius: 16px; margin-top: auto;" alt="${recipe.name}">
-                </div>
-            `;
-        }
+    // Функция отображения карточки по индексу
+function showCard(index) {
+    const recipe = currentRecipes[index];
+    const cardContent = document.querySelector('.card-content');
+    
+    if (cardContent && recipe) {
+        cardContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; height: 100%; position: relative;">
+                <h3 style="font-family: 'New', sans-serif; color: #5a3921; margin-bottom: 8px; font-size: 20px; margin-top: 5px;">${recipe.name}</h3>
+                <p style="font-family: 'Mon'; color: #5a3921; opacity: 0.8; font-size: 11px; text-align: right; line-height: 1.4; margin-bottom: 12px;">${recipe.description}</p>
+                <img src="${recipe.image}" style="width: 304px; height: 250px; object-fit: cover; border-radius: 16px; position: absolute; bottom: -70px; right: -20px; opacity: 0.9;" alt="${recipe.name}">
+            </div>
+        `;
     }
+}
     
     // Функция смены категории
     function changeCategory(category) {
