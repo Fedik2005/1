@@ -1,0 +1,351 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+@font-face {
+    font-family: 'New';
+    src: url('newyorkerc.ttf') format('truetype');
+    
+
+}
+@font-face {
+    font-family: 'Mon';
+    src: url('mon.ttf') format('truetype');
+}
+/* ОБЫЧНЫЙ РЕЖИМ (без фиксированного позиционирования) */
+html, body {
+    background-color: #fefaf5;
+    width: 100%;
+    min-height: 100vh;
+}
+
+body {
+    font-family: 'New', -apple-system, 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+/* КОНТЕЙНЕР ДЛЯ КРУГОВ */
+.blurred-circles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    filter: blur(50px);
+    pointer-events: none;
+    background-color: #fefaf5;
+}
+
+/* КРУГИ — адаптированы для тёмной темы */
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+}
+
+.circle-1 { /* вверхний слева */
+    width: 360px;
+    height: 406px;
+    top: 22%;
+    left: 25%;
+    background-color: #ddd3c9;
+    opacity: 0.7;
+    transform: translate(-50%, -50%);
+    animation: move1 35s infinite alternate ease-in-out;
+}
+
+.circle-2 {
+    width: 397px;
+    height: 528px;
+    top: 60%;
+    left: 80%;
+    background-color: #ecc4c3;
+    opacity: 0.65;
+    transform: translate(-50%, -50%);
+    animation: move2 40s infinite alternate ease-in-out;
+}
+
+.circle-3 { /* нижний слева */
+    width: 609px;
+    height: 621px;
+    top: 70%;
+    left: 15%;
+    background-color: #b97d7b;
+    opacity: 0.7;
+    transform: translate(-50%, -50%);
+    animation: move3 38s infinite alternate ease-in-out;
+}
+
+.circle-4 { /* посередине справа под 6 */
+    width: 518px;
+    height: 789px;
+    top: 30%;
+    left: 90%;
+    background-color: #efd7cf;
+    opacity: 0.65;
+    transform: translate(-50%, -50%);
+    animation: move4 45s infinite alternate ease-in-out;
+}
+
+.circle-5 { /* нижний справа */
+    width: 636px;
+    height: 336px;
+    top: 85%;
+    left: 75%;
+    background-color: #928e5e;
+    opacity: 0.7;
+    transform: translate(-50%, -50%);
+    animation: move5 42s infinite alternate ease-in-out;
+}
+
+.circle-6 { /* верхний справа */
+    width: 567px;
+    height: 565px;
+    top: 15%;
+    left: 70%;
+    background-color: #575527;
+    opacity: 0.7;
+    transform: translate(-50%, -50%);
+    animation: move6 48s infinite alternate ease-in-out;
+}
+
+/* АНИМАЦИИ ДВИЖЕНИЯ */
+@keyframes move1 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(80px, -60px) rotate(15deg) scale(1.1); }
+}
+
+@keyframes move2 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(-100px, 70px) rotate(-20deg) scale(1.12); }
+}
+
+@keyframes move3 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(70px, 80px) rotate(12deg) scale(1.08); }
+}
+
+@keyframes move4 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(-120px, -70px) rotate(-15deg) scale(1.15); }
+}
+
+@keyframes move5 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(60px, -90px) rotate(18deg) scale(1.12); }
+}
+
+@keyframes move6 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(-80px, 50px) rotate(-14deg) scale(1.1); }
+}
+
+/* КОНТЕНТ */
+.content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* ТЕКСТЫ */
+.texts {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    text-align: right;
+}
+
+.text-line {
+    margin-bottom: 12px;
+    transition: opacity 0.3s ease;
+}
+
+.text-line-1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #5a3921;
+    letter-spacing: -0.3px;
+    text-shadow: none;
+}
+
+.text-line-2 {
+    font-size: 46px;
+    font-weight: 700;
+    color: #5a3921;
+    letter-spacing: -0.5px;
+    margin-top: -8px;
+    text-shadow: none;
+}
+
+.text-line-3 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #5a3921;
+    letter-spacing: -0.3px;
+    text-shadow: none;
+}
+
+/* ФОТО — БЕЗ КРУГА */
+.photo {
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    width: 780px;
+    height: 780px;
+    object-fit: cover;
+    opacity: 0.8;
+    pointer-events: none;
+    border-radius: 0;
+}
+
+/* КНОПКА — СТЕКЛЯННАЯ */
+.button {
+    position: absolute;
+    bottom: 30px;
+    left: 24px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: none;
+    padding: 12px 28px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #5a3921;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: system-ui, -apple-system, sans-serif;
+    border-radius: 40px;
+    z-index: 20;
+    box-shadow: 
+        inset 4px 4px 12px 2px rgba(255, 255, 255, 0.2),
+        inset -2px -2px 15px 1px rgba(255, 255, 255, 0.2),
+        inset 0 0 15px 2px rgba(255, 255, 255, 0.2);
+}
+
+.button:active {
+    transform: scale(0.96);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* УЧЁТ ОСТРОВА И БЕЗОПАСНЫХ ЗОН */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .texts {
+        top: max(40px, env(safe-area-inset-top));
+        right: max(20px, env(safe-area-inset-right));
+    }
+    
+    .photo {
+        top: max(70px, calc(env(safe-area-inset-top) + 20px));
+        left: max(50px, env(safe-area-inset-left));
+    }
+    
+    .button {
+        bottom: max(30px, env(safe-area-inset-bottom));
+        left: max(24px, env(safe-area-inset-left));
+    }
+}
+/* АВТОР */
+.author {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-family: 'New', -apple-system, 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #5a3921;
+    opacity: 0.6;
+    letter-spacing: 0.5px;
+    z-index: 20;
+    pointer-events: none;
+}
+
+/* АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ */
+@media (max-width: 768px) {
+    .text-line-1 { font-size: 48px; }
+    .text-line-2 { font-size: 46px; }
+    .text-line-3 { font-size: 23px; }
+    .texts { right: 16px; }
+    .photo { width: 200px; height: 200px; top: 50px; left: 30px; }
+    .button { bottom: 20px; left: 16px; font-size: 16px; }
+}
+
+
+/* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ */
+@media (max-width: 480px) {
+    /* Убираем общее размытие у контейнера */
+    .blurred-circles {
+        filter: blur(20px) !important;
+    }
+    
+    /* Индивидуальные настройки для каждой фигуры */
+    .circle-1 {
+        filter: blur(10px);
+        opacity: 0.4 !important;
+    }
+    
+    .circle-2 {
+        filter: blur(12px);
+        opacity: 0.85 !important;
+    }
+    
+    .circle-3 {
+        filter: blur(5px);
+        opacity: 0.5 !important;
+    }
+    
+    .circle-4 {
+        filter: blur(15px);
+        opacity: 0.7 !important;
+    }
+    
+    .circle-5 {
+        filter: blur(40px);
+        opacity: 0.5 !important;
+    }
+    
+    .circle-6 {
+        filter: blur(20px);
+        opacity: 0.15 !important;
+    }
+    
+    /* Остальные ваши настройки для телефона */
+    .text-line-1 { font-size: 43px; }
+    .text-line-2 { font-size: 30px;  }
+    .text-line-3 { font-size: 24px;  }
+    .texts { right: 12px; top: 130px; }
+    .photo { width: 660px; height: 860px; top: 10px; left: 10px; right: 550px; }
+    .button { bottom: 26px; left: 12px;top: 20px; font-size: 16px; width: 160px; }
+    
+    .circle-1 { width: 250px; height: 280px; }
+    .circle-2 { width: 270px; height: 360px; }
+    .circle-3 { width: 320px; height: 330px; }
+    .circle-4 { width: 280px; height: 430px; }
+    .circle-5 { width: 240px; height: 220px; }
+    .circle-6 { width: 300px; height: 350px; }
+    .author {
+        bottom: 15px;
+        right: 100px;
+        font-size: 21px;
+        opacity: 0.7;
+    }
+}
+
+/* АНИМАЦИЯ ПОЯВЛЕНИЯ ТЕКСТА */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.text-line {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.text-line-1 { animation-delay: 0.2s; }
+.text-line-2 { animation-delay: 0.4s; }
+.text-line-3 { animation-delay: 0.6s; }
+
