@@ -524,6 +524,7 @@
 /* Исправляет съезжание на Android, не меняя верстку для iOS */
 
 /* Фикс для Android WebView: нормализуем позиционирование */
+/* ========== ТОЛЬКО ДЛЯ ANDROID ========== */
 @supports not (-webkit-touch-callout: none) {
     html, body {
         position: relative;
@@ -545,6 +546,7 @@
         position: relative;
         z-index: 10;
         overflow-y: visible;
+        justify-content: space-between;
     }
     
     .header-section {
@@ -553,26 +555,32 @@
     
     .image-section {
         flex-shrink: 0;
+        height: auto;
+        min-height: 280px;
     }
     
     .nutrition-section {
         flex-shrink: 0;
     }
     
+    /* ГЛАВНОЕ: убираем фиксированную высоту и прижимаем к низу */
     .sliding-drawer {
         flex-shrink: 0;
         margin-top: auto;
         margin-bottom: 0;
         position: relative;
         z-index: 20;
+        height: auto !important;
+        min-height: auto;
     }
     
-    /* Контент внутри выдвижного блока */
+    /* Убираем фиксированную высоту у tab-content */
     .tab-content {
+        height: auto !important;
+        max-height: 55vh;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         padding-bottom: 0;
-        max-height: 60vh;
     }
     
     .bon-appetit {
@@ -592,27 +600,27 @@
     }
     
     /* Убираем всё, что может быть после выдвижного блока */
-    .sliding-drawer::after {
-        display: none;
-    }
-    
+    .sliding-drawer::after,
     .detail-content::after {
-        display: none;
+        display: none !important;
+        content: none !important;
+        height: 0 !important;
     }
     
-    /* ЗАПРЕЩАЕМ ПРОКРУТКУ ДАЛЬШЕ ПОСЛЕДНЕГО БЛОКА */
+    /* Убираем отступы внизу body */
     body {
-        overflow-y: auto !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
     }
     
+    /* Запрещаем прокрутку дальше последнего элемента */
     .detail-content {
-        justify-content: space-between;
+        padding-bottom: 0;
     }
     
-    /* Убираем пустое пространство на коротких экранах */
     @media (max-height: 700px) {
         .tab-content {
-            max-height: 50vh;
+            max-height: 45vh;
         }
         .bon-appetit {
             padding-bottom: 15px;
@@ -621,13 +629,14 @@
     
     @media (orientation: landscape) {
         .image-section {
-            max-height: 280px;
+            max-height: 200px;
+            min-height: 180px;
         }
         .recipe-image {
-            max-height: 280px;
+            max-height: 200px;
         }
         .tab-content {
-            max-height: 40vh;
+            max-height: 35vh;
         }
     }
 }
