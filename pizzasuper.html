@@ -544,8 +544,11 @@
         min-height: 100vh;
         position: relative;
         z-index: 10;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow-y: visible;
+    }
+    
+    .header-section {
+        flex-shrink: 0;
     }
     
     .image-section {
@@ -564,6 +567,19 @@
         z-index: 20;
     }
     
+    /* Контент внутри выдвижного блока */
+    .tab-content {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0;
+        max-height: 60vh;
+    }
+    
+    .bon-appetit {
+        padding-bottom: 25px;
+        margin-bottom: 0;
+    }
+    
     .recipe-image {
         width: 100%;
         height: auto;
@@ -575,27 +591,32 @@
         position: fixed;
     }
     
-    .tab-content {
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 0;
-    }
-    
-    .bon-appetit {
-        padding-bottom: 25px;
-        margin-bottom: 0;
-    }
-    
-    /* Убираем пустоту после блока */
+    /* Убираем всё, что может быть после выдвижного блока */
     .sliding-drawer::after {
         display: none;
     }
     
     .detail-content::after {
-        content: '';
-        display: block;
-        height: 0;
-        flex-shrink: 0;
+        display: none;
+    }
+    
+    /* ЗАПРЕЩАЕМ ПРОКРУТКУ ДАЛЬШЕ ПОСЛЕДНЕГО БЛОКА */
+    body {
+        overflow-y: auto !important;
+    }
+    
+    .detail-content {
+        justify-content: space-between;
+    }
+    
+    /* Убираем пустое пространство на коротких экранах */
+    @media (max-height: 700px) {
+        .tab-content {
+            max-height: 50vh;
+        }
+        .bon-appetit {
+            padding-bottom: 15px;
+        }
     }
     
     @media (orientation: landscape) {
@@ -605,8 +626,8 @@
         .recipe-image {
             max-height: 280px;
         }
-        .sliding-drawer {
-            min-height: 280px;
+        .tab-content {
+            max-height: 40vh;
         }
     }
 }
