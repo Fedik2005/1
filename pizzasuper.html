@@ -525,13 +525,12 @@
 
 /* Фикс для Android WebView: нормализуем позиционирование */
 @supports not (-webkit-touch-callout: none) {
-    /* Это правило сработает ТОЛЬКО на Android (и других non-iOS) */
-    
     html, body {
         position: relative;
         overflow-y: auto !important;
         height: auto !important;
         min-height: 100vh;
+        background-color: #fefaf5;
     }
     
     body {
@@ -540,28 +539,31 @@
     }
     
     .detail-content {
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        justify-content: flex-start;
+        position: relative;
+        z-index: 10;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .image-section {
         flex-shrink: 0;
     }
     
-    .sliding-drawer {
-        flex-shrink: 0;
-        margin-top: auto;
-    }
-    
     .nutrition-section {
         flex-shrink: 0;
     }
     
-    /* Фикс для фото — сохраняем пропорции */
+    .sliding-drawer {
+        flex-shrink: 0;
+        margin-top: auto;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 20;
+    }
+    
     .recipe-image {
         width: 100%;
         height: auto;
@@ -569,17 +571,13 @@
         object-fit: contain;
     }
     
-    /* Фикс для кругов на Android (они не должны перекрывать контент) */
     .blurred-circles {
         position: fixed;
     }
     
-    /* Убираем всё, что может быть после выдвижного блока */
-    .sliding-drawer::after {
-        display: none;
-    }
-    
     .tab-content {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
         padding-bottom: 0;
     }
     
@@ -588,7 +586,18 @@
         margin-bottom: 0;
     }
     
-    /* Фикс для landscape на Android */
+    /* Убираем пустоту после блока */
+    .sliding-drawer::after {
+        display: none;
+    }
+    
+    .detail-content::after {
+        content: '';
+        display: block;
+        height: 0;
+        flex-shrink: 0;
+    }
+    
     @media (orientation: landscape) {
         .image-section {
             max-height: 280px;
