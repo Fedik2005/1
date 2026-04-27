@@ -555,7 +555,7 @@ html, body {
 @supports not (-webkit-touch-callout: none) {
     .menu-title {
         white-space: nowrap !important;
-        font-size: 38px;
+        font-size: 36px;
         letter-spacing: -0.5px;
     }
     
