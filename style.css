@@ -15,25 +15,21 @@
     src: url('mon.ttf') format('truetype');
 }
 
-/* ПОЛНОЭКРАННЫЙ РЕЖИМ ДЛЯ ТЕЛЕФОНОВ */
+/* БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ УСТРОЙСТВ */
 html, body {
     background-color: #fefaf5;
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    left: 0;
 }
 
 body {
     font-family: 'New', -apple-system, 'Inter', sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
-/* КОНТЕЙНЕР ДЛЯ КРУГОВ */
+/* КОНТЕЙНЕР ДЛЯ КРУГОВ (анимированный фон) */
 .blurred-circles {
     position: fixed;
     top: 0;
@@ -46,7 +42,6 @@ body {
     background-color: #fefaf5;
 }
 
-/* КРУГИ — АНИМИРОВАННЫЕ */
 .circle {
     position: absolute;
     border-radius: 50%;
@@ -119,7 +114,6 @@ body {
     animation: move6 48s infinite alternate ease-in-out;
 }
 
-/* АНИМАЦИИ */
 @keyframes move1 {
     0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
     100% { transform: translate(-50%, -50%) translate(80px, -60px) rotate(15deg) scale(1.1); }
@@ -150,12 +144,13 @@ body {
     100% { transform: translate(-50%, -50%) translate(-80px, 50px) rotate(-14deg) scale(1.1); }
 }
 
-/* КОНТЕНТ */
+/* ОСНОВНОЙ КОНТЕНТ */
 .content {
     position: relative;
     z-index: 10;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* ТЕКСТЫ */
@@ -197,13 +192,12 @@ body {
 /* ФОТО */
 .photo {
     position: absolute;
-    top: 100px;
-    left: 50px;
-    width: 400px;
+    top: 80px;
+    left: 20px;
+    width: 350px;
     height: auto;
-    opacity: 0.8;
+    opacity: 0.7;
     pointer-events: none;
-    border-radius: 0;
     z-index: 5;
 }
 
@@ -217,7 +211,7 @@ body {
     -webkit-backdrop-filter: blur(12px);
     border: none;
     padding: 12px 28px;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     color: #5a3921;
     cursor: pointer;
@@ -248,7 +242,7 @@ body {
     pointer-events: none;
 }
 
-/* БЕЗОПАСНЫЕ ЗОНЫ */
+/* БЕЗОПАСНЫЕ ЗОНЫ ДЛЯ IPHONE */
 @supports (padding-top: env(safe-area-inset-top)) {
     .texts {
         top: max(40px, env(safe-area-inset-top));
@@ -256,8 +250,8 @@ body {
     }
     
     .photo {
-        top: max(100px, calc(env(safe-area-inset-top) + 60px));
-        left: max(50px, env(safe-area-inset-left));
+        top: max(80px, calc(env(safe-area-inset-top) + 40px));
+        left: max(20px, env(safe-area-inset-left));
     }
     
     .button {
@@ -271,7 +265,130 @@ body {
     }
 }
 
-/* НАВИГАЦИЯ С ТОЧКАМИ (только для веб) */
+/* ТЕЛЕФОНЫ (480px и меньше) */
+@media (max-width: 480px) {
+    .blurred-circles {
+        filter: blur(20px) !important;
+    }
+    
+    .circle-1 {
+        filter: blur(10px);
+        opacity: 0.4 !important;
+        width: 250px;
+        height: 280px;
+    }
+    .circle-2 {
+        filter: blur(12px);
+        opacity: 0.85 !important;
+        width: 270px;
+        height: 360px;
+    }
+    .circle-3 {
+        filter: blur(5px);
+        opacity: 0.5 !important;
+        width: 320px;
+        height: 330px;
+    }
+    .circle-4 {
+        filter: blur(15px);
+        opacity: 0.7 !important;
+        width: 280px;
+        height: 430px;
+    }
+    .circle-5 {
+        filter: blur(40px);
+        opacity: 0.5 !important;
+        width: 240px;
+        height: 220px;
+    }
+    .circle-6 {
+        filter: blur(20px);
+        opacity: 0.15 !important;
+        width: 300px;
+        height: 350px;
+    }
+    
+    .text-line-1 { font-size: 22px; }
+    .text-line-2 { font-size: 28px; }
+    .text-line-3 { font-size: 20px; }
+    .texts { right: 12px; top: 50px; }
+    
+    .photo { 
+        width: 240px; 
+        top: 100px; 
+        left: 15px;
+    }
+    
+    .button { 
+        bottom: 20px; 
+        left: 16px; 
+        font-size: 18px; 
+        padding: 10px 20px;
+    }
+    
+    .author { 
+        bottom: 15px; 
+        right: 15px; 
+        font-size: 11px;
+    }
+}
+
+/* АНИМАЦИЯ ПОЯВЛЕНИЯ ТЕКСТА */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.text-line {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.text-line-1 { animation-delay: 0.2s; }
+.text-line-2 { animation-delay: 0.4s; }
+.text-line-3 { animation-delay: 0.6s; }
+
+/* ===== ANDROID ФИКС ===== */
+@supports not (-webkit-touch-callout: none) {
+    html, body {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .content {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .text-line-1 { font-size: 28px; }
+    .text-line-2 { font-size: 34px; }
+    .text-line-3 { font-size: 26px; }
+    
+    .photo {
+        width: 280px;
+        top: 70px;
+        left: 15px;
+    }
+    
+    .button {
+        font-size: 20px;
+        padding: 10px 24px;
+    }
+    
+    @media (max-width: 480px) {
+        .text-line-1 { font-size: 20px; }
+        .text-line-2 { font-size: 24px; }
+        .text-line-3 { font-size: 18px; }
+        .photo { width: 200px; top: 80px; }
+        .button { font-size: 16px; padding: 8px 18px; }
+        .author { font-size: 10px; }
+    }
+}
+
+/* НАВИГАЦИЯ С ТОЧКАМИ (только веб) */
 .section-nav {
     position: fixed;
     right: 20px;
@@ -358,67 +475,7 @@ body {
     cursor: not-allowed;
 }
 
-/* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ */
-@media (max-width: 768px) {
-    .text-line-1 { font-size: 28px; }
-    .text-line-2 { font-size: 36px; }
-    .text-line-3 { font-size: 24px; }
-    .texts { right: 16px; top: 30px; }
-    .photo { width: 300px; top: 80px; left: 20px; }
-    .button { bottom: 20px; left: 16px; font-size: 20px; padding: 10px 24px; }
-    .author { bottom: 15px; right: 15px; font-size: 12px; }
-}
-
 @media (max-width: 480px) {
-    .blurred-circles {
-        filter: blur(20px) !important;
-    }
-    
-    .circle-1 {
-        filter: blur(10px);
-        opacity: 0.4 !important;
-        width: 250px;
-        height: 280px;
-    }
-    .circle-2 {
-        filter: blur(12px);
-        opacity: 0.85 !important;
-        width: 270px;
-        height: 360px;
-    }
-    .circle-3 {
-        filter: blur(5px);
-        opacity: 0.5 !important;
-        width: 320px;
-        height: 330px;
-    }
-    .circle-4 {
-        filter: blur(15px);
-        opacity: 0.7 !important;
-        width: 280px;
-        height: 430px;
-    }
-    .circle-5 {
-        filter: blur(40px);
-        opacity: 0.5 !important;
-        width: 240px;
-        height: 220px;
-    }
-    .circle-6 {
-        filter: blur(20px);
-        opacity: 0.15 !important;
-        width: 300px;
-        height: 350px;
-    }
-    
-    .text-line-1 { font-size: 24px; }
-    .text-line-2 { font-size: 28px; }
-    .text-line-3 { font-size: 20px; }
-    .texts { right: 12px; top: 50px; }
-    .photo { width: 260px; height: auto; top: 120px; left: 10px; }
-    .button { bottom: 20px; left: 12px; font-size: 18px; padding: 10px 20px; width: auto; top: auto; }
-    .author { bottom: 15px; right: 15px; font-size: 10px; }
-    
     .section-nav {
         right: 10px;
         padding: 8px 6px;
@@ -428,50 +485,4 @@ body {
     .nav-dot { width: 6px; height: 6px; }
     .nav-arrow { width: 28px; height: 28px; }
     .nav-arrow svg { width: 16px; height: 16px; }
-}
-
-/* АНИМАЦИЯ ПОЯВЛЕНИЯ ТЕКСТА */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.text-line {
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.text-line-1 { animation-delay: 0.2s; }
-.text-line-2 { animation-delay: 0.4s; }
-.text-line-3 { animation-delay: 0.6s; }
-
-/* ========== ANDROID FIX ========== */
-@supports not (-webkit-touch-callout: none) {
-    html, body {
-        overflow: hidden !important;
-        position: fixed !important;
-        width: 100% !important;
-        height: 100% !important;
-    }
-    
-    .content {
-        overflow: hidden;
-        height: 100%;
-    }
-    
-    .photo {
-        max-width: 280px;
-        width: auto;
-        height: auto;
-    }
-    
-    @media (max-width: 480px) {
-        .photo {
-            max-width: 220px;
-        }
-        .text-line-1 { font-size: 22px; }
-        .text-line-2 { font-size: 26px; }
-        .text-line-3 { font-size: 18px; }
-        .button { font-size: 16px; padding: 8px 18px; }
-    }
 }
