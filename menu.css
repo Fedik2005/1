@@ -214,7 +214,7 @@ body {
     background: rgba(255, 255, 255, 0.25);
 }
 
-/* ФОТО 34.PNG В ПРАВОМ НИЖНЕМ УГЛУ */
+/* ФОТО 36.PNG В ПРАВОМ НИЖНЕМ УГЛУ */
 .bottom-right-photo {
     position: fixed;
     bottom: 20px;
@@ -524,5 +524,72 @@ body {
     .recipe-card[data-index="2"] {
         top: 24px;
         left: 16px;
+    }
+}
+
+/* ========== ТОЛЬКО ДЛЯ ANDROID — ИСПРАВЛЯЕТ НАЕЗД ФОТО НА КНОПКИ ========== */
+@supports not (-webkit-touch-callout: none) {
+    
+    /* Фикс: нижние кнопки не перекрываются карточками */
+    .cards-stack {
+        margin-bottom: 100px;
+    }
+    
+    /* Кнопка "На главную" — поднимаем выше */
+    .back-button {
+        bottom: max(80px, env(safe-area-inset-bottom, 80px));
+        z-index: 100;
+    }
+    
+    /* Иконка избранного — поднимаем выше */
+    .bottom-right-photo {
+        bottom: max(70px, env(safe-area-inset-bottom, 70px));
+        z-index: 100;
+    }
+    
+    /* Увеличиваем отступ снизу для контента */
+    .menu-content {
+        padding-bottom: 120px;
+    }
+    
+    /* Фикс для маленьких экранов */
+    @media (max-width: 480px) {
+        .cards-stack {
+            margin-bottom: 80px;
+        }
+        
+        .back-button {
+            bottom: max(60px, env(safe-area-inset-bottom, 60px));
+            left: max(16px, env(safe-area-inset-left, 16px));
+        }
+        
+        .bottom-right-photo {
+            bottom: max(50px, env(safe-area-inset-bottom, 50px));
+            right: max(-10px, env(safe-area-inset-right, -10px));
+        }
+        
+        .menu-content {
+            padding-bottom: 100px;
+        }
+    }
+    
+    /* Фикс для landscape */
+    @media (orientation: landscape) {
+        .cards-stack {
+            margin-bottom: 60px;
+            min-height: 250px;
+        }
+        
+        .back-button {
+            bottom: max(20px, env(safe-area-inset-bottom, 20px));
+        }
+        
+        .bottom-right-photo {
+            bottom: max(15px, env(safe-area-inset-bottom, 15px));
+        }
+        
+        .menu-content {
+            padding-bottom: 60px;
+        }
     }
 }
