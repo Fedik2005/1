@@ -526,117 +526,92 @@
 /* Фикс для Android WebView: нормализуем позиционирование */
 /* ========== ТОЛЬКО ДЛЯ ANDROID ========== */
 @supports not (-webkit-touch-callout: none) {
-    html, body {
-        position: relative;
-        overflow-y: auto !important;
-        height: auto !important;
-        min-height: 100vh;
-        background-color: #fefaf5;
-    }
     
-    body {
-        overflow-y: auto !important;
-        height: auto !important;
+    /* Запрещаем скролл всей страницы — как на iPhone */
+    html, body {
+        overflow: hidden !important;
+        height: 100% !important;
+        position: fixed !important;
+        width: 100% !important;
     }
     
     .detail-content {
+        overflow-y: hidden !important;
+        height: 100%;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
-        position: relative;
-        z-index: 10;
-        overflow-y: visible;
-        justify-content: space-between;
     }
     
+    /* Все блоки фиксированы, как на iPhone */
     .header-section {
         flex-shrink: 0;
     }
     
     .image-section {
         flex-shrink: 0;
-        height: auto;
-        min-height: 280px;
+        height: 380px;
     }
     
     .nutrition-section {
         flex-shrink: 0;
+        margin-top: -50px;
     }
     
-    /* ГЛАВНОЕ: убираем фиксированную высоту и прижимаем к низу */
+    /* Выдвижной блок — последний, как на iPhone */
     .sliding-drawer {
-        flex-shrink: 0;
+        flex: 1;
+        height: auto !important;
+        min-height: 0;
         margin-top: auto;
-        margin-bottom: 0;
-        position: relative;
-        z-index: 20;
-        height: auto !important;
-        min-height: auto;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
     }
     
-    /* Убираем фиксированную высоту у tab-content */
+    /* Контент внутри блока скроллится */
     .tab-content {
+        flex: 1;
+        overflow-y: auto !important;
         height: auto !important;
-        max-height: 55vh;
-        overflow-y: auto;
+        max-height: none;
         -webkit-overflow-scrolling: touch;
-        padding-bottom: 0;
     }
     
-    .bon-appetit {
-        padding-bottom: 25px;
-        margin-bottom: 0;
-    }
-    
+    /* Восстанавливаем фото как на iPhone */
     .recipe-image {
+        position: absolute;
+        left: -30px;
+        top: 0;
         width: 100%;
-        height: auto;
-        max-height: 380px;
-        object-fit: contain;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0 28px 28px 0;
+    }
+    
+    .image-section {
+        position: relative;
+        overflow: hidden;
     }
     
     .blurred-circles {
         position: fixed;
     }
     
-    /* Убираем всё, что может быть после выдвижного блока */
+    /* Убираем всё лишнее */
     .sliding-drawer::after,
     .detail-content::after {
-        display: none !important;
-        content: none !important;
-        height: 0 !important;
+        display: none;
     }
     
-    /* Убираем отступы внизу body */
-    body {
-        margin-bottom: 0 !important;
-        padding-bottom: 0 !important;
-    }
-    
-    /* Запрещаем прокрутку дальше последнего элемента */
-    .detail-content {
-        padding-bottom: 0;
-    }
-    
-    @media (max-height: 700px) {
-        .tab-content {
-            max-height: 45vh;
-        }
-        .bon-appetit {
-            padding-bottom: 15px;
+    @media (max-width: 480px) {
+        .image-section {
+            height: 320px;
         }
     }
     
     @media (orientation: landscape) {
         .image-section {
-            max-height: 200px;
-            min-height: 180px;
-        }
-        .recipe-image {
-            max-height: 200px;
-        }
-        .tab-content {
-            max-height: 35vh;
+            height: 250px;
         }
     }
 }
