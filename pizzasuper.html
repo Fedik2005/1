@@ -286,7 +286,7 @@
             display: block;
         }
         
-        /* ИНГРЕДИЕНТЫ - ПРЯМОУГОЛЬНИКИ С КОРИЧНЕВЫМ КОНТУРОМ */
+        /* ИНГРЕДИЕНТЫ - УВЕЛИЧЕННЫЙ ШРИФТ И ТЁМНЫЙ ТЕКСТ */
         .ingredients-list {
             display: flex;
             flex-direction: column;
@@ -303,16 +303,16 @@
             cursor: pointer;
             transition: all 0.2s ease;
             font-family: 'Mon', sans-serif;
-            font-size: 14px;
-            color: #5a3921;
+            font-size: 16px;
+            color: #3d2a1a;
+            opacity: 1;
         }
         .ingredient-item.selected {
-            background: rgba(160, 124, 92, 0.15);
+            background: rgba(160, 124, 92, 0.4);
             border-color: #5a3921;
         }
         .ingredient-item:active {
             transform: scale(0.98);
-            background: rgba(160, 124, 92, 0.1);
         }
         
         .save-ingredients-btn {
@@ -337,29 +337,104 @@
             opacity: 1;
         }
         
-        /* ПРИГОТОВЛЕНИЕ - КАК БЫЛО (С ТОЧКАМИ) */
+        /* ПРИГОТОВЛЕНИЕ - УВЕЛИЧЕННЫЙ ШРИФТ И ТЁМНЫЙ ТЕКСТ (БЕЗ ШАГОВ) */
         .cooking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0;
+            list-style: none;
+        }
+        .cooking-item {
+            background: transparent;
+            border: 1.5px solid #a07c5c;
+            border-radius: 12px;
+            padding: 12px 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
             font-family: 'Mon', sans-serif;
-            font-size: 14px;
-            color: #5a3921;
-            opacity: 0.8;
-            line-height: 1.6;
-            padding-left: 20px;
+            font-size: 16px;
+            color: #3d2a1a;
+            opacity: 1;
         }
-        .cooking-list li {
-            margin-bottom: 8px;
+        .cooking-item:active {
+            transform: scale(0.98);
         }
+        
+       
+        /* ЗЕЛЁНЫЙ ЦВЕТ ДЛЯ ВЫДЕЛЕННЫХ НЕКЛИКАБЕЛЬНЫХ ПУНКТОВ (как у ингредиентов) */
+        .cooking-item.selected-green {
+            background: #818263c9;
+            border-color: #dcd4c1e8;
+}
         
         /* НАДПИСЬ ПРИЯТНОГО АППЕТИТА */
         .bon-appetit {
             font-family: 'New', sans-serif;
             font-size: 18px;
             font-weight: 600;
-            color: #5a3921;
+            color: #3d2a1a;
             text-align: center;
             padding: 20px 0 30px 0;
-            opacity: 0.7;
+            opacity: 1;
             letter-spacing: 1px;
+        }
+        
+        /* КАСТОМНОЕ ВСПЛЫВАЮЩЕЕ ОКНО ДЛЯ ПОДРОБНОСТЕЙ ШАГА */
+        .step-detail-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .step-detail-alert.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .step-detail-content {
+            background: linear-gradient(135deg, #a07c5c, #7a5a3e);
+            border-radius: 30px;
+            padding: 24px 20px;
+            max-width: 85%;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+        .step-detail-text {
+            font-family: 'Mon', sans-serif;
+            font-size: 15px;
+            color: #ffffff;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .step-detail-btn {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            border: none;
+            padding: 10px 24px;
+            font-family: 'New', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: all 0.2s ease;
+        }
+        .step-detail-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.15);
         }
         
         .custom-alert {
@@ -382,7 +457,7 @@
             opacity: 1;
         }
         .custom-alert-content {
-            background: #ecc4c3de;
+            background: linear-gradient(135deg, #a07c5c, #7a5a3e);
             border-radius: 30px;
             padding: 24px 20px;
             max-width: 85%;
@@ -429,10 +504,13 @@
             .sliding-drawer { height: 550px; }
             .sliding-drawer.expanded { transform: translateY(calc(-100% + 220px)); }
             .save-photo img { width: 160px; height: 120px; margin-right: -35px; }
-            .ingredient-item { padding: 10px 14px; font-size: 13px; }
+            .ingredient-item { padding: 10px 14px; font-size: 14px; }
+            .cooking-item { padding: 10px 14px; font-size: 14px; }
             .bon-appetit { font-size: 16px; padding: 15px 0 25px 0; }
             .custom-alert-content { width: 280px; padding: 20px 16px; }
             .custom-alert-text { font-size: 14px; }
+            .step-detail-content { width: 300px; padding: 20px 16px; }
+            .step-detail-text { font-size: 13px; }
             
             .blurred-circles { filter: blur(20px) !important; }
             .circle-1 { filter: blur(10px); opacity: 0.4 !important; width: 250px; height: 280px; }
@@ -442,6 +520,69 @@
             .circle-5 { filter: blur(40px); opacity: 0.5 !important; width: 240px; height: 220px; }
             .circle-6 { filter: blur(20px); opacity: 0.15 !important; width: 300px; height: 350px; }
         }
+        /* ========== ТОЛЬКО ДЛЯ ANDROID (не влияет на iPhone) ========== */
+/* Исправляет съезжание на Android, не меняя верстку для iOS */
+
+/* Фикс для Android WebView: нормализуем позиционирование */
+@supports not (-webkit-touch-callout: none) {
+    /* Это правило сработает ТОЛЬКО на Android (и других non-iOS) */
+    
+    html, body {
+        position: relative;
+        overflow-y: auto !important;
+        height: auto !important;
+        min-height: 100vh;
+    }
+    
+    body {
+        overflow-y: auto !important;
+        height: auto !important;
+    }
+    
+    .detail-content {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .image-section {
+        flex-shrink: 0;
+    }
+    
+    .sliding-drawer {
+        flex-shrink: 0;
+        margin-top: 0;
+    }
+    
+    .nutrition-section {
+        flex-shrink: 0;
+    }
+    
+    /* Фикс для фото — сохраняем пропорции */
+    .recipe-image {
+        width: 100%;
+        height: auto;
+        max-height: 380px;
+        object-fit: contain;
+    }
+    
+    /* Фикс для кругов на Android (они не должны перекрывать контент) */
+    .blurred-circles {
+        position: fixed;
+    }
+    
+    /* Фикс для landscape на Android */
+    @media (orientation: landscape) {
+        .image-section {
+            max-height: 280px;
+        }
+        .recipe-image {
+            max-height: 280px;
+        }
+        .sliding-drawer {
+            min-height: 280px;
+        }
+    }
+}
     </style>
 </head>
 <body>
@@ -457,7 +598,7 @@
     <div class="detail-content">
         <div class="header-section">
             <a href="menu.html" class="back-arrow">←</a>
-            <span class="recipe-name">Мясная пицца</span>
+            <span class="recipe-name">Мясная пицца (2x)</span>
             <button class="save-photo" id="savePhoto">
                 <img src="36.png" alt="Сохранить" id="favoriteImg">
             </button>
@@ -468,10 +609,10 @@
         </div>
 
         <div class="nutrition-section">
-            <div class="nutrition-capsule"><div class="nutrition-value">18г</div><div class="nutrition-label">БЕЛКИ</div></div>
-            <div class="nutrition-capsule"><div class="nutrition-value">12г</div><div class="nutrition-label">ЖИРЫ</div></div>
-            <div class="nutrition-capsule"><div class="nutrition-value">35г</div><div class="nutrition-label">УГЛЕВОДЫ</div></div>
-            <div class="nutrition-capsule"><div class="nutrition-value">320ккал</div><div class="nutrition-label">КАЛОРИИ</div></div>
+            <div class="nutrition-capsule"><div class="nutrition-value">8,8г</div><div class="nutrition-label">БЕЛКИ</div></div>
+            <div class="nutrition-capsule"><div class="nutrition-value">7,5г</div><div class="nutrition-label">ЖИРЫ</div></div>
+            <div class="nutrition-capsule"><div class="nutrition-value">18г</div><div class="nutrition-label">УГЛЕВОДЫ</div></div>
+            <div class="nutrition-capsule"><div class="nutrition-value">175ккал</div><div class="nutrition-label">КАЛОРИИ</div></div>
         </div>
 
         <div class="sliding-drawer" id="slidingDrawer">
@@ -485,34 +626,33 @@
             <div class="tab-content" id="tabContent">
                 <div class="tab-pane active" id="ingredients">
                     <ul class="ingredients-list" id="ingredientsList">
-                        <li class="ingredient-item" data-ingredient="грудка индейки — 200г">Тёплая вода — 310мл</li>
-                        <li class="ingredient-item" data-ingredient="бекон — 100г">Соль — 10г</li>
-                        <li class="ingredient-item" data-ingredient="моцарелла — 150г">Сахар — 13г</li>
-                        <li class="ingredient-item" data-ingredient="томатный соус — 50мл">Дрожжи прессованные — 7г</li>
-                        <li class="ingredient-item" data-ingredient="тесто для пиццы — 250г">Масло растительное — 25г</li>
-                        <li class="ingredient-item" data-ingredient="итальянские травы — по вкусу">Мука — 300г</li>
-                        <li class="ingredient-item" data-ingredient="соль, перец — по вкусу">Манка для формовки — 3ст.л.</li>
-                        <li class="ingredient-item" data-ingredient="дополнительный ингредиент — тест">Перетёртые томаты — 200г</li>
-                        <li class="ingredient-item" data-ingredient="ещё один ингредиент — проверка">Филе индейки карбонад — 1уп</li>
-                        <li class="ingredient-item" data-ingredient="ещё один ингредиент — проверка">Бекон — 0,5уп</li>
-                        <li class="ingredient-item" data-ingredient="ещё один ингредиент — проверка">Моцарелла — 2шт</li>
-                        <li class="ingredient-item" data-ingredient="ещё один ингредиент — проверка">Итальянские травы </li>
-                        <li class="ingredient-item" data-ingredient="ещё один ингредиент — проверка">Томаты — 2шт</li>
-                        <li class="ingredient-item" data-ingredient="ещё один ингредиент — проверка">Зелень для украшения/корнишоны</li>
+                        <li class="ingredient-item" data-ingredient="Тёплая вода — 310мл">Тёплая вода — 310мл</li>
+                        <li class="ingredient-item" data-ingredient="Соль — 10г">Соль — 10г</li>
+                        <li class="ingredient-item" data-ingredient="Сахар — 13г">Сахар — 13г</li>
+                        <li class="ingredient-item" data-ingredient="Дрожжи прессованные — 7г">Дрожжи прессованные — 7г</li>
+                        <li class="ingredient-item" data-ingredient="Масло растительное — 25г">Масло растительное — 25г</li>
+                        <li class="ingredient-item" data-ingredient="Мука — 300г">Мука — 300г</li>
+                        <li class="ingredient-item" data-ingredient="Манка для формовки — 3ст.л.">Манка для формовки — 3ст.л.</li>
+                        <li class="ingredient-item" data-ingredient="Перетёртые томаты — 200г">Перетёртые томаты — 200г</li>
+                        <li class="ingredient-item" data-ingredient="Филе индейки карбонад — 1уп">Филе грудки индейки — 1уп</li>
+                        <li class="ingredient-item" data-ingredient="Бекон — 0,5уп">Бекон — 0,5уп</li>
+                        <li class="ingredient-item" data-ingredient="Моцарелла — 2шт">Моцарелла — 2шт</li>
+                        <li class="ingredient-item" data-ingredient="Итальянские травы — по вкусу">Итальянские травы — по вкусу</li>
+                        <li class="ingredient-item" data-ingredient="Томаты — 2шт">Томаты — 2шт</li>
+                        <li class="ingredient-item" data-ingredient="Зелень для украшения — по вкусу">Зелень для украшения — по вкусу</li>
                     </ul>
                     <button class="save-ingredients-btn" id="saveIngredientsBtn">СОХРАНИТЬ</button>
                 </div>
                 <div class="tab-pane" id="cooking">
-                    <ul class="cooking-list">
-                        <li>Разогрейте духовку до 200°C</li>
-                        <li>Раскатайте тесто</li>
-                        <li>Смажьте томатным соусом</li>
-                        <li>Выложите начинку</li>
-                        <li>Посыпьте моцареллой</li>
-                        <li>Выпекайте 15-20 минут</li>
-                        <li>Подавайте горячим</li>
-                        <li>Дополнительный шаг — проверка скролла</li>
-                        <li>Ещё один шаг — всё работает</li>
+                    <ul class="cooking-list" id="cookingList">
+                        <li class="cooking-item clickable" data-detail="Тёплая вода — 310мл<br>Соль — 10г<br>Сахар — 13г<br>Дрожжи прессованные — 7г<br>Масло растительное — 25г<br>Мука — 300г">Смешайте тёплую воду, соль, сахар и дрожжи. Добавьте растительное масло и муку, замесите тесто.</li>
+                        <li class="cooking-item no-click">Дайте постоять 10 минут, затем снова вымешайте до гладкости.</li>
+                        <li class="cooking-item no-click">Переложите тесто в смазанную маслом миску, накройте плёнкой и уберите в холодильник на 12–16 часов.</li>
+                        <li class="cooking-item no-click">Достаньте тесто, дайте постоять в тепле 30 минут. Разделите на две части.</li>
+                        <li class="cooking-item no-click">Каждую часть обваляйте в манке и растяните в форму пиццы. Переложите основу на присыпанный манкой коврик.</li>
+                        <li class="cooking-item clickable" data-detail="Перетёртые томаты — 100г<br>Филе грудки индейки — 0,5уп<br>Бекон — 0,25уп<br>Моцарелла — 1шт<br>Томат — 1шт">Выложите начинку: соус, филе, бекон, моцарелла. Посыпьте итальянскими травами. Дополнительно можно положить порезанный кружочками томат.</li>
+                        <li class="cooking-item no-click">Выпекайте 5 минут при 220 °C, затем 3 минуты при 180 °C.</li>
+                        <li class="cooking-item no-click">Перед подачей украсьте пиццу выжатым соком томата и зеленью/корнишонами.</li>
                     </ul>
                     <div class="bon-appetit">Приятного аппетита!</div>
                 </div>
@@ -524,6 +664,13 @@
         <div class="custom-alert-content">
             <div class="custom-alert-text" id="customAlertText"></div>
             <button class="custom-alert-btn" id="customAlertBtn">Хорошо</button>
+        </div>
+    </div>
+
+    <div id="stepDetailAlert" class="step-detail-alert">
+        <div class="step-detail-content">
+            <div class="step-detail-text" id="stepDetailText"></div>
+            <button class="step-detail-btn" id="stepDetailBtn">Понятно!</button>
         </div>
     </div>
 
@@ -547,7 +694,25 @@
             }
         });
 
-        // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+        var stepDetailAlert = document.getElementById('stepDetailAlert');
+        var stepDetailText = document.getElementById('stepDetailText');
+        var stepDetailBtn = document.getElementById('stepDetailBtn');
+        
+        function showStepDetail(message) {
+            stepDetailText.innerHTML = message;
+            stepDetailAlert.classList.add('show');
+        }
+        
+        stepDetailBtn.addEventListener('click', function() {
+            stepDetailAlert.classList.remove('show');
+        });
+        
+        stepDetailAlert.addEventListener('click', function(e) {
+            if (e.target === stepDetailAlert) {
+                stepDetailAlert.classList.remove('show');
+            }
+        });
+
         var tabBtns = document.querySelectorAll('.tab-btn');
         var tabPanes = document.querySelectorAll('.tab-pane');
         
@@ -573,7 +738,6 @@
             }(tabBtns[i]));
         }
 
-        // ИЗБРАННОЕ
         var savePhotoBtn = document.getElementById('savePhoto');
         var favoriteImg = document.getElementById('favoriteImg');
         var recipeName = 'Мясная пицца';
@@ -607,7 +771,6 @@
             });
         }
 
-        // ИНГРЕДИЕНТЫ - ВЫДЕЛЕНИЕ
         var ingredientItems = document.querySelectorAll('.ingredient-item');
         
         for (var i = 0; i < ingredientItems.length; i++) {
@@ -617,7 +780,6 @@
             });
         }
         
-        // КНОПКА СОХРАНИТЬ
         var saveIngredientsBtn = document.getElementById('saveIngredientsBtn');
         
         function copyToClipboard(text) {
@@ -665,7 +827,30 @@
             });
         }
 
-        // ВЕРТИКАЛЬНЫЕ И ГОРИЗОНТАЛЬНЫЕ СВАЙПЫ
+        // Обработчики для пунктов приготовления
+        var cookingItems = document.querySelectorAll('.cooking-item');
+        
+        for (var i = 0; i < cookingItems.length; i++) {
+            (function(item) {
+                var isClickable = item.classList.contains('clickable');
+                var detailText = item.getAttribute('data-detail');
+                
+                if (isClickable && detailText) {
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        showStepDetail(detailText);
+                    });
+                } else {
+                    item.classList.add('no-click');
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        this.classList.toggle('selected-green');
+                        // Ничего не делаем, только зелёный эффект через CSS
+                    });
+                }
+            })(cookingItems[i]);
+        }
+
         var drawer = document.getElementById('slidingDrawer');
         var handle = document.getElementById('drawerHandle');
         var tabContent = document.querySelector('.tab-content');
@@ -698,10 +883,8 @@
             var diffY = startY - currentY;
             var diffX = Math.abs(startX - currentX);
             
-            // Проверяем, вверху ли список
             var isAtTop = tabContent.scrollTop === 0;
             
-            // Если движение больше по горизонтали - это горизонтальный свайп
             if (diffX > 15 && Math.abs(diffY) < 10) {
                 isHorizontalSwipe = true;
                 
@@ -717,19 +900,15 @@
                 return;
             }
             
-            // Вертикальные свайпы
             if (!isHorizontalSwipe && Math.abs(diffY) > 15) {
-                // Свайп вниз (diffY < 0) - опускаем блок ТОЛЬКО если список вверху И блок поднят
                 if (diffY < -25 && isExpanded && isAtTop) {
                     collapseDrawer();
                     isDragging = false;
                 }
-                // Свайп вверх (diffY > 0) - поднимаем блок (всегда, если не поднят)
                 else if (diffY > 25 && !isExpanded) {
                     expandDrawer();
                     isDragging = false;
                 }
-                // Иначе ничего не делаем - просто скроллим список
             }
         }
         
@@ -738,14 +917,12 @@
             isHorizontalSwipe = false;
         }
 
-        // Обработчики для ручки
         if (handle) {
             handle.addEventListener('touchstart', onTouchStart);
             handle.addEventListener('touchmove', onTouchMove);
             handle.addEventListener('touchend', onTouchEnd);
         }
 
-        // Обработчики для области контента
         if (tabContent) {
             tabContent.addEventListener('touchstart', onTouchStart);
             tabContent.addEventListener('touchmove', onTouchMove);
