@@ -1,12 +1,42 @@
-/* ===== ВАШИ ОРИГИНАЛЬНЫЕ СТИЛИ (НЕТРОНУТЫЕ, РАБОТАЮТ НА IPHONE) ===== */
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-@font-face { font-family: 'New'; src: url('newyorkerc.ttf') format('truetype'); }
-@font-face { font-family: 'Mon'; src: url('mon.ttf') format('truetype'); }
-html, body { background-color: #fefaf5; width: 100%; min-height: 100vh; }
-body { font-family: 'New', -apple-system, 'Inter', sans-serif; overflow-x: hidden; }
-
-.blurred-circles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; filter: blur(50px); pointer-events: none; background-color: #fefaf5; }
-.circle { position: absolute; border-radius: 50%; will-change: transform; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+@font-face {
+    font-family: 'New';
+    src: url('newyorkerc.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Mon';
+    src: url('mon.ttf') format('truetype');
+}
+html, body {
+    background-color: #fefaf5;
+    width: 100%;
+    min-height: 100vh;
+}
+body {
+    font-family: 'New', -apple-system, 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+.blurred-circles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    filter: blur(50px);
+    pointer-events: none;
+    background-color: #fefaf5;
+}
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+}
 .circle-1 { width: 360px; height: 406px; top: 22%; left: 25%; background-color: #ddd3c9; opacity: 0.7; transform: translate(-50%, -50%); animation: move1 35s infinite alternate ease-in-out; }
 .circle-2 { width: 397px; height: 528px; top: 60%; left: 80%; background-color: #ecc4c3; opacity: 0.65; transform: translate(-50%, -50%); animation: move2 40s infinite alternate ease-in-out; }
 .circle-3 { width: 609px; height: 621px; top: 70%; left: 15%; background-color: #b97d7b; opacity: 0.7; transform: translate(-50%, -50%); animation: move3 38s infinite alternate ease-in-out; }
@@ -14,63 +44,207 @@ body { font-family: 'New', -apple-system, 'Inter', sans-serif; overflow-x: hidde
 .circle-5 { width: 636px; height: 336px; top: 85%; left: 75%; background-color: #928e5e; opacity: 0.7; transform: translate(-50%, -50%); animation: move5 42s infinite alternate ease-in-out; }
 .circle-6 { width: 567px; height: 565px; top: 15%; left: 70%; background-color: #575527; opacity: 0.7; transform: translate(-50%, -50%); animation: move6 48s infinite alternate ease-in-out; }
 
-@keyframes move1 { 0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); } 100% { transform: translate(-50%, -50%) translate(80px, -60px) rotate(15deg) scale(1.1); } }
-@keyframes move2 { 0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); } 100% { transform: translate(-50%, -50%) translate(-100px, 70px) rotate(-20deg) scale(1.12); } }
-@keyframes move3 { 0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); } 100% { transform: translate(-50%, -50%) translate(70px, 80px) rotate(12deg) scale(1.08); } }
-@keyframes move4 { 0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); } 100% { transform: translate(-50%, -50%) translate(-120px, -70px) rotate(-15deg) scale(1.15); } }
-@keyframes move5 { 0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); } 100% { transform: translate(-50%, -50%) translate(60px, -90px) rotate(18deg) scale(1.12); } }
-@keyframes move6 { 0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); } 100% { transform: translate(-50%, -50%) translate(-80px, 50px) rotate(-14deg) scale(1.1); } }
+@keyframes move1 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(80px, -60px) rotate(15deg) scale(1.1); }
+}
+@keyframes move2 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(-100px, 70px) rotate(-20deg) scale(1.12); }
+}
+@keyframes move3 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(70px, 80px) rotate(12deg) scale(1.08); }
+}
+@keyframes move4 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(-120px, -70px) rotate(-15deg) scale(1.15); }
+}
+@keyframes move5 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(60px, -90px) rotate(18deg) scale(1.12); }
+}
+@keyframes move6 {
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(-50%, -50%) translate(-80px, 50px) rotate(-14deg) scale(1.1); }
+}
 
-.content { position: relative; z-index: 10; width: 100%; min-height: 100vh; }
-.texts { position: absolute; top: 40px; right: 20px; text-align: right; }
-.text-line { margin-bottom: 12px; transition: opacity 0.3s ease; }
-.text-line-1 { font-size: 32px; font-weight: 700; color: #5a3921; letter-spacing: -0.3px; }
-.text-line-2 { font-size: 46px; font-weight: 700; color: #5a3921; letter-spacing: -0.5px; margin-top: -8px; }
-.text-line-3 { font-size: 36px; font-weight: 700; color: #5a3921; letter-spacing: -0.3px; }
-.photo { position: absolute; top: 100px; left: 50px; width: 780px; height: 780px; object-fit: cover; opacity: 0.8; pointer-events: none; border-radius: 0; }
-.button { position: absolute; bottom: 30px; left: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: none; padding: 12px 28px; font-size: 28px; font-weight: 700; color: #5a3921; cursor: pointer; transition: all 0.2s ease; font-family: system-ui, -apple-system, sans-serif; border-radius: 40px; z-index: 20; box-shadow: inset 4px 4px 12px 2px rgba(255, 255, 255, 0.2), inset -2px -2px 15px 1px rgba(255, 255, 255, 0.2), inset 0 0 15px 2px rgba(255, 255, 255, 0.2); }
-.button:active { transform: scale(0.96); background: rgba(255, 255, 255, 0.2); }
-@supports (padding-top: env(safe-area-inset-top)) { .texts { top: max(40px, env(safe-area-inset-top)); right: max(20px, env(safe-area-inset-right)); } .photo { top: max(70px, calc(env(safe-area-inset-top) + 20px)); left: max(50px, env(safe-area-inset-left)); } .button { bottom: max(30px, env(safe-area-inset-bottom)); left: max(24px, env(safe-area-inset-left)); } }
-.author { position: absolute; bottom: 20px; right: 20px; font-family: 'New', -apple-system, 'Inter', sans-serif; font-size: 14px; font-weight: 400; color: #5a3921; opacity: 0.6; letter-spacing: 0.5px; z-index: 20; pointer-events: none; }
-
-@media (max-width: 768px) { .text-line-1 { font-size: 48px; } .text-line-2 { font-size: 46px; } .text-line-3 { font-size: 23px; } .texts { right: 16px; } .photo { width: 200px; height: 200px; top: 50px; left: 30px; } .button { bottom: 20px; left: 16px; font-size: 16px; } }
-@media (max-width: 480px) { .blurred-circles { filter: blur(20px) !important; } .circle-1 { filter: blur(10px); opacity: 0.4 !important; width: 250px; height: 280px; } .circle-2 { filter: blur(12px); opacity: 0.85 !important; width: 270px; height: 360px; } .circle-3 { filter: blur(5px); opacity: 0.5 !important; width: 320px; height: 330px; } .circle-4 { filter: blur(15px); opacity: 0.7 !important; width: 280px; height: 430px; } .circle-5 { filter: blur(40px); opacity: 0.5 !important; width: 240px; height: 220px; } .circle-6 { filter: blur(20px); opacity: 0.15 !important; width: 300px; height: 350px; } .text-line-1 { font-size: 43px; } .text-line-2 { font-size: 30px; } .text-line-3 { font-size: 24px; } .texts { right: 12px; top: 130px; } .photo { width: 660px; height: 860px; top: 10px; left: 10px; } .button { bottom: 26px; left: 12px; font-size: 16px; width: 160px; } .author { bottom: 15px; right: 100px; font-size: 21px; opacity: 0.7; } }
-
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.text-line { opacity: 0; animation: fadeInUp 0.6s ease forwards; }
+.content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    min-height: 100vh;
+}
+.texts {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    text-align: right;
+}
+.text-line {
+    margin-bottom: 12px;
+    transition: opacity 0.3s ease;
+}
+.text-line-1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #5a3921;
+    letter-spacing: -0.3px;
+}
+.text-line-2 {
+    font-size: 46px;
+    font-weight: 700;
+    color: #5a3921;
+    letter-spacing: -0.5px;
+    margin-top: -8px;
+}
+.text-line-3 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #5a3921;
+    letter-spacing: -0.3px;
+}
+.photo {
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    width: 780px;
+    height: 780px;
+    object-fit: cover;
+    opacity: 0.8;
+    pointer-events: none;
+    border-radius: 0;
+}
+.button {
+    position: absolute;
+    bottom: 30px;
+    left: 24px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: none;
+    padding: 12px 28px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #5a3921;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: system-ui, -apple-system, sans-serif;
+    border-radius: 40px;
+    z-index: 20;
+    box-shadow: inset 4px 4px 12px 2px rgba(255, 255, 255, 0.2), inset -2px -2px 15px 1px rgba(255, 255, 255, 0.2), inset 0 0 15px 2px rgba(255, 255, 255, 0.2);
+}
+.button:active {
+    transform: scale(0.96);
+    background: rgba(255, 255, 255, 0.2);
+}
+@supports (padding-top: env(safe-area-inset-top)) {
+    .texts { top: max(40px, env(safe-area-inset-top)); right: max(20px, env(safe-area-inset-right)); }
+    .photo { top: max(70px, calc(env(safe-area-inset-top) + 20px)); left: max(50px, env(safe-area-inset-left)); }
+    .button { bottom: max(30px, env(safe-area-inset-bottom)); left: max(24px, env(safe-area-inset-left)); }
+}
+.author {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-family: 'New', -apple-system, 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #5a3921;
+    opacity: 0.6;
+    letter-spacing: 0.5px;
+    z-index: 20;
+    pointer-events: none;
+}
+@media (max-width: 768px) {
+    .text-line-1 { font-size: 48px; }
+    .text-line-2 { font-size: 46px; }
+    .text-line-3 { font-size: 23px; }
+    .texts { right: 16px; }
+    .photo { width: 200px; height: 200px; top: 50px; left: 30px; }
+    .button { bottom: 20px; left: 16px; font-size: 16px; }
+}
+@media (max-width: 480px) {
+    .blurred-circles { filter: blur(20px) !important; }
+    .circle-1 { filter: blur(10px); opacity: 0.4 !important; width: 250px; height: 280px; }
+    .circle-2 { filter: blur(12px); opacity: 0.85 !important; width: 270px; height: 360px; }
+    .circle-3 { filter: blur(5px); opacity: 0.5 !important; width: 320px; height: 330px; }
+    .circle-4 { filter: blur(15px); opacity: 0.7 !important; width: 280px; height: 430px; }
+    .circle-5 { filter: blur(40px); opacity: 0.5 !important; width: 240px; height: 220px; }
+    .circle-6 { filter: blur(20px); opacity: 0.15 !important; width: 300px; height: 350px; }
+    .text-line-1 { font-size: 43px; }
+    .text-line-2 { font-size: 30px; }
+    .text-line-3 { font-size: 24px; }
+    .texts { right: 12px; top: 130px; }
+    .photo { width: 660px; height: 860px; top: 10px; left: 10px; }
+    .button { bottom: 26px; left: 12px; font-size: 16px; width: 160px; }
+    .author { bottom: 15px; right: 100px; font-size: 21px; opacity: 0.7; }
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.text-line {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
 .text-line-1 { animation-delay: 0.2s; }
 .text-line-2 { animation-delay: 0.4s; }
 .text-line-3 { animation-delay: 0.6s; }
 
-/* ===== ИСПРАВЛЕНИЯ ТОЛЬКО ДЛЯ ANDROID (НЕ ВЛИЯЮТ НА IPHONE) ===== */
+/* ========== ТОЛЬКО ДЛЯ ANDROID — БЕЗ ФОТО, ТОЛЬКО ФОН И ТЕКСТ ========== */
 @supports not (-webkit-touch-callout: none) {
-    html, body { position: fixed; width: 100%; height: 100%; overflow: hidden; }
-    .content { height: 100%; width: 100%; overflow: hidden; position: relative; }
-    
-    /* Фото адаптируется под экран, не вылезает */
-    .photo { width: 55%; max-width: 280px; height: auto; top: 18%; left: 5%; object-fit: contain; opacity: 0.8; }
-    
-    /* Текст подстраивается и не наезжает на фото */
-    .texts { right: 16px; top: 12%; }
-    .text-line-1 { font-size: 24px; }
-    .text-line-2 { font-size: 28px; }
-    .text-line-3 { font-size: 20px; }
-    
-    /* Кнопка удобного размера */
-    .button { bottom: 25px; left: 20px; font-size: 16px; padding: 8px 20px; width: auto; min-width: 130px; top: auto; }
-    .author { bottom: 15px; right: 15px; font-size: 10px; }
-    
-    @media (max-width: 400px) {
-        .photo { width: 45%; max-width: 200px; top: 22%; left: 3%; }
-        .text-line-1 { font-size: 20px; }
-        .text-line-2 { font-size: 24px; }
-        .text-line-3 { font-size: 16px; }
-        .texts { top: 16%; right: 10px; }
-        .button { font-size: 13px; padding: 8px 16px; bottom: 20px; }
+    html, body {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
-    @media (max-height: 700px) {
-        .photo { width: 30%; top: 20%; }
-        .texts { top: 8%; }
-        .button { bottom: 15px; }
+    .content {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+    /* Убираем фото на Android */
+    .photo {
+        display: none;
+    }
+    /* Тексты по центру, крупнее */
+    .texts {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        right: auto;
+        text-align: center;
+    }
+    .text-line-1 { font-size: 36px; }
+    .text-line-2 { font-size: 40px; }
+    .text-line-3 { font-size: 30px; }
+    /* Кнопка как на iPhone */
+    .button {
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 20px;
+        padding: 12px 28px;
+        width: auto;
+        min-width: 160px;
+        text-align: center;
+        white-space: nowrap;
+    }
+    /* Автор внизу справа */
+    .author {
+        bottom: 15px;
+        right: 15px;
+        font-size: 12px;
+    }
+    @media (max-width: 480px) {
+        .text-line-1 { font-size: 28px; }
+        .text-line-2 { font-size: 32px; }
+        .text-line-3 { font-size: 24px; }
+        .button { font-size: 16px; padding: 10px 24px; bottom: 25px; }
+        .author { font-size: 10px; }
     }
 }
