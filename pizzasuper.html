@@ -527,22 +527,24 @@
 /* ========== ТОЛЬКО ДЛЯ ANDROID ========== */
 @supports not (-webkit-touch-callout: none) {
     
-    /* Запрещаем скролл всей страницы — как на iPhone */
+    /* Фикс: запрещаем скролл страницы, оставляем только внутри drawer */
     html, body {
         overflow: hidden !important;
-        height: 100% !important;
         position: fixed !important;
         width: 100% !important;
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
     }
     
     .detail-content {
-        overflow-y: hidden !important;
         height: 100%;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
     }
     
-    /* Все блоки фиксированы, как на iPhone */
+    /* Фиксируем верхние блоки */
     .header-section {
         flex-shrink: 0;
     }
@@ -550,34 +552,11 @@
     .image-section {
         flex-shrink: 0;
         height: 380px;
-    }
-    
-    .nutrition-section {
-        flex-shrink: 0;
-        margin-top: -50px;
-    }
-    
-    /* Выдвижной блок — последний, как на iPhone */
-    .sliding-drawer {
-        flex: 1;
-        height: auto !important;
-        min-height: 0;
-        margin-top: auto;
-        display: flex;
-        flex-direction: column;
+        position: relative;
         overflow: hidden;
     }
     
-    /* Контент внутри блока скроллится */
-    .tab-content {
-        flex: 1;
-        overflow-y: auto !important;
-        height: auto !important;
-        max-height: none;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Восстанавливаем фото как на iPhone */
+    /* Восстанавливаем позиционирование фото как на iPhone */
     .recipe-image {
         position: absolute;
         left: -30px;
@@ -586,33 +565,115 @@
         height: 100%;
         object-fit: cover;
         border-radius: 0 28px 28px 0;
+        opacity: 0.92;
     }
     
-    .image-section {
+    .nutrition-section {
+        flex-shrink: 0;
+        margin-top: -50px;
+    }
+    
+    /* ВЫДВИЖНОЙ БЛОК — точное копирование с iPhone */
+    .sliding-drawer {
         position: relative;
-        overflow: hidden;
+        width: 100%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 30px 30px 0 0;
+        margin-top: -4px;
+        transform: translateY(0);
+        transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        z-index: 20;
+        box-shadow: inset 4px 4px 12px 2px rgba(255, 255, 255, 0.2), inset -2px -2px 15px 1px rgba(255, 255, 255, 0.2), inset 0 0 15px 2px rgba(255, 255, 255, 0.2);
+        height: 650px;
+        flex-shrink: 0;
     }
     
-    .blurred-circles {
-        position: fixed;
+    .sliding-drawer.expanded {
+        transform: translateY(calc(-100% + 250px));
     }
     
-    /* Убираем всё лишнее */
-    .sliding-drawer::after,
+    .drawer-handle {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    
+    .drawer-handle-line {
+        width: 50px;
+        height: 5px;
+        background: rgba(90, 57, 33, 0.3);
+        border-radius: 10px;
+    }
+    
+    .drawer-tabs {
+        display: flex;
+        padding: 0 20px;
+        gap: 20px;
+        flex-shrink: 0;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        padding: 12px 0;
+        font-family: 'New', sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: #5a3921;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: all 0.2s ease;
+        border-radius: 30px;
+    }
+    
+    .tab-btn.active {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.25);
+    }
+    
+    /* Контент внутри — скроллится */
+    .tab-content {
+        padding: 20px;
+        height: calc(650px - 110px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .bon-appetit {
+        padding: 20px 0 30px 0;
+        margin-bottom: 0;
+    }
+    
+    /* Убираем любые отступы после блока */
+    .sliding-drawer::after {
+        display: none;
+    }
+    
     .detail-content::after {
         display: none;
     }
     
+    /* Фикс для маленьких экранов */
     @media (max-width: 480px) {
-        .image-section {
-            height: 320px;
-        }
+        .image-section { height: 320px; }
+        .tab-content { height: calc(550px - 110px); }
+        .sliding-drawer { height: 550px; }
+        .sliding-drawer.expanded { transform: translateY(calc(-100% + 220px)); }
     }
     
     @media (orientation: landscape) {
-        .image-section {
-            height: 250px;
-        }
+        .image-section { height: 250px; }
+        .tab-content { height: calc(450px - 110px); }
+        .sliding-drawer { height: 450px; }
+        .sliding-drawer.expanded { transform: translateY(calc(-100% + 180px)); }
     }
 }
     </style>
