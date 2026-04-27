@@ -14,7 +14,6 @@
     src: url('mon.ttf') format('truetype');
 }
 
-/* Базовые стили - работают одинаково на всех платформах */
 html, body {
     background-color: #fefaf5;
     width: 100%;
@@ -39,7 +38,7 @@ body {
     background-color: #fefaf5;
 }
 
-/* КРУГИ */
+/* КРУГИ - оригинальные размеры и позиции */
 .circle {
     position: absolute;
     border-radius: 50%;
@@ -112,7 +111,7 @@ body {
     animation: move6 48s infinite alternate ease-in-out;
 }
 
-/* АНИМАЦИИ ДВИЖЕНИЯ КРУГОВ */
+/* АНИМАЦИИ ДВИЖЕНИЯ */
 @keyframes move1 {
     0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
     100% { transform: translate(-50%, -50%) translate(80px, -60px) rotate(15deg) scale(1.1); }
@@ -140,7 +139,7 @@ body {
 
 @keyframes move6 {
     0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
-    100% { transform: translate(-50%, -50%) translate(-80px, 50px) rotate(-14deg) scale(1.1); }
+    100% { transform: translate(-50%, -50%) translate(-80px, 50px) rotate(-18deg) scale(1.1); }
 }
 
 /* КОНТЕНТ */
@@ -151,7 +150,7 @@ body {
     min-height: 100vh;
 }
 
-/* ТЕКСТЫ */
+/* ТЕКСТЫ - точные позиции как на iPhone */
 .texts {
     position: absolute;
     top: 40px;
@@ -186,7 +185,7 @@ body {
     letter-spacing: -0.3px;
 }
 
-/* ФОТО - будет видно на всех устройствах */
+/* ФОТО - оригинальные размеры и позиция */
 .photo {
     position: absolute;
     top: 100px;
@@ -199,12 +198,12 @@ body {
     border-radius: 0;
 }
 
-/* КНОПКА — стеклянный эффект (работает на всех платформах) */
+/* КНОПКА - оригинальный стеклянный стиль */
 .button {
     position: absolute;
     bottom: 30px;
     left: 24px;
-    background: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: none;
@@ -217,12 +216,12 @@ body {
     font-family: system-ui, -apple-system, sans-serif;
     border-radius: 40px;
     z-index: 20;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 4px 4px 12px 2px rgba(255, 255, 255, 0.2), inset -2px -2px 15px 1px rgba(255, 255, 255, 0.2), inset 0 0 15px 2px rgba(255, 255, 255, 0.2);
 }
 
 .button:active {
     transform: scale(0.96);
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* АВТОР */
@@ -263,95 +262,94 @@ body {
     }
 }
 
-/* АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ */
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ (iPhone и Android одинаково) ===== */
 @media (max-width: 768px) {
-    .text-line-1 { font-size: 28px; }
-    .text-line-2 { font-size: 36px; }
-    .text-line-3 { font-size: 24px; }
-    .texts { right: 16px; top: 30px; }
-    .photo { width: 350px; height: 350px; top: 80px; left: 30px; }
-    .button { bottom: 20px; left: 16px; font-size: 20px; padding: 10px 24px; }
-    .author { font-size: 12px; }
-}
-
-/* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ - единая для всех платформ */
-@media (max-width: 480px) {
-    .blurred-circles {
-        filter: blur(30px);
+    /* Тексты на мобильных */
+    .text-line-1 { 
+        font-size: 28px; 
+    }
+    .text-line-2 { 
+        font-size: 32px; 
+    }
+    .text-line-3 { 
+        font-size: 24px; 
+    }
+    .texts { 
+        right: 16px; 
+        top: 50px;
     }
     
-    .circle-1 {
-        width: 200px;
-        height: 220px;
-        top: 15%;
-        left: 20%;
-        opacity: 0.5;
-    }
-    
-    .circle-2 {
-        width: 220px;
-        height: 280px;
-        top: 55%;
-        left: 85%;
-        opacity: 0.7;
-    }
-    
-    .circle-3 {
-        width: 260px;
-        height: 270px;
-        top: 75%;
-        left: 10%;
-        opacity: 0.6;
-    }
-    
-    .circle-4 {
-        width: 230px;
-        height: 350px;
-        top: 25%;
-        left: 95%;
-        opacity: 0.65;
-    }
-    
-    .circle-5 {
-        width: 280px;
-        height: 200px;
-        top: 90%;
-        left: 80%;
-        opacity: 0.55;
-    }
-    
-    .circle-6 {
-        width: 250px;
-        height: 280px;
-        top: 5%;
-        left: 75%;
-        opacity: 0.45;
-    }
-    
-    .text-line-1 { font-size: 24px; }
-    .text-line-2 { font-size: 28px; }
-    .text-line-3 { font-size: 20px; }
-    .texts { right: 12px; top: 60px; }
-    
-    .photo {
-        width: 280px;
-        height: 280px;
-        top: 120px;
-        left: 20px;
+    /* Фото на мобильных - уменьшаем пропорционально */
+    .photo { 
+        width: 380px; 
+        height: 380px; 
+        top: 120px; 
+        left: 20px; 
         opacity: 0.85;
     }
     
-    .button {
-        bottom: 20px;
-        left: 12px;
-        font-size: 18px;
-        padding: 8px 20px;
+    /* Кнопка */
+    .button { 
+        bottom: 25px; 
+        left: 16px; 
+        font-size: 22px; 
+        padding: 10px 24px;
     }
     
+    /* Круги на мобильных - уменьшаем */
+    .circle-1 { width: 200px; height: 226px; }
+    .circle-2 { width: 220px; height: 280px; }
+    .circle-3 { width: 280px; height: 290px; }
+    .circle-4 { width: 240px; height: 360px; }
+    .circle-5 { width: 260px; height: 200px; }
+    .circle-6 { width: 250px; height: 260px; }
+}
+
+/* ТОЧНАЯ НАСТРОЙКА ДЛЯ ТЕЛЕФОНОВ (как на iPhone) */
+@media (max-width: 480px) {
+    /* Убираем общее размытие у контейнера */
+    .blurred-circles {
+        filter: blur(20px);
+    }
+    
+    /* Индивидуальные фильтры для кругов как в оригинале */
+    .circle-1 { filter: blur(10px); opacity: 0.4; width: 250px; height: 280px; top: 20%; left: 20%; }
+    .circle-2 { filter: blur(12px); opacity: 0.85; width: 270px; height: 360px; top: 55%; left: 85%; }
+    .circle-3 { filter: blur(5px); opacity: 0.5; width: 320px; height: 330px; top: 75%; left: 10%; }
+    .circle-4 { filter: blur(15px); opacity: 0.7; width: 280px; height: 430px; top: 25%; left: 95%; }
+    .circle-5 { filter: blur(40px); opacity: 0.5; width: 240px; height: 220px; top: 90%; left: 80%; }
+    .circle-6 { filter: blur(20px); opacity: 0.15; width: 300px; height: 350px; top: 5%; left: 75%; }
+    
+    /* Тексты как на iPhone */
+    .text-line-1 { font-size: 43px; }
+    .text-line-2 { font-size: 30px; }
+    .text-line-3 { font-size: 24px; }
+    .texts { right: 12px; top: 130px; }
+    
+    /* Фото как на iPhone */
+    .photo { 
+        width: 660px; 
+        height: 860px; 
+        top: 10px; 
+        left: 10px; 
+        opacity: 0.8;
+    }
+    
+    /* Кнопка как на iPhone */
+    .button { 
+        bottom: 26px; 
+        left: 12px;
+        font-size: 16px;
+        padding: 8px 20px;
+        width: auto;
+        min-width: 120px;
+    }
+    
+    /* Автор */
     .author {
-        bottom: 12px;
-        right: 12px;
-        font-size: 11px;
+        bottom: 15px;
+        right: 100px;
+        font-size: 14px;
         opacity: 0.7;
     }
 }
@@ -371,7 +369,7 @@ body {
 .text-line-2 { animation-delay: 0.4s; }
 .text-line-3 { animation-delay: 0.6s; }
 
-/* Стили для навигации с точками */
+/* Навигация для веб-версии */
 .section-nav {
     position: fixed;
     right: 20px;
@@ -451,7 +449,6 @@ body {
 
 .nav-arrow:active {
     transform: scale(0.9);
-    background: rgba(255, 255, 255, 0.3);
 }
 
 .nav-arrow:disabled {
@@ -460,22 +457,5 @@ body {
 }
 
 @media (max-width: 768px) {
-    .section-nav {
-        right: 10px;
-        padding: 8px 6px;
-    }
-    .nav-dots {
-        gap: 8px;
-    }
-    .nav-dot {
-        width: 6px;
-        height: 6px;
-    }
-}
-
-/* Стили для секций */
-.section {
-    min-height: 100vh;
-    width: 100%;
-    position: relative;
+    .section-nav { display: none !important; }
 }
