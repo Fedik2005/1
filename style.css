@@ -7,14 +7,12 @@
 @font-face {
     font-family: 'New';
     src: url('newyorkerc.ttf') format('truetype');
-    
-
 }
 @font-face {
     font-family: 'Mon';
     src: url('mon.ttf') format('truetype');
 }
-/* ОБЫЧНЫЙ РЕЖИМ (без фиксированного позиционирования) */
+
 html, body {
     background-color: #fefaf5;
     width: 100%;
@@ -26,7 +24,6 @@ body {
     overflow-x: hidden;
 }
 
-/* КОНТЕЙНЕР ДЛЯ КРУГОВ */
 .blurred-circles {
     position: fixed;
     top: 0;
@@ -39,14 +36,13 @@ body {
     background-color: #fefaf5;
 }
 
-/* КРУГИ — адаптированы для тёмной темы */
 .circle {
     position: absolute;
     border-radius: 50%;
     will-change: transform;
 }
 
-.circle-1 { /* вверхний слева */
+.circle-1 {
     width: 360px;
     height: 406px;
     top: 22%;
@@ -68,7 +64,7 @@ body {
     animation: move2 40s infinite alternate ease-in-out;
 }
 
-.circle-3 { /* нижний слева */
+.circle-3 {
     width: 609px;
     height: 621px;
     top: 70%;
@@ -79,7 +75,7 @@ body {
     animation: move3 38s infinite alternate ease-in-out;
 }
 
-.circle-4 { /* посередине справа под 6 */
+.circle-4 {
     width: 518px;
     height: 789px;
     top: 30%;
@@ -90,7 +86,7 @@ body {
     animation: move4 45s infinite alternate ease-in-out;
 }
 
-.circle-5 { /* нижний справа */
+.circle-5 {
     width: 636px;
     height: 336px;
     top: 85%;
@@ -101,7 +97,7 @@ body {
     animation: move5 42s infinite alternate ease-in-out;
 }
 
-.circle-6 { /* верхний справа */
+.circle-6 {
     width: 567px;
     height: 565px;
     top: 15%;
@@ -112,7 +108,6 @@ body {
     animation: move6 48s infinite alternate ease-in-out;
 }
 
-/* АНИМАЦИИ ДВИЖЕНИЯ */
 @keyframes move1 {
     0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
     100% { transform: translate(-50%, -50%) translate(80px, -60px) rotate(15deg) scale(1.1); }
@@ -143,7 +138,6 @@ body {
     100% { transform: translate(-50%, -50%) translate(-80px, 50px) rotate(-14deg) scale(1.1); }
 }
 
-/* КОНТЕНТ */
 .content {
     position: relative;
     z-index: 10;
@@ -151,7 +145,6 @@ body {
     min-height: 100vh;
 }
 
-/* ТЕКСТЫ */
 .texts {
     position: absolute;
     top: 40px;
@@ -189,7 +182,6 @@ body {
     text-shadow: none;
 }
 
-/* ФОТО — ВИДИМО НА ВСЕХ УСТРОЙСТВАХ (ПО УМОЛЧАНИЮ) */
 .photo {
     position: absolute;
     top: 100px;
@@ -200,10 +192,13 @@ body {
     opacity: 0.8;
     pointer-events: none;
     border-radius: 0;
-    display: block; /* Гарантирует видимость */
 }
 
-/* КНОПКА — СТЕКЛЯННАЯ */
+/* Стиль для скрытия фото на Android (добавляется через JS) */
+.photo.hide-on-android {
+    display: none !important;
+}
+
 .button {
     position: absolute;
     bottom: 30px;
@@ -232,7 +227,6 @@ body {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* УЧЁТ ОСТРОВА И БЕЗОПАСНЫХ ЗОН */
 @supports (padding-top: env(safe-area-inset-top)) {
     .texts {
         top: max(40px, env(safe-area-inset-top));
@@ -249,7 +243,7 @@ body {
         left: max(24px, env(safe-area-inset-left));
     }
 }
-/* АВТОР */
+
 .author {
     position: absolute;
     bottom: 20px;
@@ -264,28 +258,6 @@ body {
     pointer-events: none;
 }
 
-/* =============== ДЛЯ ANDROID: СКРЫТЬ ФОТОГРАФИЮ =============== */
-/* Это правило сработает на любом устройстве с Android */
-@media (any-pointer: coarse) and (min--moz-device-pixel-ratio: 0) { /* Классический хак для обнаружения Android WebView */
-    .photo {
-        display: none !important;
-    }
-}
-
-/* Более надежный способ: явно для Android через user agent detection.
-   Добавьте этот класс к body с помощью JavaScript, если обнаружен Android.
-   Если вы предпочитаете CSS-only решение, раскомментируйте следующий блок,
-   но его поддержка может быть не 100%.
-*/
-/* Простой хак: современные Android-браузеры сообщают 'Linux armv8l' и т.д. */
-@media (any-pointer: coarse) and (max--moz-device-pixel-ratio: 0) and (platform: 'Linux armv8l') {
-    .photo {
-        display: none !important;
-    }
-}
-/* ----------------------------------------------------------------- */
-
-/* АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ */
 @media (max-width: 768px) {
     .text-line-1 { font-size: 48px; }
     .text-line-2 { font-size: 46px; }
@@ -295,15 +267,11 @@ body {
     .button { bottom: 20px; left: 16px; font-size: 16px; }
 }
 
-
-/* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ */
 @media (max-width: 480px) {
-    /* Убираем общее размытие у контейнера */
     .blurred-circles {
         filter: blur(20px) !important;
     }
     
-    /* Индивидуальные настройки для каждой фигуры */
     .circle-1 {
         filter: blur(10px);
         opacity: 0.4 !important;
@@ -334,13 +302,12 @@ body {
         opacity: 0.15 !important;
     }
     
-    /* Остальные ваши настройки для телефона */
     .text-line-1 { font-size: 43px; }
-    .text-line-2 { font-size: 30px;  }
-    .text-line-3 { font-size: 24px;  }
+    .text-line-2 { font-size: 30px; }
+    .text-line-3 { font-size: 24px; }
     .texts { right: 12px; top: 130px; }
     .photo { width: 660px; height: 860px; top: 10px; left: 10px; right: 550px; }
-    .button { bottom: 26px; left: 12px;top: 20px; font-size: 16px; width: 160px; }
+    .button { bottom: 26px; left: 12px; top: 20px; font-size: 16px; width: 160px; }
     
     .circle-1 { width: 250px; height: 280px; }
     .circle-2 { width: 270px; height: 360px; }
@@ -348,6 +315,7 @@ body {
     .circle-4 { width: 280px; height: 430px; }
     .circle-5 { width: 240px; height: 220px; }
     .circle-6 { width: 300px; height: 350px; }
+    
     .author {
         bottom: 15px;
         right: 100px;
@@ -356,7 +324,6 @@ body {
     }
 }
 
-/* АНИМАЦИЯ ПОЯВЛЕНИЯ ТЕКСТА */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
