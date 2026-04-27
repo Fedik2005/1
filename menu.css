@@ -173,6 +173,7 @@ body {
     text-align: center;
     margin-top: 120px;
     margin-bottom: 20px;
+    white-space: nowrap;
 }
 
 .placeholder-text {
@@ -296,8 +297,9 @@ body {
     }
     
     .menu-title {
-        font-size: 40px;
+        font-size: 38px;
         margin-top: calc(env(safe-area-inset-top) + 60px);
+        white-space: nowrap;
     }
     
     .placeholder-text {
@@ -438,8 +440,9 @@ body {
         inset 4px 4px 12px 2px rgba(255, 255, 255, 0.2),
         inset -2px -2px 15px 1px rgba(255, 255, 255, 0.2),
         inset 0 0 15px 2px rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.25, 1.2, 0.5, 1);
     touch-action: pan-y pinch-zoom;
+    will-change: transform;
 }
 
 .recipe-card:active {
@@ -548,8 +551,27 @@ html, body {
     touch-action: auto !important;
 }
 
-/* Адаптация для Android */
+/* ФИКС ДЛЯ ANDROID — НАДПИСЬ В ОДНУ СТРОКУ */
 @supports not (-webkit-touch-callout: none) {
+    .menu-title {
+        white-space: nowrap !important;
+        font-size: 38px;
+        letter-spacing: -0.5px;
+    }
+    
+    @media (max-width: 480px) {
+        .menu-title {
+            font-size: 32px !important;
+            white-space: nowrap !important;
+        }
+    }
+    
+    @media (max-width: 380px) {
+        .menu-title {
+            font-size: 28px !important;
+        }
+    }
+    
     .back-button {
         bottom: max(30px, env(safe-area-inset-bottom, 30px));
         left: max(24px, env(safe-area-inset-left, 24px));
@@ -570,6 +592,20 @@ html, body {
         .bottom-right-photo {
             bottom: max(15px, env(safe-area-inset-bottom, 15px));
             right: max(-10px, env(safe-area-inset-right, -10px));
+        }
+    }
+}
+
+/* ФИКС ДЛЯ IOS — НАДПИСЬ В ОДНУ СТРОКУ */
+@supports (-webkit-touch-callout: none) {
+    .menu-title {
+        white-space: nowrap;
+    }
+    
+    @media (max-width: 480px) {
+        .menu-title {
+            font-size: 36px;
+            white-space: nowrap;
         }
     }
 }
