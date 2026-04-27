@@ -198,7 +198,7 @@ body {
 .text-line-2 { animation-delay: 0.4s; }
 .text-line-3 { animation-delay: 0.6s; }
 
-/* ========== ТОЛЬКО ДЛЯ ANDROID — ТОЧНАЯ КОПИЯ IPHONE ПО ВИДУ ========== */
+/* ========== ТОЛЬКО ДЛЯ ANDROID ========== */
 @supports not (-webkit-touch-callout: none) {
     html, body {
         position: fixed;
@@ -212,49 +212,58 @@ body {
         overflow: hidden;
         position: relative;
     }
-    /* Тексты как на iPhone */
-    .texts {
-        position: absolute;
-        right: 12px;
-        top: 100px;
-        text-align: right;
-    }
-    .text-line-1 { font-size: 32px; }
-    .text-line-2 { font-size: 28px; }
-    .text-line-3 { font-size: 22px; }
-    /* Фото — вписывается в экран */
     .photo {
         position: absolute;
-        width: 280px;
+        width: 75%;
+        max-width: 300px;
         height: auto;
-        top: 60px;
-        left: 10px;
+        top: 15%;
+        left: 5%;
         object-fit: contain;
+        opacity: 0.8;
     }
-    /* Кнопка как на iPhone */
+    .texts {
+        position: absolute;
+        right: 16px;
+        top: 12%;
+        text-align: right;
+    }
+    .text-line-1 { font-size: 28px; }
+    .text-line-2 { font-size: 32px; }
+    .text-line-3 { font-size: 24px; }
     .button {
         position: absolute;
-        bottom: 25px;
-        left: 12px;
+        bottom: 30px;
+        left: 20px;
         font-size: 18px;
-        padding: 10px 20px;
+        padding: 10px 24px;
         width: auto;
         min-width: 140px;
+        text-align: center;
+        top: auto;
     }
-    /* Автор как на iPhone */
     .author {
         position: absolute;
         bottom: 15px;
         right: 15px;
-        font-size: 12px;
+        font-size: 11px;
         opacity: 0.6;
     }
-    @media (max-width: 380px) {
-        .photo { width: 220px; top: 50px; }
-        .text-line-1 { font-size: 28px; }
-        .text-line-2 { font-size: 24px; }
+    @media (max-width: 400px) {
+        .photo { width: 65%; max-width: 240px; top: 18%; }
+        .text-line-1 { font-size: 22px; }
+        .text-line-2 { font-size: 26px; }
         .text-line-3 { font-size: 18px; }
-        .texts { top: 80px; right: 8px; }
-        .button { font-size: 14px; padding: 8px 16px; bottom: 20px; left: 10px; }
+        .texts { top: 15%; right: 12px; }
+        .button { font-size: 14px; padding: 8px 16px; bottom: 25px; }
+        .author { font-size: 9px; }
+    }
+    @media (max-height: 700px) {
+        .photo { width: 35%; top: 20%; left: 3%; }
+        .texts { top: 8%; }
+        .text-line-1 { font-size: 22px; }
+        .text-line-2 { font-size: 26px; }
+        .text-line-3 { font-size: 18px; }
+        .button { bottom: 20px; font-size: 14px; padding: 8px 16px; }
     }
 }
