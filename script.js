@@ -9,14 +9,18 @@ const text3 = document.getElementById('text3');
 const photo = document.getElementById('photo');
 const button = document.getElementById('recipeButton');
 
-photo.style.opacity = '0';
-setTimeout(() => {
-    photo.style.transition = 'opacity 2.5s ease';
-    photo.style.opacity = '0.7';
-}, 100);
+// Плавное появление фото
+if (photo) {
+    photo.style.opacity = '0';
+    setTimeout(() => {
+        photo.style.transition = 'opacity 2.5s ease';
+        photo.style.opacity = '0.8';
+    }, 100);
+}
 
 function animateText(element, phrases, currentIndex, delay) {
     setTimeout(function animate() {
+        if (!element) return;
         element.style.transition = 'opacity 1s ease';
         element.style.opacity = '0';
         
@@ -33,18 +37,21 @@ function animateText(element, phrases, currentIndex, delay) {
     return currentIndex;
 }
 
-index1 = animateText(text1, phrases1, index1, 2000);
-index2 = animateText(text2, phrases2, index2, 4500);
-index3 = animateText(text3, phrases3, index3, 7000);
+// Запуск анимации текста
+if (text1) index1 = animateText(text1, phrases1, index1, 2000);
+if (text2) index2 = animateText(text2, phrases2, index2, 4500);
+if (text3) index3 = animateText(text3, phrases3, index3, 7000);
 
-// ИЗМЕНЁННЫЙ ОБРАБОТЧИК КНОПКИ — ПЕРЕХОД НА menu.html
-button.addEventListener('click', () => {
-    button.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-        button.style.transform = '';
-        window.location.href = 'menu.html';
-    }, 100);
-});
+// Обработчик кнопки - переход на menu.html
+if (button) {
+    button.addEventListener('click', () => {
+        button.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            button.style.transform = '';
+            window.location.href = 'menu.html';
+        }, 100);
+    });
+}
 
 // ===== ПРОКРУТКА С ТОЧКАМИ (только для веб-версии) =====
 function isDesktop() {
@@ -102,7 +109,8 @@ function updateActiveDot() {
     });
     
     if (progressBar) {
-        const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = totalScroll > 0 ? (window.scrollY / totalScroll) * 100 : 0;
         progressBar.style.height = scrollPercent + '%';
     }
     
@@ -156,28 +164,24 @@ function initNavButtons() {
 }
 
 function initDesktopNav() {
+    const sectionNav = document.getElementById('sectionNav');
+    if (!sectionNav) return;
+    
     if (!isDesktop()) {
-        const sectionNav = document.getElementById('sectionNav');
-        if (sectionNav) sectionNav.style.display = 'none';
+        sectionNav.style.display = 'none';
         return;
     }
     
-    const sectionNav = document.getElementById('sectionNav');
-    if (sectionNav) {
-        sectionNav.style.display = 'flex';
-    }
-    
+    sectionNav.style.display = 'flex';
     createSectionDots();
     initNavButtons();
     
     window.addEventListener('scroll', updateActiveDot);
     window.addEventListener('resize', () => {
         if (!isDesktop()) {
-            const sectionNav = document.getElementById('sectionNav');
-            if (sectionNav) sectionNav.style.display = 'none';
+            sectionNav.style.display = 'none';
         } else {
-            const sectionNav = document.getElementById('sectionNav');
-            if (sectionNav) sectionNav.style.display = 'flex';
+            sectionNav.style.display = 'flex';
             createSectionDots();
             updateActiveDot();
         }
@@ -186,4 +190,5 @@ function initDesktopNav() {
     updateActiveDot();
 }
 
+// Запуск навигации после загрузки страницы
 setTimeout(initDesktopNav, 100);
