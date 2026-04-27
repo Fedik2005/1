@@ -544,36 +544,11 @@
         overflow: hidden;
     }
     
-    /* Фиксируем верхние блоки с правильными отступами */
+    /* Фиксируем верхние блоки */
     .header-section {
         flex-shrink: 0;
-        padding-top: max(20px, env(safe-area-inset-top, 20px)) !important;
+        padding-top: max(20px, env(safe-area-inset-top, 20px));
         min-height: 70px;
-        gap: 12px;
-        align-items: center;
-    }
-    
-    /* Фикс для кнопки сохранить — предотвращаем обрезание */
-    .save-photo {
-        margin-right: 0 !important;
-        padding: 0;
-        flex-shrink: 0;
-    }
-    
-    .save-photo img {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-        display: block;
-    }
-    
-    .back-arrow {
-        flex-shrink: 0;
-    }
-    
-    .recipe-name {
-        flex-shrink: 1;
-        font-size: 22px;
     }
     
     .image-section {
@@ -688,24 +663,15 @@
         display: none;
     }
     
-    /* Фикс для маленьких экранов (iPhone SE, маленькие Android) */
+    /* Фикс для маленьких экранов */
     @media (max-width: 480px) {
         .header-section {
-            padding-top: max(12px, env(safe-area-inset-top, 12px)) !important;
-            min-height: 60px;
-            gap: 10px;
+            padding-top: max(12px, env(safe-area-inset-top, 12px));
+            min-height: 64px;
         }
         .save-photo img {
             width: 38px;
             height: 38px;
-        }
-        .back-arrow {
-            width: 38px;
-            height: 38px;
-            font-size: 24px;
-        }
-        .recipe-name {
-            font-size: 18px;
         }
         .image-section { height: 320px; }
         .tab-content { height: calc(550px - 110px); }
@@ -713,39 +679,26 @@
         .sliding-drawer.expanded { transform: translateY(calc(-100% + 220px)); }
     }
     
-    /* Фикс для очень маленьких экранов (до 380px) */
-    @media (max-width: 380px) {
-        .header-section {
-            padding-top: max(8px, env(safe-area-inset-top, 8px)) !important;
-            min-height: 54px;
-        }
-        .save-photo img {
-            width: 34px;
-            height: 34px;
-        }
-        .back-arrow {
-            width: 34px;
-            height: 34px;
-            font-size: 22px;
-        }
-        .recipe-name {
-            font-size: 16px;
-        }
-        .image-section { height: 280px; }
-        .tab-content { height: calc(500px - 110px); }
-        .sliding-drawer { height: 500px; }
-        .sliding-drawer.expanded { transform: translateY(calc(-100% + 200px)); }
+    @media (orientation: landscape) {
+        .image-section { height: 250px; }
+        .tab-content { height: calc(450px - 110px); }
+        .sliding-drawer { height: 450px; }
+        .sliding-drawer.expanded { transform: translateY(calc(-100% + 180px)); }
     }
     
-    @media (orientation: landscape) {
-        .header-section {
-            padding-top: max(8px, env(safe-area-inset-top, 8px)) !important;
-            min-height: 54px;
-        }
-        .image-section { height: 200px; }
-        .tab-content { height: calc(380px - 110px); }
-        .sliding-drawer { height: 380px; }
-        .sliding-drawer.expanded { transform: translateY(calc(-100% + 150px)); }
+    /* ===== ФИКС КНОПКИ СОХРАНИТЬ (НЕ ОБРЕЗАЕТСЯ) ===== */
+    .save-photo {
+        margin-right: 0 !important;
+        padding: 0;
+        flex-shrink: 0;
+        overflow: visible;
+    }
+    
+    .save-photo img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        display: block;
     }
 }
     </style>
