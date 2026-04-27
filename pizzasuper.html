@@ -547,8 +547,6 @@
     /* Фиксируем верхние блоки */
     .header-section {
         flex-shrink: 0;
-        padding-top: max(20px, env(safe-area-inset-top, 20px));
-        min-height: 70px;
     }
     
     .image-section {
@@ -665,14 +663,6 @@
     
     /* Фикс для маленьких экранов */
     @media (max-width: 480px) {
-        .header-section {
-            padding-top: max(12px, env(safe-area-inset-top, 12px));
-            min-height: 64px;
-        }
-        .save-photo img {
-            width: 38px;
-            height: 38px;
-        }
         .image-section { height: 320px; }
         .tab-content { height: calc(550px - 110px); }
         .sliding-drawer { height: 550px; }
@@ -686,11 +676,8 @@
         .sliding-drawer.expanded { transform: translateY(calc(-100% + 180px)); }
     }
     
-    /* ===== ФИКС КНОПКИ СОХРАНИТЬ (НЕ ОБРЕЗАЕТСЯ) ===== */
+    /* ===== ТОЛЬКО ФИКС КНОПКИ СОХРАНИТЬ (НИЧЕГО БОЛЬШЕ) ===== */
     .save-photo {
-        margin-right: 0 !important;
-        padding: 0;
-        flex-shrink: 0;
         overflow: visible;
     }
     
@@ -698,7 +685,6 @@
         width: 44px;
         height: 44px;
         object-fit: contain;
-        display: block;
     }
 }
     </style>
