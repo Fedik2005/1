@@ -542,6 +542,10 @@
     .detail-content {
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        justify-content: flex-start;
     }
     
     .image-section {
@@ -550,7 +554,7 @@
     
     .sliding-drawer {
         flex-shrink: 0;
-        margin-top: 0;
+        margin-top: auto;
     }
     
     .nutrition-section {
@@ -568,6 +572,20 @@
     /* Фикс для кругов на Android (они не должны перекрывать контент) */
     .blurred-circles {
         position: fixed;
+    }
+    
+    /* Убираем всё, что может быть после выдвижного блока */
+    .sliding-drawer::after {
+        display: none;
+    }
+    
+    .tab-content {
+        padding-bottom: 0;
+    }
+    
+    .bon-appetit {
+        padding-bottom: 25px;
+        margin-bottom: 0;
     }
     
     /* Фикс для landscape на Android */
