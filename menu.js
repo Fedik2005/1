@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.recipe-card');
     let currentIndex = 0;
     
-    // Данные для разных категорий с названиями, описаниями и фото
+    // Данные для разных категорий
     const recipesByCategory = {
         first: [
             { name: "Суп Фо бо", description: "Ароматный бульон, нежная говядина, свежий лайм и охлаждающая мята создают невероятный баланс — насыщенный, яркий и гармоничный. Это не просто суп, это кулинарное путешествие во Вьетнам!", image: "1.png" },
@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: "Чахохбили ", description: "Простое, но очень вкусное грузинское блюдо - курочка, тушёная с помидорами и специями. Мясо получается мягким и сочным, а томатный соус - ароматным. Хмели-сунели, кориандр и зелень добавляют характерный грузинский колорит.", image: "4.png" },
             { name: "Минтай с черри помидорками", description: "Нежное филе минтая, обжаренное до золотистой корочки, сочетается с яркими черри-томатами, которые лопаются во рту, оставляя сладковатый след. Лёгкая лимонная нотка завершает вкус — свежо, просто и изысканно.", image: "l5.png" },
             { name: "Курочка в кисло-сладком соусе", description: "Нежная курочка по-гонконгски в хрустящей корочке, политая кисло-сладким соусом с кусочками спелого ананаса. Взрыв вкуса: острое, сладкое и пикантное в каждом укусе. Просто бомба!", image: "l6.png" }
-            
         ],
         sweet: [
             { name: "Мясная пицца", description: "Нежное филе грудки индейки, ароматный бекон и тягучая моцарелла на томатном соусе. Итальянские травы раскрывают каждый вкус, создавая идеальную гармонию. Настоящая мясная бомба!", image: "Рисунок8.png" },
@@ -50,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let currentRecipes = recipesByCategory.first;
     let isAnimating = false;
+    let isBouncing = false;
     
-    // Функция отображения карточки по индексу
     function showCard(index) {
         const recipe = currentRecipes[index];
         const cardContent = document.querySelector('.recipe-card .card-content');
@@ -67,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Функция смены категории
     function changeCategory(category) {
         if (recipesByCategory[category]) {
             currentRecipes = recipesByCategory[category];
@@ -76,9 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Функция следующей карточки
     function nextCard() {
-        if (isAnimating) return;
+        if (isAnimating || isBouncing) return;
         if (currentIndex < currentRecipes.length - 1) {
             isAnimating = true;
             const card = document.querySelector('.recipe-card');
@@ -93,9 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Функция предыдущей карточки
     function prevCard() {
-        if (isAnimating) return;
+        if (isAnimating || isBouncing) return;
         if (currentIndex > 0) {
             isAnimating = true;
             const card = document.querySelector('.recipe-card');
@@ -110,67 +106,101 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Обработчики для кнопок категорий
+    // Функция "пружинного" эффекта при достижении границы
+    function bounceCard(direction) {
+        if (isBouncing) return;
+        isBouncing = true;
+        const card = document.querySelector('.recipe-card');
+        
+        if (direction === 'up') {
+            // Свайп вверх на первой карточке — дёргаем вверх
+            card.style.transform = 'translateY(-15px)';
+            setTimeout(() => {
+                card.style.transform = '';
+                setTimeout(() => { isBouncing = false; }, 50);
+            }, 100);
+        } else if (direction === 'down') {
+            // Свайп вниз на последней карточке — дёргаем вниз
+            card.style.transform = 'translateY(15px)';
+            setTimeout(() => {
+                card.style.transform = '';
+                setTimeout(() => { isBouncing = false; }, 50);
+            }, 100);
+        }
+    }
+    
+    // Кнопки категорий
     const categoryBtns = document.querySelectorAll('.cat-btn');
     categoryBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const category = btn.getAttribute('data-category');
             if (category) {
                 changeCategory(category);
-                
-                // Анимация активной кнопки
                 categoryBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
             }
         });
     });
     
-    // ОБРАБОТЧИК ДЛЯ ФОТО 34.PNG В ПРАВОМ НИЖНЕМ УГЛУ - ОТКРЫВАЕТ favorites.html
+    // Избранное
     const favoritePhoto = document.getElementById('favoriteIcon');
     if (favoritePhoto) {
         favoritePhoto.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
             window.location.href = 'favorites.html';
         });
     }
     
-    // Свайп для карточки
-    let startY = 0;
+    // ЛИСТАНИЕ КАРТОЧЕК С BOUNCE-ЭФФЕКТОМ
+    let touchStartY = 0;
+    let touchStartX = 0;
     let isSwiping = false;
-    const cardElement = document.querySelector('.recipe-card');
+    let swipeThreshold = 40;
+    const cardEl = document.querySelector('.recipe-card');
     
-    function handleTouchStart(e) {
-        startY = e.touches[0].clientY;
+    function onTouchStart(e) {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
         isSwiping = true;
     }
     
-    function handleTouchMove(e) {
-        if (!isSwiping || isAnimating) return;
-        const currentY = e.touches[0].clientY;
-        const diff = startY - currentY;
+    function onTouchMove(e) {
+        if (!isSwiping || isAnimating || isBouncing) return;
         
-        if (Math.abs(diff) > 50) {
-            if (diff > 0) {
-                nextCard();
+        const deltaY = e.touches[0].clientY - touchStartY;
+        const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+        
+        if (deltaX < 30 && Math.abs(deltaY) > swipeThreshold) {
+            if (deltaY > 0) {
+                // Свайп вниз
+                if (currentIndex > 0) {
+                    prevCard();
+                } else {
+                    bounceCard('down');
+                }
             } else {
-                prevCard();
+                // Свайп вверх
+                if (currentIndex < currentRecipes.length - 1) {
+                    nextCard();
+                } else {
+                    bounceCard('up');
+                }
             }
             isSwiping = false;
         }
     }
     
-    function handleTouchEnd() {
+    function onTouchEnd() {
         isSwiping = false;
     }
     
-    if (cardElement) {
-        cardElement.addEventListener('touchstart', handleTouchStart);
-        cardElement.addEventListener('touchmove', handleTouchMove);
-        cardElement.addEventListener('touchend', handleTouchEnd);
+    if (cardEl) {
+        cardEl.addEventListener('touchstart', onTouchStart, { passive: false });
+        cardEl.addEventListener('touchmove', onTouchMove, { passive: false });
+        cardEl.addEventListener('touchend', onTouchEnd);
     }
     
-    // ОБРАБОТЧИК НАЖАТИЯ НА КАРТОЧКУ
+    // Клик по карточке
     const recipeCard = document.querySelector('.recipe-card');
     if (recipeCard) {
         recipeCard.addEventListener('click', (e) => {
@@ -180,30 +210,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const recipeName = currentRecipe.name.trim();
                 localStorage.setItem('selectedRecipe', recipeName);
                 
-                // Определяем, какой файл открывать в зависимости от названия блюда
                 let targetPage = '';
-                
-                if (recipeName === 'Мясная пицца') {
-                    targetPage = 'pizzasuper.html';
-                } else if (recipeName === 'Суп Фо бо') {
-                    targetPage = 'phobo.html';
-                } else if (recipeName === 'Борщ') {
-                    targetPage = 'borsh.html';
-                } else if (recipeName === 'Тыквенный крем-суп') {
-                    targetPage = 'pumpkin.html';
-                } else if (recipeName === 'Чахохбили') {
-                    targetPage = 'chahohbili.html';
-                } else if (recipeName === 'Минтай с черри помидорками') {
-                    targetPage = 'mintai.html';
-                } else if (recipeName === 'Курочка в кисло-сладком соусе') {
-                    targetPage = 'kurochka.html';
-                } else if (recipeName === 'Пицца камамбер') {
-                    targetPage = 'kamamber.html';
-                } else if (recipeName === 'Лимончелло') {
-                    targetPage = 'limonchello.html';
-                } else {
-                    targetPage = 'recipe-default.html';
-                }
+                if (recipeName === 'Мясная пицца') targetPage = 'pizzasuper.html';
+                else if (recipeName === 'Суп Фо бо') targetPage = 'phobo.html';
+                else if (recipeName === 'Борщ') targetPage = 'borsh.html';
+                else if (recipeName === 'Тыквенный крем-суп') targetPage = 'pumpkin.html';
+                else if (recipeName === 'Чахохбили') targetPage = 'chahohbili.html';
+                else if (recipeName === 'Минтай с черри помидорками') targetPage = 'mintai.html';
+                else if (recipeName === 'Курочка в кисло-сладком соусе') targetPage = 'kurochka.html';
+                else if (recipeName === 'Пицца камамбер') targetPage = 'kamamber.html';
+                else if (recipeName === 'Лимончелло') targetPage = 'limonchello.html';
+                else targetPage = 'recipe-default.html';
                 
                 window.location.href = targetPage;
             }
@@ -212,10 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Инициализация
     changeCategory('first');
-    
-    // Активируем первую кнопку по умолчанию
     const firstBtn = document.querySelector('.cat-btn[data-category="first"]');
-    if (firstBtn) {
-        firstBtn.classList.add('active');
-    }
+    if (firstBtn) firstBtn.classList.add('active');
 });
