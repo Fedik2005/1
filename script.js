@@ -42,7 +42,7 @@ if (text1) index1 = animateText(text1, phrases1, index1, 2000);
 if (text2) index2 = animateText(text2, phrases2, index2, 4500);
 if (text3) index3 = animateText(text3, phrases3, index3, 7000);
 
-// Обработчик кнопки - переход на menu.html
+// Обработчик кнопки
 if (button) {
     button.addEventListener('click', () => {
         button.style.transform = 'scale(0.95)';
@@ -53,7 +53,7 @@ if (button) {
     });
 }
 
-// ===== ПРОКРУТКА С ТОЧКАМИ (только для веб-версии) =====
+// Навигация для веб-версии
 function isDesktop() {
     return window.innerWidth > 768;
 }
@@ -109,8 +109,7 @@ function updateActiveDot() {
     });
     
     if (progressBar) {
-        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = totalScroll > 0 ? (window.scrollY / totalScroll) * 100 : 0;
+        const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
         progressBar.style.height = scrollPercent + '%';
     }
     
@@ -190,5 +189,4 @@ function initDesktopNav() {
     updateActiveDot();
 }
 
-// Запуск навигации после загрузки страницы
 setTimeout(initDesktopNav, 100);
