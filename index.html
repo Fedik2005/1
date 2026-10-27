@@ -5,69 +5,42 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="description" content="Polkovniki Lubvi - домашняя книга рецептов Настеньки">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%231a4be0%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%229%22 fill=%22%23ffffff%22/%3E%3C/svg%3E">
-    <title>Polkovniki Lubvi - книга рецептов</title>
+    <meta name="theme-color" content="#f5f6ee">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%23f5f6ee%22 stroke=%22%23222%22 stroke-width=%221.5%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%229%22 fill=%22none%22 stroke=%22%23222%22 stroke-width=%221%22/%3E%3C/svg%3E">
+    <title>Polkovniki Lubvi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;600;700&display=swap">
-    <link rel="stylesheet" href="style.css?v=13">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="style.css?v=14">
 </head>
 <body>
-    <div class="home" id="home">
-        <div class="home-side">
-            <header class="home-head">
-                <h1 class="home-title wordmark">Polkovniki<br>Lubvi</h1>
-                <p class="home-lead">Домашняя книга рецептов Настеньки: блюда, которые мы готовим и любим. <span class="home-phrase" id="phrase">We cook.</span></p>
-            </header>
+    <div class="home">
+        <header class="home-top">
+            <a href="index.html" class="wordmark">Polkovniki Lubvi</a>
+            <span class="home-author">Автор: Настенька</span>
+        </header>
 
-            <nav class="wheel" id="wheel" aria-label="Выберите блюдо">
-                <ul class="wheel-list" id="wheelList"></ul>
-            </nav>
+        <img class="photo" id="photo" src="img/poppies.webp" alt="">
 
-            <div class="home-bottom">
-                <p class="home-fact" id="homeFact" aria-live="polite"></p>
-                <div class="home-actions">
-                    <a class="btn btn-accent" id="openDish" href="menu.html?v=13">
-                        <span id="openDishLabel">Открыть рецепт</span>
-                        <svg class="icon" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h14M11 9l4-4-4-4"/></svg>
-                    </a>
-                    <a class="text-link" id="recipeButton" href="menu.html?v=13">Все рецепты</a>
-                </div>
-            </div>
-        </div>
+        <main class="home-main">
+            <h1 class="home-title">
+                <span class="text-line text-line-1" id="text1">We cook</span>
+                <span class="text-line text-line-2" id="text2">Recipe book</span>
+                <span class="text-line text-line-3" id="text3">Je t'aime</span>
+            </h1>
+            <p class="home-lead">Тёплые рецепты на каждый день</p>
+        </main>
 
-        <div class="home-field" id="homeField">
-            <a class="home-dish" id="homeDish" href="menu.html?v=13" tabindex="-1" aria-hidden="true"></a>
-            <p class="home-swatch" id="homeSwatch"></p>
-        </div>
+        <footer class="home-bottom">
+            <a href="menu.html?v=14" class="btn is-filled" id="recipeButton">
+                Смотреть рецепты
+                <svg class="icon" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h14M11 9l4-4-4-4"/></svg>
+            </a>
+            <span class="home-note">блюда и немного любви</span>
+        </footer>
     </div>
 
-    <section class="strip" aria-labelledby="stripTitle">
-        <div class="strip-head">
-            <h2 class="strip-title" id="stripTitle">Все блюда книги</h2>
-            <p class="strip-count" id="stripCount"></p>
-        </div>
-        <ul class="strip-row" id="stripRow"></ul>
-    </section>
-
-    <footer class="home-foot">
-        <a class="foot-photo" id="footPhoto" href="menu.html?v=13" aria-hidden="true" tabindex="-1"></a>
-        <div class="foot-menu">
-            <p class="wordmark foot-mark">Polkovniki Lubvi</p>
-            <nav aria-label="Разделы книги">
-                <ul class="foot-links" id="footLinks"></ul>
-            </nav>
-            <div class="foot-notes">
-                <p>Готовим вдвоём и записываем для вас. Рецепты, фото и любовь - Настенька.</p>
-                <p>КБЖУ посчитаны на 100 г готового блюда и примерные.</p>
-            </div>
-        </div>
-    </footer>
-
     <div class="page-fade" id="pageFade"></div>
-    <script src="recipes.js?v=4"></script>
-    <script src="script.js?v=13"></script>
+    <script src="script.js?v=14"></script>
 </body>
 </html>

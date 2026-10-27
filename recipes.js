@@ -2,7 +2,6 @@
 // Новое блюдо: скопируйте любой блок ниже, поменяйте id (латиницей), название,
 // категорию, фото (лучше .webp или .png на прозрачном фоне) и списки.
 // Шаг с полем detail открывает подсказку с нужными ингредиентами.
-// field - цвет главного ингредиента: поле, на котором стоит блюдо (ink - цвет текста на нём).
 // nutrition можно оставить пустым {} - тогда КБЖУ не показывается.
 
 const CATEGORIES = [
@@ -22,7 +21,6 @@ const RECIPES = [
         name: "Суп Фо Бо",
         category: "first",
         image: "img/phobo.webp", width: 603, height: 434,
-        field: { name: "Лайм", color: "#8cc63f", ink: "#111111" },
         description: "Ароматный бульон, нежная говядина, свежий лайм и охлаждающая мята создают невероятный баланс — насыщенный, яркий и гармоничный. Это не просто суп, это кулинарное путешествие во Вьетнам!",
         nutrition: { protein: "3,1", fat: "1,1", carbs: "5,7", kcal: "46" },
         ingredients: [
@@ -77,7 +75,6 @@ const RECIPES = [
         name: "Чахохбили",
         category: "second",
         image: "img/chahohbili.webp", width: 437, height: 337,
-        field: { name: "Томат", color: "#d63a22", ink: "#ffffff" },
         description: "Простое, но очень вкусное грузинское блюдо - курочка, тушёная с помидорами и специями. Мясо получается мягким и сочным, а томатный соус - ароматным. Хмели-сунели, кориандр и зелень добавляют характерный грузинский колорит.",
         nutrition: { protein: "8,7", fat: "7,9", carbs: "4,3", kcal: "122" },
         ingredients: [
@@ -109,7 +106,6 @@ const RECIPES = [
         name: "Минтай с черри помидорками",
         category: "second",
         image: "img/mintai.webp", width: 900, height: 686,
-        field: { name: "Лимон", color: "#f3d23b", ink: "#111111" },
         description: "Нежное филе минтая, обжаренное до золотистой корочки, сочетается с яркими черри-томатами, которые лопаются во рту, оставляя сладковатый след. Лёгкая лимонная нотка завершает вкус — свежо, просто и изысканно.",
         nutrition: { protein: "12", fat: "2,6", carbs: "4,7", kcal: "90" },
         ingredients: [
@@ -140,7 +136,6 @@ const RECIPES = [
         name: "Курочка в кисло-сладком соусе",
         category: "second",
         image: "img/kurochka.webp", width: 900, height: 888,
-        field: { name: "Ананас", color: "#f6b81f", ink: "#111111" },
         description: "Нежная курочка по-гонконгски в хрустящей корочке, политая кисло-сладким соусом с кусочками спелого ананаса. Взрыв вкуса: острое, сладкое и пикантное в каждом укусе. Просто бомба!",
         nutrition: { protein: "16", fat: "5", carbs: "13", kcal: "163" },
         ingredients: [
@@ -174,7 +169,6 @@ const RECIPES = [
         name: "Курочка с картошкой",
         category: "second",
         image: "img/nogki.webp", width: 603, height: 526,
-        field: { name: "Мёд", color: "#d9900f", ink: "#111111" },
         description: "Нежное, сочное мясо, тушёное с мягкой картошкой и сладковатой морковью в ароматном островатом соусе. Блюдо согревает, насыщает и готовится без лишних хлопот.",
         nutrition: { protein: "9,4", fat: "7,8", carbs: "12", kcal: "156" },
         ingredients: [
@@ -206,7 +200,6 @@ const RECIPES = [
         name: "Фунчоза в китайском стиле",
         category: "second",
         image: "img/funchoza.webp", width: 676, height: 460,
-        field: { name: "Кинза", color: "#23774a", ink: "#ffffff" },
         description: "Сочная курочка, нежная стеклянная лапша и яркий азиатский соус. Сладковатые нотки делают это блюдо настоящим взрывом вкуса — сытно, ароматно и безумно вкусно!",
         nutrition: { protein: "9,4", fat: "7,2", carbs: "15", kcal: "162" },
         ingredients: [
@@ -243,7 +236,6 @@ const RECIPES = [
         name: "Рис с курочкой",
         category: "second",
         image: "img/ris-s-kurochkoy.webp", width: 660, height: 543,
-        field: { name: "Соевый соус", color: "#3b2418", ink: "#ffffff" },
         description: "Нежнейшее куриное филе в золотистой корочке, томлёное с имбирём, чесноком и мексиканской смесью, в густом устрично-соевом соусе. Подаётся на подушке из рассыпчатого басмати — сочно, ароматно!",
         nutrition: { protein: "9,1", fat: "1,6", carbs: "19", kcal: "129" },
         ingredients: [
@@ -277,7 +269,6 @@ const RECIPES = [
         name: "Рубленные котлетки",
         category: "second",
         image: "img/rublennye-kotletki.webp", width: 900, height: 730,
-        field: { name: "Плавленый сыр", color: "#f2c94c", ink: "#111111" },
         description: "Сочнейшие куриные котлетки с хрустящей корочкой и нежным плавленным сыром. Кусочки грудки, сыр, творожок и ароматная зелень создают идеальный баланс вкуса, а томаты добавляют сочность. Настоящее домашнее тепло в каждой котлетке!",
         nutrition: { protein: "21", fat: "8,7", carbs: "3", kcal: "177" },
         ingredients: [
@@ -306,7 +297,6 @@ const RECIPES = [
         name: "Мясная пицца",
         category: "baking",
         image: "img/pizzasuper.webp", width: 645, height: 588,
-        field: { name: "Руккола", color: "#4f7a28", ink: "#ffffff" },
         description: "Нежное филе грудки индейки, ароматный бекон и тягучая моцарелла на томатном соусе. Итальянские травы раскрывают каждый вкус, создавая идеальную гармонию. Настоящая мясная бомба!",
         nutrition: { protein: "11", fat: "8,2", carbs: "17", kcal: "187" },
         ingredients: [
@@ -343,7 +333,6 @@ const RECIPES = [
         name: "Пицца камамбер",
         category: "baking",
         image: "img/camamber.webp", width: 680, height: 565,
-        field: { name: "Груша", color: "#b9cf5a", ink: "#111111" },
         description: "Нежная груша, томленый камамбер с благородной плесенью и горный мёд создают гармонию сладкого, пикантного и сливочного. Хрустящая основа, тающая начинка – это не просто пицца, а десерт для гурманов!",
         nutrition: { protein: "9,2", fat: "15", carbs: "21", kcal: "255" },
         ingredients: [
@@ -389,7 +378,6 @@ const RECIPES = [
         name: "Творожные бейглы",
         category: "baking",
         image: "img/beigl.webp", width: 877, height: 527,
-        field: { name: "Горчица", color: "#d8a31a", ink: "#111111" },
         description: "Творожная основа идеально сочетается с нежным карбонатом индейки или котлетками, свежим салатом и творожным сыром. Лёгкие нотки зелени дополняют этот насыщенный вкус. Идеально для сытного перекуса.",
         nutrition: { protein: "14", fat: "8,1", carbs: "14", kcal: "189" },
         ingredients: [
@@ -417,7 +405,6 @@ const RECIPES = [
         name: "Чизкейк с рикоттой",
         category: "sweet",
         image: "img/cheez.webp", width: 900, height: 589,
-        field: { name: "Клубника", color: "#e8384f", ink: "#111111" },
         description: "Этот чизкейк получился удивительно воздушным и лёгким, с мягким сливочным вкусом настоящей рикотты. Нежная текстура просто тает во рту, оставляя тонкий молочный оттенок и приятную сладость итальянской рикотты.",
         nutrition: { protein: "10", fat: "15", carbs: "14", kcal: "231" },
         ingredients: [
@@ -442,7 +429,6 @@ const RECIPES = [
         name: "Шоколадный Сан-Себастьян",
         category: "sweet",
         image: "img/sansebast.webp", width: 692, height: 462,
-        field: { name: "Какао", color: "#4a2418", ink: "#ffffff" },
         description: "Нежный, с кремообразной сердцевиной, которая напоминает подтаявшее шоколадное мороженое. Каждый кусочек — гладкий, насыщенный и бесконечно вкусный. Шоколадное наслаждение без лишних слов.",
         nutrition: { protein: "10", fat: "15", carbs: "14", kcal: "233" },
         ingredients: [
@@ -468,7 +454,6 @@ const RECIPES = [
         name: "Творожно-банановый кекс",
         category: "sweet",
         image: "img/tvorogkekc.webp", width: 447, height: 389,
-        field: { name: "Банан", color: "#f4d54a", ink: "#111111" },
         description: "Воздушная творожная основа, сладость спелого банана и лёгкая ванильная нотка. Мягкий, влажный, с золотистой корочкой — идеально к чаю или кофе. Просто, вкусно и уютно!",
         nutrition: { protein: "8,2", fat: "13", carbs: "25", kcal: "254" },
         ingredients: [
@@ -498,7 +483,6 @@ const RECIPES = [
         name: "Творожные синнабоны с греческим йогуртом",
         category: "sweet",
         image: "img/sibinon.webp", width: 592, height: 356,
-        field: { name: "Корица", color: "#a4532a", ink: "#ffffff" },
         description: "Горячие, воздушные, с ароматной начинкой из корицы и тростникового сахара. Нежный крем из греческого йогурта слегка подтаивает на тёплой выпечке.",
         nutrition: { protein: "13", fat: "6,8", carbs: "29", kcal: "235" },
         ingredients: [
@@ -528,7 +512,6 @@ const RECIPES = [
         name: "Шарлотка",
         category: "sweet",
         image: "img/charlot.webp", width: 900, height: 619,
-        field: { name: "Зелёное яблоко", color: "#a9cc5b", ink: "#111111" },
         description: "Нежная, как облако, и простая, как самое тёплое воспоминание. Снаружи — золотистая корочка, внутри — мягкая яблочная нежность, тающая во рту. Идеально с чашкой чая и сметаной в тихий вечер.",
         nutrition: { protein: "5,7", fat: "4,7", carbs: "29", kcal: "183" },
         ingredients: [
@@ -552,7 +535,6 @@ const RECIPES = [
         name: "Творожные оладьи",
         category: "sweet",
         image: "img/oladi.webp", width: 610, height: 495,
-        field: { name: "Черника", color: "#3b3f8f", ink: "#ffffff" },
         description: "Воздушные, как облако, и очень нежные. Сверху — дольки банана, которые оттеняют вкус и делают их ещё аппетитнее. Просто, легко и очень вкусно.",
         nutrition: { protein: "13", fat: "7,6", carbs: "17", kcal: "192" },
         ingredients: [
@@ -580,7 +562,6 @@ const RECIPES = [
         name: "Шоколадный клафути с вишней",
         category: "sweet",
         image: "img/claf.webp", width: 900, height: 717,
-        field: { name: "Вишня", color: "#8f1631", ink: "#ffffff" },
         description: "Тёплый десерт с нежной текстурой и насыщенным вкусом шоколада. Сочная вишня добавляет приятную кислинку. А если добавить шарик ванильного мороженого — получится идеальный контраст.",
         nutrition: { protein: "6,8", fat: "4,8", carbs: "21", kcal: "155" },
         ingredients: [
@@ -607,7 +588,6 @@ const RECIPES = [
         name: "Меренговый рулет",
         category: "sweet",
         image: "img/merengovyy-rulet.webp", width: 567, height: 442,
-        field: { name: "Малина", color: "#c42b5b", ink: "#ffffff" },
         description: "Хрустящая меренга с нежной, тающей во рту сердцевиной. Ягодный конфитюр или свежие фрукты добавляют яркую кислинку и делают этот десерт настоящим произведением искусства — лёгкий, воздушный и невероятно изящный!",
         nutrition: { protein: "7,6", fat: "11", carbs: "50", kcal: "324" },
         ingredients: [
@@ -639,7 +619,6 @@ const RECIPES = [
         name: "Сырники с маком",
         category: "sweet",
         image: "img/syrniki-s-makom.webp", width: 554, height: 437,
-        field: { name: "Мак", color: "#2c3140", ink: "#ffffff" },
         description: "Нежные, воздушные сырники с хрустящей корочкой и бархатистой сердцевиной. Ароматный мак добавляет изысканную нотку и приятный хруст. Идеально со сметаной, ягодами или любым творожком!",
         nutrition: { protein: "16", fat: "9,5", carbs: "18", kcal: "223" },
         ingredients: [
@@ -665,7 +644,6 @@ const RECIPES = [
         name: "Кабачки под сырной шапочкой",
         category: "snacks",
         image: "img/kabachki.webp", width: 626, height: 463,
-        field: { name: "Кабачок", color: "#24563a", ink: "#ffffff" },
         description: "Нежные кабачки, запечённые с сочными томатами и шапкой из расплавленного сыра. Простое, но невероятно вкусное блюдо, которое тает во рту — идеальный вариант для лёгкой закуски.",
         nutrition: { protein: "6", fat: "6,4", carbs: "4,7", kcal: "98" },
         ingredients: [
