@@ -152,6 +152,66 @@ img {
     font-weight: 500;
 }
 
+/* Составная кнопка Palmer: квадрат с иконкой + прямоугольник с подписью */
+.split {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 2px;
+    height: 36px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.split-icon,
+.split-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-sm);
+    background: var(--cream);
+    transition: background-color 0.25s, color 0.25s, border-radius 0.4s var(--ease-out), width 0.4s var(--ease-out), opacity 0.25s, transform 0.12s var(--ease-out);
+}
+
+.split-icon {
+    width: 36px;
+    flex: none;
+}
+
+.split-label {
+    gap: 6px;
+    padding: 0 12px;
+}
+
+.split .icon {
+    width: 14px;
+    height: 14px;
+}
+
+.split.is-dark .split-icon,
+.split.is-dark .split-label,
+.split[aria-pressed="true"] .split-icon,
+.split[aria-pressed="true"] .split-label {
+    background: var(--ink);
+    color: var(--cream);
+}
+
+.split:active .split-icon,
+.split:active .split-label {
+    transform: scale(0.96);
+}
+
+@media (hover: hover) {
+    .split:not(.is-dark):not([aria-pressed="true"]):hover .split-icon,
+    .split:not(.is-dark):not([aria-pressed="true"]):hover .split-label {
+        background: var(--ink);
+        color: var(--cream);
+    }
+}
+
 /* Плавный переход между страницами, как у Palmer */
 .page-fade {
     position: fixed;

@@ -1,18 +1,20 @@
-// Полотно с блюдами, меню категорий и панель рецепта
+// Полотно с блюдами, разделы, меню-плашки и панель рецепта (по мотивам Palmer)
 document.addEventListener('DOMContentLoaded', () => {
     const $ = (id) => document.getElementById(id);
+    const body = document.body;
     const stage = $('stage');
     const canvas = $('canvas');
     const recipePanel = $('recipe');
     const recipeScroll = $('recipeScroll');
     const menu = $('menu');
     const menuButton = $('menuButton');
-    const scrim = $('scrim');
+    const sections = $('sections');
+    const viewToggle = $('viewToggle');
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const desktopQuery = window.matchMedia('(min-width: 900px)');
 
     const ALL = 'all';
     const FAVORITES = 'favorites';
+    const PANEL_EASE = 'cubic-bezier(0.7, 0, 0.2, 1)';
     const byId = {};
     RECIPES.forEach(r => { byId[r.id] = r; });
 
@@ -55,6 +57,23 @@ document.addEventListener('DOMContentLoaded', () => {
         return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     }
 
+    // Крупный текст поднимается по буквам из-под линии
+    function splitChars(el, text) {
+        let c = 0;
+        el.innerHTML = text.split(' ').map(word =>
+            '<span class="word">' + Array.from(word).map(ch => '<span class="ch" style="--c:' + (c++) + '">' + escapeHtml(ch) + '</span>').join('') + '</span>'
+        ).join(' ');
+        el.setAttribute('aria-label', text);
+    }
+
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
     // ---------- Категории ----------
 
     let currentCategory = load('currentCategory', ALL);
@@ -81,35 +100,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!isKnownView(currentCategory)) currentCategory = ALL;
 
-    function buildMenu() {
-        const rows = [{ id: ALL }].concat(CATEGORIES, [{ id: 'sep' }, { id: FAVORITES }]);
-        let i = 0;
-        $('menuList').innerHTML = rows.map(row => {
-            if (row.id === 'sep') return '<li aria-hidden="true"><div class="menu-sep"></div></li>';
-            const n = recipesFor(row.id).length;
-            const cls = 'menu-link' + (row.id === currentCategory ? ' is-current' : '') + (n ? '' : ' is-empty');
-            return '<li><button class="' + cls + '" type="button" data-category="' + row.id + '" style="--i:' + (i++) + '"' +
-                (row.id === currentCategory ? ' aria-current="true"' : '') + '>' +
-                escapeHtml(viewName(row.id)) + '<span class="count">' + n + '</span></button></li>';
-        }).join('');
-        const total = RECIPES.length;
-        $('menuTotal').textContent = total + ' ' + plural(total, 'рецепт', 'рецепта', 'рецептов');
+    function allViews() {
+        return [ALL].concat(CATEGORIES.map(c => c.id), [FAVORITES]);
+    }
+
+    function dishesWord(n) {
+        return n + ' ' + plural(n, 'блюдо', 'блюда', 'блюд');
     }
 
     function updateChrome() {
-        $('viewName').textContent = viewName(currentCategory);
-        $('viewCount').textContent = recipesFor(currentCategory).length;
         const favN = getFavorites().filter(name => RECIPES.some(r => r.name === name)).length;
         $('favCount').textContent = favN || '';
-        $('favoriteIcon').classList.toggle('is-filled', currentCategory === FAVORITES);
+        $('favoriteIcon').setAttribute('aria-pressed', currentCategory === FAVORITES ? 'true' : 'false');
+    }
+
+    // ---------- Меню: всплывающие плашки ----------
+
+    function buildMenu() {
+        const views = allViews();
+        const chips = views.map((v, i) => {
+            const n = recipesFor(v).length;
+            const cur = v === currentCategory;
+            return '<li><button class="chip' + (cur ? ' is-current' : '') + '" type="button" data-category="' + v + '" style="--i:' + i + '"' +
+                (cur ? ' aria-current="true"' : '') + '>' + escapeHtml(viewName(v)) + ' <span class="count">' + n + '</span></button></li>';
+        });
+        chips.push('<li><a class="chip is-light" href="index.html" style="--i:' + views.length + '">← на главную</a></li>');
+        $('menuList').innerHTML = chips.join('');
     }
 
     function openMenu() {
         buildMenu();
+        menu.getBoundingClientRect();
         menu.classList.add('is-open');
         menuButton.setAttribute('aria-expanded', 'true');
-        const current = menu.querySelector('.is-current');
-        if (current) setTimeout(() => current.focus({ preventScroll: true }), 60);
     }
 
     function closeMenu() {
@@ -117,18 +140,23 @@ document.addEventListener('DOMContentLoaded', () => {
         menuButton.setAttribute('aria-expanded', 'false');
     }
 
-    function toggleMenu() {
+    menuButton.addEventListener('click', () => {
         if (menu.classList.contains('is-open')) closeMenu(); else openMenu();
-    }
-
-    menuButton.addEventListener('click', toggleMenu);
-    $('viewPill').addEventListener('click', toggleMenu);
+    });
 
     $('menuList').addEventListener('click', (e) => {
         const btn = e.target.closest('[data-category]');
         if (!btn) return;
         closeMenu();
-        changeCategory(btn.getAttribute('data-category'));
+        const view = btn.getAttribute('data-category');
+        if (sectionsOpen) closeSections(view);
+        else changeCategory(view);
+    });
+
+    document.addEventListener('pointerdown', (e) => {
+        if (!menu.classList.contains('is-open')) return;
+        if (e.target.closest('#menu, #menuButton')) return;
+        closeMenu();
     });
 
     // Избранное: кнопка внизу переключает полотно на сохранённые блюда
@@ -139,12 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     $('emptyButton').addEventListener('click', () => changeCategory(ALL));
-
-    document.addEventListener('pointerdown', (e) => {
-        if (!menu.classList.contains('is-open')) return;
-        if (e.target.closest('#menu, #menuButton, #viewPill')) return;
-        closeMenu();
-    });
 
     // ---------- Раскладка блюд по полотну ----------
 
@@ -169,10 +191,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function layout(list) {
         const W = window.innerWidth, H = window.innerHeight;
         const mobile = W < 700;
-        const cell = mobile ? 150 : 230;
-        const rowStep = cell;
+        const cell = mobile ? 178 : 262;
         const caption = 34;
-        const padX = mobile ? 24 : 60;
+        const rowStep = cell + 10;
+        const padX = mobile ? 20 : 60;
         const padTop = mobile ? 70 : 80;
         const padBottom = mobile ? 90 : 100;
         const n = list.length;
@@ -205,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return list.map((r, k) => {
             const slot = used[k];
             const row = Math.floor(slot / cols), col = slot % cols;
-            const scale = single ? 1.7 : 0.6 + rand() * 0.28;
+            const scale = single ? 1.7 : 0.7 + rand() * 0.26;
             const box = cell * scale;
             const ratio = r.width / r.height;
             const width = Math.round(Math.min(box, box * 0.86 * ratio));
@@ -224,14 +246,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    let introTimer = null;
+    let introRunning = false;
+
     function render(animate) {
         const list = recipesFor(currentCategory);
         items = layout(list);
         canvas.style.width = canvasW + 'px';
         canvas.style.height = canvasH + 'px';
-        canvas.innerHTML = items.map((it, i) =>
+        canvas.innerHTML = items.map(it =>
             '<button class="dish" type="button" data-id="' + it.recipe.id + '" style="left:' + it.x + 'px;top:' + it.y + 'px;width:' + it.width + 'px">' +
-            '<img src="' + it.recipe.image + '" alt="" width="' + it.recipe.width + '" height="' + it.recipe.height + '" decoding="async"' + (i > 8 ? ' loading="lazy"' : '') + '>' +
+            '<img src="' + it.recipe.image + '" alt="" width="' + it.recipe.width + '" height="' + it.recipe.height + '" decoding="async">' +
             '<span class="dish-name">' + escapeHtml(it.recipe.name) + '</span></button>'
         ).join('');
 
@@ -240,58 +265,173 @@ document.addEventListener('DOMContentLoaded', () => {
         if (empty) {
             if (currentCategory === FAVORITES) {
                 $('emptyTitle').textContent = 'Пока пусто';
-                $('emptyText').textContent = 'У вас пока нет сохранённых рецептов. Нажмите на сердечко в рецепте, и он появится здесь.';
+                $('emptyText').textContent = 'У вас пока нет сохранённых рецептов. Нажмите «в избранное» в рецепте, и он появится здесь.';
             } else {
                 $('emptyTitle').textContent = viewName(currentCategory);
                 $('emptyText').textContent = 'В этой категории пока нет рецептов. Скоро появятся.';
             }
         }
 
-        zoom = 1;
+        updateChrome();
+        if (animate && !reduceMotion && list.length > 1) {
+            intro();
+        } else {
+            stopIntro();
+            zoom = 1;
+            centerView();
+            apply();
+            updateZoomButtons();
+        }
+    }
+
+    // Вход как у Palmer: блюда сначала появляются мелко, а потом полотно приближается
+    function intro() {
+        stopIntro();
+        introRunning = true;
+        const W = window.innerWidth, H = window.innerHeight;
+        zoom = Math.max(0.22, Math.min(0.6, Math.min(W / canvasW, H / canvasH) * 0.9));
+        canvas.style.transition = 'none';
+        canvas.classList.add('is-far');
         centerView();
         apply();
-        updateZoomButtons();
-        updateChrome();
-        if (animate) entrance();
+
+        const dishes = Array.from(canvas.querySelectorAll('.dish'));
+        const order = shuffle(dishes.map((_, i) => i));
+        const step = Math.min(45, 700 / dishes.length);
+        order.forEach((idx, k) => {
+            dishes[idx].animate([
+                { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 },
+                { transform: 'translate(-50%, -50%) scale(1.08)', opacity: 1, offset: 0.65 },
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 }
+            ], { duration: 520, delay: 120 + k * step, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'backwards' });
+        });
+
+        const wait = 120 + order.length * step + 420;
+        introTimer = setTimeout(() => {
+            canvas.style.transition = 'transform 1.5s cubic-bezier(0.65, 0, 0.35, 1)';
+            canvas.classList.remove('is-far');
+            zoom = 1;
+            centerView();
+            apply();
+            updateZoomButtons();
+            introTimer = setTimeout(() => {
+                canvas.style.transition = '';
+                introRunning = false;
+            }, 1500);
+        }, wait);
     }
 
-    // Появление: блюда «ложатся» на стену от центра к краям
-    function entrance() {
-        if (reduceMotion || !canvas.animate) return;
-        const cx = -panX + window.innerWidth / 2, cy = -panY + window.innerHeight / 2;
-        canvas.querySelectorAll('.dish').forEach((el, i) => {
-            const it = items[i];
-            const d = Math.hypot(it.x - cx, it.y - cy);
-            el.animate([
-                { opacity: 0, transform: 'translate(-50%, calc(-50% + 18px)) scale(0.96)' },
-                { opacity: 1, transform: 'translate(-50%, -50%)' }
-            ], { duration: 700, delay: Math.min(d * 0.45, 420), easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'backwards' });
-        });
+    function stopIntro() {
+        clearTimeout(introTimer);
+        introRunning = false;
+        canvas.style.transition = '';
+        canvas.classList.remove('is-far');
+        canvas.getAnimations && canvas.querySelectorAll('.dish').forEach(d => d.getAnimations().forEach(a => a.finish()));
     }
+
+    // Блюда сжимаются в точки и исчезают (перед разделами и сменой категории)
+    function vanish() {
+        const dishes = Array.from(canvas.querySelectorAll('.dish'));
+        if (reduceMotion || !dishes.length) return Promise.resolve();
+        stopIntro();
+        const anims = shuffle(dishes.slice()).map((d, k) => d.animate([
+            { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+            { transform: 'translate(-50%, -50%) scale(0.03)', opacity: 1, offset: 0.85 },
+            { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 }
+        ], { duration: 520, delay: k * Math.min(18, 260 / dishes.length), easing: 'cubic-bezier(0.55, 0, 0.75, 0.2)', fill: 'forwards' }));
+        return Promise.all(anims.map(a => a.finished.catch(() => {})));
+    }
+
+    let changing = false;
 
     function changeCategory(view) {
-        if (!isKnownView(view)) return;
+        if (!isKnownView(view) || changing) return;
         if (view === currentCategory && canvas.children.length) {
             updateChrome();
             return;
         }
         currentCategory = view;
         store('currentCategory', view);
-        if (reduceMotion) {
-            render(false);
-            return;
-        }
-        canvas.classList.add('is-leaving');
-        setTimeout(() => {
-            canvas.classList.remove('is-leaving');
+        changing = true;
+        vanish().then(() => {
+            changing = false;
             render(true);
-        }, 260);
+        });
     }
+
+    // ---------- Разделы (верхняя кнопка) ----------
+
+    let sectionsOpen = false;
+    const ART = [
+        { x: 40, y: 44, w: 60 },
+        { x: 74, y: 64, w: 44 },
+        { x: 26, y: 76, w: 36 }
+    ];
+
+    function buildSections() {
+        splitChars($('sectionsTitle'), 'Тёплые рецепты на каждый день');
+        $('sectionsGrid').innerHTML = allViews().map((v, ci) => {
+            const list = recipesFor(v).slice(0, 3);
+            const n = recipesFor(v).length;
+            const art = list.length
+                ? list.map((r, k) => '<img src="' + r.image + '" alt="" style="left:' + ART[k].x + '%;top:' + ART[k].y + '%;width:' + ART[k].w + '%;--d:' + (300 + ci * 70 + k * 90) + '">').join('')
+                : '<span class="placeholder"></span>';
+            return '<li><button class="section-card' + (v === currentCategory ? ' is-current' : '') + '" type="button" data-category="' + v + '">' +
+                '<span class="section-art">' + art + '</span>' +
+                '<span class="section-name">' + escapeHtml(viewName(v)) + '</span>' +
+                '<span class="section-count">' + (n ? dishesWord(n) : 'скоро') + '</span></button></li>';
+        }).join('');
+    }
+
+    function openSections() {
+        if (sectionsOpen) return;
+        sectionsOpen = true;
+        closeMenu();
+        viewToggle.setAttribute('aria-pressed', 'true');
+        viewToggle.setAttribute('aria-label', 'Все блюда на полотне');
+        $('viewToggleLabel').textContent = 'полотно';
+        body.classList.add('sections-open');
+        buildSections();
+        vanish().then(() => {
+            if (!sectionsOpen) return;
+            sections.hidden = false;
+            sections.scrollTop = 0;
+            sections.getBoundingClientRect();
+            sections.classList.add('is-in');
+        });
+    }
+
+    function closeSections(view) {
+        if (!sectionsOpen) return;
+        sectionsOpen = false;
+        viewToggle.setAttribute('aria-pressed', 'false');
+        viewToggle.setAttribute('aria-label', 'Разделы');
+        $('viewToggleLabel').textContent = 'разделы';
+        body.classList.remove('sections-open');
+        sections.classList.remove('is-in');
+        if (view && isKnownView(view)) {
+            currentCategory = view;
+            store('currentCategory', view);
+        }
+        setTimeout(() => {
+            sections.hidden = true;
+            render(true);
+        }, reduceMotion ? 0 : 380);
+    }
+
+    viewToggle.addEventListener('click', () => {
+        if (sectionsOpen) closeSections(); else openSections();
+    });
+
+    $('sectionsGrid').addEventListener('click', (e) => {
+        const card = e.target.closest('[data-category]');
+        if (card) closeSections(card.getAttribute('data-category'));
+    });
 
     // ---------- Перетаскивание полотна, инерция, масштаб ----------
 
     let panX = 0, panY = 0, zoom = 1;
-    const ZOOM_MIN = 0.6, ZOOM_MAX = 1.6;
+    const ZOOM_MIN = 0.4, ZOOM_MAX = 1.6;
     let inertia = null;
 
     function limits() {
@@ -321,13 +461,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function glideTo(x, y) {
-        canvas.classList.add('is-gliding');
+        canvas.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
         const l = limits();
         panX = clamp(x, l.minX, l.maxX);
         panY = clamp(y, l.minY, l.maxY);
         apply();
         clearTimeout(glideTo.t);
-        glideTo.t = setTimeout(() => canvas.classList.remove('is-gliding'), 620);
+        glideTo.t = setTimeout(() => { canvas.style.transition = ''; }, 620);
     }
 
     function stopInertia() {
@@ -371,9 +511,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let suppressClick = false;
 
     stage.addEventListener('pointerdown', (e) => {
+        suppressClick = false;
         if (e.button !== 0 && e.pointerType === 'mouse') return;
+        if (introRunning || body.classList.contains('recipe-open')) return;
         stopInertia();
-        canvas.classList.remove('is-gliding');
+        canvas.style.transition = '';
         pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
         if (pointers.size === 2) {
             const [a, b] = Array.from(pointers.values());
@@ -449,8 +591,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     stage.addEventListener('wheel', (e) => {
         e.preventDefault();
+        if (introRunning || body.classList.contains('recipe-open')) return;
         stopInertia();
-        canvas.classList.remove('is-gliding');
+        canvas.style.transition = '';
         if (e.ctrlKey) {
             zoomAt(zoom * Math.exp(-e.deltaY * 0.01), e.clientX, e.clientY, false);
             return;
@@ -464,15 +607,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Нажатие на блюдо (тап без перетаскивания или Enter с клавиатуры)
     canvas.addEventListener('click', (e) => {
-        if (suppressClick) {
+        if (suppressClick || introRunning) {
             suppressClick = false;
             return;
         }
+        if (body.classList.contains('recipe-open')) {
+            closeRecipe();
+            return;
+        }
         const dish = e.target.closest('.dish');
-        if (dish) openRecipe(dish.getAttribute('data-id'), true);
+        if (dish) openRecipe(dish.getAttribute('data-id'), true, dish);
     });
-
-    stage.addEventListener('pointerdown', () => { suppressClick = false; }, true);
 
     function zoomAt(z, cx, cy, smooth) {
         z = clamp(z, ZOOM_MIN, ZOOM_MAX);
@@ -498,16 +643,17 @@ document.addEventListener('DOMContentLoaded', () => {
     $('zoomIn').addEventListener('click', () => zoomAt(zoom + 0.25, window.innerWidth / 2, window.innerHeight / 2, true));
     $('zoomOut').addEventListener('click', () => zoomAt(zoom - 0.25, window.innerWidth / 2, window.innerHeight / 2, true));
 
-    // Стрелки клавиатуры двигают полотно
+    // Esc закрывает верхний слой, стрелки двигают полотно
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             if ($('customAlert').classList.contains('show')) hideAlert();
             else if ($('stepDetailAlert').classList.contains('show')) hideStepDetail();
-            else if (recipePanel.classList.contains('is-open')) closeRecipe();
-            else closeMenu();
+            else if (body.classList.contains('recipe-open')) closeRecipe();
+            else if (menu.classList.contains('is-open')) closeMenu();
+            else if (sectionsOpen) closeSections();
             return;
         }
-        if (recipePanel.classList.contains('is-open') || menu.classList.contains('is-open')) return;
+        if (body.classList.contains('recipe-open') || sectionsOpen || menu.classList.contains('is-open')) return;
         const step = 160;
         const moves = { ArrowLeft: [step, 0], ArrowRight: [-step, 0], ArrowUp: [0, step], ArrowDown: [0, -step] };
         if (moves[e.key] && !e.target.closest('input, textarea')) {
@@ -526,54 +672,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let resizeTimer;
+    let lastW = window.innerWidth;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
+            // мобильные браузеры меняют высоту при скролле адресной строки - раскладку не трогаем
+            if (Math.abs(window.innerWidth - lastW) < 2) return;
+            lastW = window.innerWidth;
             render(false);
-            if (openId) {
-                markSelected(openId);
-                placeSheet(sheetState);
-            }
         }, 150);
     });
 
     // ---------- Панель рецепта ----------
 
     let openId = null;
-    let sheetState = 'closed';
     let lastFocus = null;
-
-    function isDesktop() { return desktopQuery.matches; }
-
-    function sheetHeight() { return recipePanel.offsetHeight || window.innerHeight; }
-
-    function peekOffset() {
-        return Math.max(0, sheetHeight() - Math.round(window.innerHeight * 0.7));
-    }
-
-    function placeSheet(state) {
-        sheetState = state;
-        if (isDesktop()) {
-            recipePanel.style.removeProperty('--sheet-y');
-            return;
-        }
-        const y = state === 'full' ? 0 : state === 'peek' ? peekOffset() : sheetHeight();
-        recipePanel.style.setProperty('--sheet-y', y + 'px');
-    }
-
-    function markSelected(id) {
-        canvas.querySelectorAll('.dish').forEach(d => d.classList.toggle('is-selected', d.getAttribute('data-id') === id));
-        canvas.classList.toggle('has-selection', !!id && isDesktop());
-        if (!id || !isDesktop()) return;
-        const it = items.find(i => i.recipe.id === id);
-        if (!it) return;
-        // Блюдо встаёт в центр свободной части экрана слева от панели
-        const freeW = window.innerWidth - recipePanel.offsetWidth;
-        glideTo(freeW / 2 - it.x * zoom, window.innerHeight / 2 - it.y * zoom);
-    }
+    let flying = null;
 
     function fillRecipe(recipe) {
-        $('recipeName').textContent = recipe.name;
+        splitChars($('recipeName'), recipe.name);
         const photo = $('recipePhoto');
         photo.src = recipe.image;
         photo.alt = recipe.name;
@@ -582,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const labels = { protein: 'белки, г', fat: 'жиры, г', carbs: 'углеводы, г', kcal: 'ккал' };
         const n = recipe.nutrition || {};
         const keys = Object.keys(labels).filter(k => n[k]);
-        $('nutrition').hidden = keys.length === 0;
+        $('nutritionWrap').hidden = keys.length === 0;
         $('nutrition').innerHTML = keys.map(k => '<div><dt>' + labels[k] + '</dt><dd>' + escapeHtml(n[k]) + '</dd></div>').join('');
 
         $('ingredientsCount').textContent = recipe.ingredients.length;
@@ -614,35 +731,106 @@ document.addEventListener('DOMContentLoaded', () => {
         recipeScroll.scrollTop = 0;
     }
 
-    function openRecipe(id, push) {
+    function endFlight() {
+        if (!flying) return;
+        flying.anim.cancel();
+        flying.clone.remove();
+        if (flying.dish) flying.dish.classList.remove('is-flying');
+        flying = null;
+    }
+
+    // Фото перелетает из одного места в другое (FLIP)
+    function fly(src, fromRect, toRect, dish, done) {
+        endFlight();
+        const clone = document.createElement('img');
+        clone.className = 'fly';
+        clone.src = src;
+        clone.alt = '';
+        Object.assign(clone.style, { left: '0px', top: '0px', width: toRect.width + 'px', height: toRect.height + 'px' });
+        document.body.appendChild(clone);
+        if (dish) dish.classList.add('is-flying');
+        const from = 'translate(' + fromRect.left + 'px,' + fromRect.top + 'px) scale(' + (fromRect.width / toRect.width) + ',' + (fromRect.height / toRect.height) + ')';
+        const to = 'translate(' + toRect.left + 'px,' + toRect.top + 'px)';
+        clone.style.transformOrigin = '0 0';
+        const anim = clone.animate([{ transform: from }, { transform: to }], { duration: 800, easing: PANEL_EASE, fill: 'forwards' });
+        flying = { clone, anim, dish };
+        anim.finished.then(() => {
+            if (!flying || flying.anim !== anim) return;
+            done && done();
+            endFlight();
+        }).catch(() => {});
+    }
+
+    // где окажется фото, когда панель доедет (сейчас она за левым краем)
+    function photoTargetRect() {
+        const photo = $('recipePhoto');
+        const r = photo.getBoundingClientRect();
+        const box = fitContain(photo, r);
+        return { left: box.left + recipePanel.offsetWidth, top: box.top, width: box.width, height: box.height };
+    }
+
+    // реальная область картинки внутри object-fit: contain
+    function fitContain(img, r) {
+        const ratio = (img.naturalWidth || 1) / (img.naturalHeight || 1);
+        let w = r.width, h = r.width / ratio;
+        if (h > r.height) { h = r.height; w = h * ratio; }
+        return { left: r.left + (r.width - w) / 2, top: r.top + (r.height - h) / 2, width: w, height: h };
+    }
+
+    function openRecipe(id, push, dish) {
         const recipe = byId[id];
         if (!recipe) return;
         closeMenu();
-        const wasOpen = recipePanel.classList.contains('is-open');
+        const wasOpen = body.classList.contains('recipe-open');
         openId = id;
         store('selectedRecipe', recipe.name);
-        fillRecipe(recipe);
         if (!wasOpen) lastFocus = document.activeElement;
-        recipePanel.classList.add('is-open');
-        scrim.classList.add('is-on');
-        if (!wasOpen && !isDesktop()) {
-            placeSheet('closed');
-            recipePanel.getBoundingClientRect();
-        }
-        placeSheet('peek');
-        markSelected(id);
+        stopInertia();
+        fillRecipe(recipe);
+
+        const photo = $('recipePhoto');
+        const title = $('recipeName');
+        photo.classList.remove('is-shown');
+        title.classList.remove('is-in');
+
+        const ready = photo.decode ? photo.decode().catch(() => {}) : Promise.resolve();
+        ready.then(() => {
+            const dishImg = dish && dish.querySelector('img');
+            const canFly = !reduceMotion && !wasOpen && dishImg;
+            if (canFly) {
+                const target = photoTargetRect();
+                fly(recipe.image, dishImg.getBoundingClientRect(), target, dish, () => photo.classList.add('is-shown'));
+            } else {
+                photo.classList.add('is-shown');
+            }
+            body.classList.add('recipe-open');
+            requestAnimationFrame(() => setTimeout(() => title.classList.add('is-in'), wasOpen ? 0 : 260));
+        });
+
         document.title = recipe.name + ' | Polkovniki Lubvi';
         if (push) history.pushState({ recipe: id }, '', '#' + id);
-        setTimeout(() => $('closeRecipe').focus({ preventScroll: true }), 80);
+        setTimeout(() => $('closeRecipe').focus({ preventScroll: true }), 700);
     }
 
     function closeRecipe(fromHistory) {
-        if (!recipePanel.classList.contains('is-open')) return;
-        recipePanel.classList.remove('is-open');
-        scrim.classList.remove('is-on');
-        placeSheet('closed');
+        if (!body.classList.contains('recipe-open')) return;
+        const id = openId;
         openId = null;
-        markSelected(null);
+        endFlight();
+
+        const photo = $('recipePhoto');
+        const dish = canvas.querySelector('.dish[data-id="' + id + '"]');
+        const dishImg = dish && dish.querySelector('img');
+        if (!reduceMotion && dishImg && photo.classList.contains('is-shown')) {
+            const from = fitContain(photo, photo.getBoundingClientRect());
+            const stageShift = stage.getBoundingClientRect().left;
+            const d = dishImg.getBoundingClientRect();
+            const to = { left: d.left - stageShift, top: d.top, width: d.width, height: d.height };
+            photo.classList.remove('is-shown');
+            fly(photo.src, from, to, dish);
+        }
+
+        body.classList.remove('recipe-open');
         document.title = 'Рецепты | Polkovniki Lubvi';
         if (!fromHistory) {
             if (history.state && history.state.recipe) history.back();
@@ -652,7 +840,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     $('closeRecipe').addEventListener('click', () => closeRecipe());
-    scrim.addEventListener('click', () => closeRecipe());
 
     window.addEventListener('popstate', () => {
         const id = location.hash.slice(1);
@@ -676,9 +863,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Избранное (как раньше: список названий в localStorage 'favorites')
     function updateFavoriteButton(recipe) {
         const on = getFavorites().indexOf(recipe.name) !== -1;
-        const btn = $('savePhoto');
-        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-        btn.setAttribute('aria-label', on ? 'Убрать из избранного' : 'В избранное');
+        $('savePhoto').setAttribute('aria-pressed', on ? 'true' : 'false');
+        $('savePhotoLabel').textContent = on ? 'в избранном' : 'в избранное';
     }
 
     $('savePhoto').addEventListener('click', (e) => {
@@ -691,15 +877,8 @@ document.addEventListener('DOMContentLoaded', () => {
         else favorites.push(recipe.name);
         setFavorites(favorites);
         updateFavoriteButton(recipe);
-        const btn = $('savePhoto');
-        btn.classList.remove('is-pop');
-        void btn.offsetWidth;
-        if (index === -1) btn.classList.add('is-pop');
         updateChrome();
-        if (currentCategory === FAVORITES) {
-            render(false);
-            markSelected(openId);
-        }
+        if (currentCategory === FAVORITES) render(false);
     });
 
     // Ингредиенты: выбор и копирование
@@ -713,7 +892,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateSaveButton() {
         const n = document.querySelectorAll('.ingredient-item.selected').length;
-        $('saveIngredientsBtn').textContent = n ? 'Скопировать выбранные · ' + n : 'Скопировать выбранные';
+        $('saveIngredientsLabel').textContent = n ? 'Скопировать выбранные · ' + n : 'Скопировать выбранные';
     }
 
     function copyToClipboard(text) {
@@ -765,6 +944,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Свайп влево/вправо по рецепту переключает вкладки
+    let touch = null;
+    recipeScroll.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        touch = { x: e.touches[0].clientX, y: e.touches[0].clientY, mode: null };
+    }, { passive: true });
+    recipeScroll.addEventListener('touchmove', (e) => {
+        if (!touch) return;
+        const dx = e.touches[0].clientX - touch.x, dy = e.touches[0].clientY - touch.y;
+        if (!touch.mode) {
+            if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+            touch.mode = Math.abs(dx) > Math.abs(dy) * 1.4 ? 'tabs' : 'scroll';
+        }
+        if (touch.mode === 'tabs') {
+            e.preventDefault();
+            if (Math.abs(dx) > 50) {
+                switchTab(dx < 0 ? 'cooking' : 'ingredients');
+                touch = null;
+            }
+        }
+    }, { passive: false });
+    recipeScroll.addEventListener('touchend', () => { touch = null; });
+
     // ---------- Окошки ----------
 
     let dialogReturn = null;
@@ -802,99 +1004,6 @@ document.addEventListener('DOMContentLoaded', () => {
     $('customAlert').addEventListener('click', (e) => { if (e.target === e.currentTarget) hideAlert(); });
     $('stepDetailAlert').addEventListener('click', (e) => { if (e.target === e.currentTarget) hideStepDetail(); });
 
-    // ---------- Свайпы в панели (телефон) ----------
-    // Вверх - раскрыть, вниз - свернуть/закрыть, влево/вправо - переключить вкладку
-
-    let touch = null;
-
-    function onTouchStart(e) {
-        if (isDesktop() || e.touches.length !== 1) return;
-        const t = e.touches[0];
-        touch = {
-            x: t.clientX, y: t.clientY, mode: null,
-            fromHandle: !!e.target.closest('.recipe-handle'),
-            base: sheetState === 'full' ? 0 : peekOffset(),
-            samples: [{ y: t.clientY, t: e.timeStamp }]
-        };
-    }
-
-    function onTouchMove(e) {
-        if (!touch) return;
-        const t = e.touches[0];
-        const dx = t.clientX - touch.x, dy = t.clientY - touch.y;
-
-        if (!touch.mode) {
-            if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
-            if (Math.abs(dx) > Math.abs(dy) * 1.4) {
-                touch.mode = 'tabs';
-            } else {
-                const atTop = recipeScroll.scrollTop <= 0;
-                const wantsSheet = touch.fromHandle ||
-                    (sheetState === 'peek' && dy < 0) ||
-                    (atTop && dy > 0);
-                touch.mode = wantsSheet ? 'sheet' : 'scroll';
-                if (touch.mode === 'sheet') recipePanel.classList.add('is-dragging');
-            }
-        }
-
-        if (touch.mode === 'tabs') {
-            e.preventDefault();
-            if (Math.abs(dx) > 50) {
-                switchTab(dx < 0 ? 'cooking' : 'ingredients');
-                touch = null;
-            }
-            return;
-        }
-
-        if (touch.mode === 'sheet') {
-            e.preventDefault();
-            let y = touch.base + dy;
-            if (y < 0) y = y * 0.25;
-            recipePanel.style.setProperty('--sheet-y', y + 'px');
-            touch.samples.push({ y: t.clientY, t: e.timeStamp });
-            if (touch.samples.length > 5) touch.samples.shift();
-        }
-    }
-
-    function onTouchEnd() {
-        if (!touch) return;
-        if (touch.mode === 'sheet') {
-            recipePanel.classList.remove('is-dragging');
-            const s = touch.samples, first = s[0], last = s[s.length - 1];
-            const v = (last.y - first.y) / Math.max(1, last.t - first.t);
-            const y = touch.base + (last.y - touch.y);
-            const peek = peekOffset();
-            if (v > 0.5 || y > peek + 90) {
-                if (sheetState === 'full' && y < peek + 90) placeSheet('peek');
-                else closeRecipe();
-            } else if (v < -0.4 || y < peek / 2) {
-                placeSheet('full');
-            } else {
-                placeSheet(sheetState === 'full' && y < peek / 2 ? 'full' : 'peek');
-            }
-        }
-        touch = null;
-    }
-
-    recipePanel.addEventListener('touchstart', onTouchStart, { passive: true });
-    recipePanel.addEventListener('touchmove', onTouchMove, { passive: false });
-    recipePanel.addEventListener('touchend', onTouchEnd);
-    recipePanel.addEventListener('touchcancel', onTouchEnd);
-
-    // Скролл содержимого вверх в свёрнутом виде раскрывает панель
-    recipeScroll.addEventListener('scroll', () => {
-        if (!isDesktop() && sheetState === 'peek' && recipeScroll.scrollTop > 4) placeSheet('full');
-    });
-
-    $('drawerHandle').addEventListener('click', () => {
-        placeSheet(sheetState === 'full' ? 'peek' : 'full');
-    });
-
-    desktopQuery.addEventListener('change', () => {
-        if (openId) placeSheet('peek');
-        else placeSheet('closed');
-    });
-
     // ---------- Старт ----------
 
     // Старые ссылки: favorites.html ведёт на menu.html#favorites
@@ -905,8 +1014,7 @@ document.addEventListener('DOMContentLoaded', () => {
         history.replaceState(null, '', location.pathname);
     }
 
-    placeSheet('closed');
-    render(true);
+    render(!byId[startHash]);
     requestAnimationFrame(() => $('pageFade').classList.add('is-hidden'));
 
     if (byId[startHash]) {
@@ -916,12 +1024,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Переход на главную - с тем же мягким затуханием
-    document.querySelectorAll('a[href="index.html"]').forEach(a => {
-        a.addEventListener('click', (e) => {
-            e.preventDefault();
-            $('pageFade').classList.remove('is-hidden');
-            setTimeout(() => { window.location.href = a.getAttribute('href'); }, 380);
-        });
+    document.addEventListener('click', (e) => {
+        const a = e.target.closest('a[href="index.html"]');
+        if (!a) return;
+        e.preventDefault();
+        $('pageFade').classList.remove('is-hidden');
+        setTimeout(() => { window.location.href = a.getAttribute('href'); }, 380);
     });
 
     window.addEventListener('pageshow', () => $('pageFade').classList.add('is-hidden'));
