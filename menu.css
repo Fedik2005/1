@@ -1,611 +1,838 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
+/* Полотно с блюдами, меню категорий, панель рецепта */
 
-@font-face {
-    font-family: 'New';
-    src: url('newyorkerc.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Mon';
-    src: url('mon.ttf') format('truetype');
-}
-
-/* ПОЛНОЭКРАННЫЙ РЕЖИМ */
-html, body {
-    background-color: #fefaf5;
-    width: 100%;
+html,
+body.app {
     height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
     overflow: hidden;
     overscroll-behavior: none;
 }
 
-body {
-    font-family: 'New', -apple-system, 'Inter', sans-serif;
-    overflow-x: hidden;
-}
+/* ---------- Верхняя строка ---------- */
 
-/* КОНТЕЙНЕР ДЛЯ КРУГОВ */
-.blurred-circles {
+.app-top {
     position: fixed;
+    z-index: 30;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    filter: blur(50px);
+    right: 0;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: calc(env(safe-area-inset-top) + var(--edge)) var(--edge) 0;
     pointer-events: none;
-    background-color: #fefaf5;
 }
 
-/* КРУГИ */
-.circle {
+.app-top > * {
+    pointer-events: auto;
+}
+
+.view-pill {
+    grid-column: 2;
+    background: var(--cream);
+}
+
+.view-pill .dots {
+    width: 9px;
+    height: 9px;
+    fill: currentColor;
+}
+
+.count {
+    font-size: 11px;
+    color: var(--fog-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.is-active .count {
+    color: var(--fog);
+}
+
+/* ---------- Полотно ---------- */
+
+.stage {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    touch-action: none;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    /* края полотна растворяются под шапкой и нижними кнопками */
+    -webkit-mask-image: linear-gradient(to bottom, transparent calc(env(safe-area-inset-top) + 34px), #000 calc(env(safe-area-inset-top) + 96px), #000 calc(100% - env(safe-area-inset-bottom) - 104px), transparent calc(100% - env(safe-area-inset-bottom) - 44px));
+    mask-image: linear-gradient(to bottom, transparent calc(env(safe-area-inset-top) + 34px), #000 calc(env(safe-area-inset-top) + 96px), #000 calc(100% - env(safe-area-inset-bottom) - 104px), transparent calc(100% - env(safe-area-inset-bottom) - 44px));
+}
+
+.stage.is-dragging {
+    cursor: grabbing;
+}
+
+.canvas {
     position: absolute;
-    border-radius: 50%;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
     will-change: transform;
 }
 
-.circle-1 {
-    width: 360px;
-    height: 406px;
-    top: 22%;
-    left: 25%;
-    background-color: #ddd3c9;
-    opacity: 0.7;
-    transform: translate(-50%, -50%);
-    animation: move1 35s infinite alternate ease-in-out;
+.canvas.is-gliding {
+    transition: transform 0.6s var(--ease-out);
 }
 
-.circle-2 {
-    width: 397px;
-    height: 528px;
-    top: 60%;
-    left: 80%;
-    background-color: #ecc4c3;
-    opacity: 0.65;
-    transform: translate(-50%, -50%);
-    animation: move2 40s infinite alternate ease-in-out;
-}
-
-.circle-3 {
-    width: 609px;
-    height: 621px;
-    top: 70%;
-    left: 15%;
-    background-color: #b97d7b;
-    opacity: 0.7;
-    transform: translate(-50%, -50%);
-    animation: move3 38s infinite alternate ease-in-out;
-}
-
-.circle-4 {
-    width: 518px;
-    height: 789px;
-    top: 30%;
-    left: 90%;
-    background-color: #efd7cf;
-    opacity: 0.65;
-    transform: translate(-50%, -50%);
-    animation: move4 45s infinite alternate ease-in-out;
-}
-
-.circle-5 {
-    width: 636px;
-    height: 336px;
-    top: 85%;
-    left: 75%;
-    background-color: #928e5e;
-    opacity: 0.7;
-    transform: translate(-50%, -50%);
-    animation: move5 42s infinite alternate ease-in-out;
-}
-
-.circle-6 {
-    width: 567px;
-    height: 565px;
-    top: 15%;
-    left: 70%;
-    background-color: #575527;
-    opacity: 0.7;
-    transform: translate(-50%, -50%);
-    animation: move6 48s infinite alternate ease-in-out;
-}
-
-/* АНИМАЦИИ ДВИЖЕНИЯ */
-@keyframes move1 {
-    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
-    100% { transform: translate(-50%, -50%) translate(80px, -60px) rotate(15deg) scale(1.1); }
-}
-
-@keyframes move2 {
-    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
-    100% { transform: translate(-50%, -50%) translate(-100px, 70px) rotate(-20deg) scale(1.12); }
-}
-
-@keyframes move3 {
-    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
-    100% { transform: translate(-50%, -50%) translate(70px, 80px) rotate(12deg) scale(1.08); }
-}
-
-@keyframes move4 {
-    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
-    100% { transform: translate(-50%, -50%) translate(-120px, -70px) rotate(-15deg) scale(1.15); }
-}
-
-@keyframes move5 {
-    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
-    100% { transform: translate(-50%, -50%) translate(60px, -90px) rotate(18deg) scale(1.12); }
-}
-
-@keyframes move6 {
-    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1); }
-    100% { transform: translate(-50%, -50%) translate(-80px, 50px) rotate(-14deg) scale(1.1); }
-}
-
-/* КОНТЕНТ СТРАНИЦЫ РЕЦЕПТОВ — ЗАПРЕЩАЕМ СКРОЛЛ */
-.menu-content {
+.dish {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    padding: 0 20px;
-    overflow: hidden;
-}
-
-.menu-title {
-    font-family: 'New', -apple-system, 'Inter', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    color: #5a3921;
-    text-align: center;
-    margin-top: 120px;
-    margin-bottom: 20px;
-    white-space: nowrap;
-}
-
-.placeholder-text {
-    font-family: 'New', -apple-system, 'Inter', sans-serif;
-    font-size: 24px;
-    color: #5a3921;
-    opacity: 0.6;
-    text-align: center;
-}
-
-/* КНОПКА НАЗАД — СТЕКЛЯННАЯ */
-.back-button {
-    position: fixed;
-    bottom: 30px;
-    left: 24px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: none;
-    padding: 12px 28px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #5a3921;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'Mon', -apple-system, sans-serif;
-    border-radius: 40px;
-    z-index: 20;
-    text-decoration: none;
-    box-shadow: 
-        inset 4px 4px 12px 2px rgba(255, 255, 255, 0.2),
-        inset -2px -2px 15px 1px rgba(255, 255, 255, 0.2),
-        inset 0 0 15px 2px rgba(255, 255, 255, 0.2);
-}
-
-.back-button:active {
-    transform: scale(0.96);
-    background: rgba(255, 255, 255, 0.25);
-}
-
-/* ФОТО 36.PNG В ПРАВОМ НИЖНЕМ УГЛУ */
-.bottom-right-photo {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 200px;
-    height: auto;
-    cursor: pointer;
-    z-index: 25;
-    transition: transform 0.2s ease, opacity 0.2s;
-    filter: none;
-    opacity: 1;
-    border-radius: 0;
-    background: none;
-    backdrop-filter: none;
+    gap: 6px;
     padding: 0;
-    box-shadow: none;
+    transform: translate(-50%, -50%);
+    cursor: inherit;
+    transition: opacity 0.35s ease;
 }
 
-.bottom-right-photo:active {
-    transform: scale(0.95);
-    opacity: 0.95;
-}
-
-/* УЧЁТ ОСТРОВА И БЕЗОПАСНЫХ ЗОН */
-@supports (padding-top: env(safe-area-inset-top)) {
-    .menu-content {
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-    
-    .menu-title {
-        margin-top: calc(env(safe-area-inset-top) + 80px);
-    }
-    
-    .back-button {
-        bottom: max(30px, env(safe-area-inset-bottom));
-        left: max(24px, env(safe-area-inset-left));
-    }
-    
-    .bottom-right-photo {
-        bottom: calc(env(safe-area-inset-bottom) + 15px);
-        right: max(15px, env(safe-area-inset-right));
-    }
-}
-
-/* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ */
-@media (max-width: 480px) {
-    .blurred-circles {
-        filter: blur(20px) !important;
-    }
-    
-    .circle-1 {
-        filter: blur(10px);
-        opacity: 0.4 !important;
-    }
-    
-    .circle-2 {
-        filter: blur(12px);
-        opacity: 0.85 !important;
-    }
-    
-    .circle-3 {
-        filter: blur(5px);
-        opacity: 0.5 !important;
-    }
-    
-    .circle-4 {
-        filter: blur(15px);
-        opacity: 0.7 !important;
-    }
-    
-    .circle-5 {
-        filter: blur(40px);
-        opacity: 0.5 !important;
-    }
-    
-    .circle-6 {
-        filter: blur(20px);
-        opacity: 0.15 !important;
-    }
-    
-    .menu-title {
-        font-size: 38px;
-        margin-top: calc(env(safe-area-inset-top) + 60px);
-        white-space: nowrap;
-    }
-    
-    .placeholder-text {
-        font-size: 22px;
-    }
-    
-    .back-button {
-        bottom: 20px;
-        left: 16px;
-        font-size: 14px;
-        padding: 10px 20px;
-        font-family: 'Mon', -apple-system, sans-serif;
-    }
-    
-    .bottom-right-photo {
-        bottom: 15px;
-        right: -10px;
-        width: 105px;
-        padding: 1px;
-    }
-    
-    .circle-1 { width: 250px; height: 280px; }
-    .circle-2 { width: 270px; height: 360px; }
-    .circle-3 { width: 320px; height: 330px; }
-    .circle-4 { width: 280px; height: 430px; }
-    .circle-5 { width: 240px; height: 220px; }
-    .circle-6 { width: 300px; height: 350px; }
-}
-
-/* КОНТЕЙНЕР ДЛЯ КНОПОК-КАТЕГОРИЙ */
-.categories-wrapper {
+.dish img {
     width: 100%;
-    margin-top: 40px;
-    position: relative;
+    height: auto;
+    pointer-events: none;
+    transition: transform 0.45s var(--ease-out);
 }
 
-.categories-scroll {
+.dish-name {
+    max-width: 150px;
+    font-size: 12px;
+    line-height: 1.25;
+    text-align: center;
+    text-wrap: balance;
+}
+
+@media (hover: hover) {
+    .stage:not(.is-dragging) .dish:hover img {
+        transform: scale(1.04) rotate(-1.5deg);
+    }
+}
+
+.dish:focus-visible {
+    outline-offset: 8px;
+}
+
+.canvas.has-selection .dish:not(.is-selected) {
+    opacity: 0.18;
+}
+
+.canvas.is-leaving .dish {
+    opacity: 0;
+}
+
+.empty {
+    position: fixed;
+    inset: 0;
     display: flex;
-    flex-direction: row;
-    gap: 16px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 15px;
-    padding-left: 20px;
-    padding-right: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 0 32px;
+    text-align: center;
+    pointer-events: none;
 }
 
-.categories-scroll::-webkit-scrollbar {
+.empty[hidden] {
     display: none;
 }
 
-/* КНОПКИ-КАТЕГОРИИ — СТЕКЛЯННЫЕ */
-.cat-btn {
-    flex-shrink: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: none;
-    padding: 12px 28px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #5a3921;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'Mon', -apple-system, sans-serif;
-    border-radius: 40px;
-    text-decoration: none;
-    white-space: nowrap;
-    box-shadow: 
-        inset 4px 4px 12px 2px rgba(255, 255, 255, 0.2),
-        inset -2px -2px 15px 1px rgba(255, 255, 255, 0.2),
-        inset 0 0 15px 2px rgba(255, 255, 255, 0.2);
+.empty-title {
+    font-size: clamp(32px, 9vw, 56px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
 }
 
-.cat-btn:active {
-    transform: scale(0.96);
-    background: rgba(255, 255, 255, 0.25);
+.empty-text {
+    max-width: 32ch;
+    color: var(--fog-text);
+    text-wrap: balance;
 }
 
-.cat-btn.active {
-    background: rgba(255, 255, 255, 0.35);
-    transform: scale(0.98);
+.empty .btn {
+    pointer-events: auto;
 }
 
-/* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ ДЛЯ КНОПОК */
-@media (max-width: 480px) {
-    .categories-wrapper {
-        margin-top: 30px;
-    }
-    
-    .cat-btn {
-        padding: 10px 20px;
-        font-size: 14px;
-    }
-    
-    .categories-scroll {
-        gap: 12px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-}
+/* ---------- Нижняя панель ---------- */
 
-/* СТОПКА КАРТОЧЕК РЕЦЕПТОВ */
-.cards-stack {
-    width: 100%;
-    margin-top: 30px;
-    margin-bottom: 30px;
+.controls {
+    position: fixed;
+    z-index: 30;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom) + var(--edge));
     display: flex;
-    justify-content: center;
+    gap: 4px;
+    transform: translateX(-50%);
+}
+
+.controls .btn[aria-expanded="true"] {
+    background: var(--ink);
+    color: var(--cream);
+}
+
+.burger {
+    width: 12px;
+    height: 9px;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    transition: transform 0.3s var(--ease-out);
+}
+
+.burger line {
+    transition: transform 0.3s var(--ease-out), opacity 0.2s;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+[aria-expanded="true"] .burger .l1 {
+    transform: translateY(3.75px) rotate(45deg);
+}
+
+[aria-expanded="true"] .burger .l2 {
+    opacity: 0;
+}
+
+[aria-expanded="true"] .burger .l3 {
+    transform: translateY(-3.75px) rotate(-45deg);
+}
+
+.zoom {
+    position: fixed;
+    z-index: 30;
+    right: var(--edge);
+    bottom: calc(env(safe-area-inset-bottom) + var(--edge));
+    display: flex;
     align-items: center;
-    position: relative;
-    min-height: 400px;
+    gap: 12px;
 }
 
-.card-stack-container {
-    position: relative;
-    width: 100%;
-    max-width: 320px;
-    height: 400px;
-    margin: 0 auto;
+.zoom-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-/* КАРТОЧКИ РЕЦЕПТОВ — СТЕКЛЯННЫЕ */
-.recipe-card {
+.zoom-btn {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-full);
+    background: var(--cream);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.zoom-btn::after {
+    content: '';
     position: absolute;
+    inset: -8px;
+}
+
+.zoom-btn .icon {
+    width: 10px;
+    height: 10px;
+}
+
+@media (hover: hover) {
+    .zoom-btn:hover {
+        background: var(--ink);
+        color: var(--cream);
+    }
+}
+
+.zoom-btn:disabled {
+    border-color: var(--fog);
+    color: var(--fog);
+    background: var(--cream);
+    cursor: default;
+}
+
+.hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--fog-text);
+    transition: opacity 0.6s ease;
+}
+
+.hint.is-gone {
+    opacity: 0;
+}
+
+/* На телефоне масштаб - щипком двумя пальцами */
+@media (max-width: 699px) {
+    .zoom {
+        display: none;
+    }
+}
+
+/* ---------- Меню категорий ---------- */
+
+.menu {
+    position: fixed;
+    z-index: 29;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom) + var(--edge) + 44px);
+    width: min(380px, calc(100vw - var(--edge) * 2));
+    max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 130px);
+    overflow-y: auto;
+    padding: 12px 16px 14px;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-lg);
+    background: var(--cream);
+    transform: translateX(-50%);
+    transform-origin: 50% 100%;
+    clip-path: inset(100% 0 0 0 round var(--radius-lg));
+    visibility: hidden;
+    transition: clip-path 0.5s var(--ease-drawer), visibility 0s 0.5s;
+}
+
+.menu.is-open {
+    clip-path: inset(0 0 0 0 round var(--radius-lg));
+    visibility: visible;
+    transition: clip-path 0.5s var(--ease-drawer), visibility 0s;
+}
+
+.menu-list {
+    list-style: none;
+}
+
+.menu-link {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: none;
-    border-radius: 24px;
-    cursor: pointer;
-    overflow: hidden;
-    box-shadow: 
-        inset 4px 4px 12px 2px rgba(255, 255, 255, 0.2),
-        inset -2px -2px 15px 1px rgba(255, 255, 255, 0.2),
-        inset 0 0 15px 2px rgba(255, 255, 255, 0.2);
-    transition: transform 0.35s cubic-bezier(0.25, 1.2, 0.5, 1);
-    touch-action: pan-y pinch-zoom;
-    will-change: transform;
+    padding: 5px 0;
+    text-align: left;
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.45s var(--ease-out), color 0.2s;
 }
 
-.recipe-card:active {
-    transform: scale(1.02);
-}
-
-.card-content {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    position: relative;
-}
-
-/* Позиции карточек в стопке */
-.recipe-card[data-index="0"] {
-    top: 0;
-    left: 0;
-    z-index: 3;
+.menu.is-open .menu-link {
     opacity: 1;
-    filter: blur(0);
-    transform: translateY(0) scale(1);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transform: none;
+    transition-delay: calc(var(--i) * 28ms + 80ms);
 }
 
-.recipe-card[data-index="1"] {
-    top: 15px;
-    left: 12px;
+.menu-link .count {
+    font-size: 11px;
+    letter-spacing: -0.02em;
+    transform: translateY(-1.1em);
+}
+
+.menu-link.is-empty {
+    color: var(--fog-text);
+}
+
+.menu-link.is-current::before {
+    content: '';
+    flex: none;
+    align-self: center;
+    width: 7px;
+    height: 7px;
+    margin-right: 4px;
+    border-radius: 50%;
+    background: var(--ink);
+}
+
+@media (hover: hover) {
+    .menu-link:hover {
+        color: var(--fog-text);
+    }
+}
+
+.menu-sep {
+    height: 1px;
+    margin: 10px 0;
+    background: var(--ink);
+}
+
+.menu-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    font-size: 12px;
+}
+
+.menu-foot a {
+    text-decoration: none;
+}
+
+.menu-foot a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* ---------- Панель рецепта ---------- */
+
+.scrim {
+    position: fixed;
+    z-index: 40;
+    inset: 0;
+    background: rgba(34, 34, 34, 0.18);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0s 0.4s;
+}
+
+.scrim.is-on {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease, visibility 0s;
+}
+
+.recipe {
+    position: fixed;
+    z-index: 41;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(100dvh - env(safe-area-inset-top) - 10px);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--ink);
+    border-bottom: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: var(--cream);
+    transform: translateY(var(--sheet-y, 100%));
+    visibility: hidden;
+    transition: transform 0.5s var(--ease-drawer), visibility 0s 0.5s;
+}
+
+.recipe.is-open {
+    visibility: visible;
+    transition: transform 0.5s var(--ease-drawer), visibility 0s;
+}
+
+.recipe.is-dragging {
+    transition: none;
+}
+
+.recipe-handle {
+    flex: none;
+    display: grid;
+    place-items: center;
+    height: 26px;
+    touch-action: none;
+    cursor: grab;
+}
+
+.recipe-handle span {
+    width: 36px;
+    height: 3px;
+    border-radius: var(--radius-full);
+    background: var(--fog);
+}
+
+.recipe-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 var(--edge) calc(env(safe-area-inset-bottom) + 40px);
+    scrollbar-width: thin;
+    scrollbar-color: var(--fog) transparent;
+}
+
+.recipe-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.recipe-name {
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+}
+
+.recipe-actions {
+    display: flex;
+    gap: 6px;
+    flex: none;
+}
+
+.icon-btn {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-full);
+    background: var(--cream);
+    transition: background-color 0.2s, color 0.2s, transform 0.12s var(--ease-out);
+}
+
+.icon-btn::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+}
+
+.icon-btn:active {
+    transform: scale(0.92);
+}
+
+.icon-btn .icon {
+    width: 14px;
+    height: 14px;
+}
+
+.fav-btn[aria-pressed="true"] {
+    background: var(--ink);
+    color: var(--cream);
+}
+
+.fav-btn[aria-pressed="true"] .icon {
+    fill: currentColor;
+}
+
+.fav-btn.is-pop .icon {
+    animation: pop 0.4s var(--ease-out);
+}
+
+@keyframes pop {
+    40% { transform: scale(1.35); }
+}
+
+.recipe-photo {
+    width: 100%;
+    max-width: 420px;
+    height: 240px;
+    margin: 18px auto 6px;
+    object-fit: contain;
+}
+
+.recipe-desc {
+    max-width: 60ch;
+    font-size: 14px;
+}
+
+.nutrition {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 18px;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+}
+
+.nutrition[hidden] {
+    display: none;
+}
+
+.nutrition div {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 9px 0 8px;
+}
+
+.nutrition div + div {
+    padding-left: 10px;
+    border-left: 1px solid var(--ink);
+}
+
+.nutrition dd {
+    font-size: 18px;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+}
+
+.nutrition dt {
+    font-size: 11px;
+    color: var(--fog-text);
+}
+
+.tabs {
+    position: sticky;
     z-index: 2;
-    opacity: 0.7;
-    filter: blur(4px);
-    transform: translateY(-5px) scale(0.96);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    top: 0;
+    display: flex;
+    gap: 6px;
+    margin: 24px calc(var(--edge) * -1) 0;
+    padding: 10px var(--edge);
+    background: var(--cream);
 }
 
-.recipe-card[data-index="2"] {
-    top: 30px;
-    left: 24px;
-    z-index: 1;
-    opacity: 0.4;
-    filter: blur(8px);
-    transform: translateY(-10px) scale(0.92);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.tab-btn {
+    height: 32px;
 }
 
-/* Анимация прокрутки */
-.recipe-card.fade-out-up {
-    animation: swipeUp 0.35s ease forwards;
+.tab-pane {
+    padding-top: 6px;
 }
 
-.recipe-card.fade-out-down {
-    animation: swipeDown 0.35s ease forwards;
+.tab-pane[hidden] {
+    display: none;
 }
 
-@keyframes swipeUp {
-    0% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
-    100% { transform: translateY(-140px) scale(0.85); opacity: 0; filter: blur(6px); }
+.ingredients-list,
+.cooking-list {
+    list-style: none;
+    border-top: 1px solid var(--ink);
 }
 
-@keyframes swipeDown {
-    0% { transform: translateY(-140px) scale(0.85); opacity: 0; filter: blur(6px); }
-    100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+.ingredients-list li,
+.cooking-list li {
+    border-bottom: 1px solid var(--ink);
 }
 
-/* Адаптация для телефонов */
-@media (max-width: 480px) {
-    .cards-stack {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        min-height: 350px;
+.ingredient-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 0;
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.check {
+    position: relative;
+    flex: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-full);
+    transition: background-color 0.2s;
+}
+
+.check svg {
+    position: absolute;
+    inset: 2px;
+    width: 10px;
+    height: 10px;
+    stroke: var(--cream);
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 14;
+    stroke-dashoffset: 14;
+    transition: stroke-dashoffset 0.3s var(--ease-out);
+}
+
+.ingredient-item.selected .check {
+    background: var(--ink);
+}
+
+.ingredient-item.selected .check svg {
+    stroke-dashoffset: 0;
+}
+
+.ingredient-amount {
+    margin-left: auto;
+    padding-left: 12px;
+    color: var(--fog-text);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.ingredient-item.selected .ingredient-amount {
+    color: var(--ink);
+}
+
+.save-ingredients-btn {
+    width: 100%;
+    justify-content: center;
+    height: 40px;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.cooking-item {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 6px;
+    width: 100%;
+    padding: 12px 0;
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.4;
+    transition: color 0.25s;
+}
+
+.step-num {
+    padding-top: 3px;
+    font-size: 11px;
+    color: var(--fog-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.step-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    padding: 3px 9px;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.step-more .icon {
+    width: 8px;
+    height: 8px;
+}
+
+.cooking-item.selected-green {
+    color: var(--fog-text);
+}
+
+.cooking-item.selected-green .step-text {
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+}
+
+.bon-appetit {
+    padding: 36px 0 12px;
+    font-size: 30px;
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    text-align: center;
+}
+
+/* Компьютер: панель справа, полотно остаётся видно */
+@media (min-width: 900px) {
+    .recipe {
+        top: 0;
+        left: auto;
+        width: 460px;
+        height: auto;
+        border: 0;
+        border-left: 1px solid var(--ink);
+        border-radius: 0;
+        transform: translateX(100%);
     }
-    
-    .card-stack-container {
-        max-width: 280px;
-        height: 350px;
+
+    .recipe.is-open {
+        transform: none;
     }
-    
-    .recipe-card[data-index="1"] {
-        top: 12px;
-        left: 8px;
+
+    .recipe-handle {
+        display: none;
     }
-    
-    .recipe-card[data-index="2"] {
-        top: 24px;
-        left: 16px;
+
+    .recipe-scroll {
+        padding: 22px 24px 48px;
+    }
+
+    .recipe-photo {
+        height: 280px;
+    }
+
+    .tabs {
+        margin: 24px -24px 0;
+        padding: 10px 24px;
+    }
+
+    .scrim {
+        display: none;
     }
 }
 
-/* ========== ANDROID + IOS — ПОЛНОСТЬЮ ЗАПРЕЩАЕМ СКРОЛЛ И ОБНОВЛЕНИЯ ========== */
-html, body {
-    overscroll-behavior: none !important;
-    position: fixed !important;
-    overflow: hidden !important;
-    touch-action: none !important;
+/* ---------- Окошки ---------- */
+
+.custom-alert,
+.step-detail-alert {
+    position: fixed;
+    z-index: 60;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(34, 34, 34, 0.24);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0s 0.25s;
 }
 
-.menu-content {
-    overflow: hidden !important;
-    touch-action: none !important;
+.custom-alert.show,
+.step-detail-alert.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.25s ease, visibility 0s;
 }
 
-.recipe-card {
-    touch-action: pan-y pinch-zoom !important;
+.dialog-card {
+    width: min(340px, 100%);
+    padding: 16px;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-lg);
+    background: var(--cream);
+    transform: translateY(8px) scale(0.98);
+    transition: transform 0.35s var(--ease-out);
 }
 
-.back-button, .bottom-right-photo {
-    touch-action: auto !important;
+.show .dialog-card {
+    transform: none;
 }
 
-/* ФИКС ДЛЯ ANDROID — НАДПИСЬ В ОДНУ СТРОКУ */
-@supports not (-webkit-touch-callout: none) {
-    .menu-title {
-        white-space: nowrap !important;
-        font-size: 38px;
-        letter-spacing: -0.5px;
-    }
-    
-    @media (max-width: 480px) {
-        .menu-title {
-            font-size: 32px !important;
-            white-space: nowrap !important;
-        }
-    }
-    
-    @media (max-width: 380px) {
-        .menu-title {
-            font-size: 28px !important;
-        }
-    }
-    
-    .back-button {
-        bottom: max(30px, env(safe-area-inset-bottom, 30px));
-        left: max(24px, env(safe-area-inset-left, 24px));
-        z-index: 100;
-    }
-    
-    .bottom-right-photo {
-        bottom: max(20px, env(safe-area-inset-bottom, 20px));
-        right: max(20px, env(safe-area-inset-right, 20px));
-        z-index: 100;
-    }
-    
-    @media (max-width: 480px) {
-        .back-button {
-            bottom: max(20px, env(safe-area-inset-bottom, 20px));
-            left: max(16px, env(safe-area-inset-left, 16px));
-        }
-        .bottom-right-photo {
-            bottom: max(15px, env(safe-area-inset-bottom, 15px));
-            right: max(-10px, env(safe-area-inset-right, -10px));
-        }
-    }
+.dialog-title {
+    font-size: 18px;
+    letter-spacing: -0.03em;
 }
 
-/* ФИКС ДЛЯ IOS — НАДПИСЬ В ОДНУ СТРОКУ */
-@supports (-webkit-touch-callout: none) {
-    .menu-title {
-        white-space: nowrap;
-    }
-    
-    @media (max-width: 480px) {
-        .menu-title {
-            font-size: 36px;
-            white-space: nowrap;
-        }
+.dialog-text {
+    margin-top: 10px;
+    font-size: 14px;
+    white-space: pre-line;
+}
+
+.dialog-list {
+    list-style: none;
+    margin-top: 12px;
+    border-top: 1px solid var(--ink);
+}
+
+.dialog-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ink);
+    font-size: 14px;
+}
+
+.dialog-list span + span {
+    color: var(--fog-text);
+    white-space: nowrap;
+}
+
+.dialog-card .btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: 16px;
+    height: 36px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .canvas.is-gliding,
+    .menu,
+    .menu.is-open,
+    .menu-link,
+    .recipe,
+    .recipe.is-open,
+    .dialog-card {
+        transition-duration: 0.01s !important;
+        transition-delay: 0s !important;
     }
 }

@@ -3,58 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <meta name="theme-color" content="#fefaf5">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f5f6ee">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%23f5f6ee%22 stroke=%22%23222%22 stroke-width=%221.5%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%229%22 fill=%22none%22 stroke=%22%23222%22 stroke-width=%221%22/%3E%3C/svg%3E">
     <title>Polkovniki Lubvi</title>
-    <link rel="stylesheet" href="style.css?v=6>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
-    <div class="blurred-circles">
-        <div class="circle circle-1"></div>
-        <div class="circle circle-2"></div>
-        <div class="circle circle-3"></div>
-        <div class="circle circle-4"></div>
-        <div class="circle circle-5"></div>
-        <div class="circle circle-6"></div>
+    <div class="home">
+        <header class="home-top">
+            <a href="index.html" class="wordmark">Polkovniki Lubvi</a>
+            <span class="home-author">Автор: Настенька</span>
+        </header>
+
+        <img class="photo" id="photo" src="img/poppies.webp" alt="">
+
+        <main class="home-main">
+            <h1 class="home-title">
+                <span class="text-line text-line-1" id="text1">We cook</span>
+                <span class="text-line text-line-2" id="text2">Recipe book</span>
+                <span class="text-line text-line-3" id="text3">Je t'aime</span>
+            </h1>
+            <p class="home-lead">Тёплые рецепты на каждый день</p>
+        </main>
+
+        <footer class="home-bottom">
+            <a href="menu.html" class="btn is-filled" id="recipeButton">
+                Смотреть рецепты
+                <svg class="icon" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h14M11 9l4-4-4-4"/></svg>
+            </a>
+            <span class="home-note" id="homeNote"></span>
+        </footer>
     </div>
 
-    <div class="content">
-        <div class="texts">
-            <div class="text-line text-line-1" id="text1">We cook</div>
-            <div class="text-line text-line-2" id="text2">Recipe book</div>
-            <div class="text-line text-line-3" id="text3">Je t'aime</div>
-        </div>
-
-        <img class="photo" id="photo" src="l888.png" alt="photo">
-
-        <button class="button" id="recipeButton">...</button>
-        <div class="author">Автор: Настенька</div>
-    </div>
-
-    <!-- Навигация с точками (только для веб) -->
-    <div class="section-nav" id="sectionNav" style="display: none;">
-        <div class="nav-progress">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-        <div class="nav-dots" id="navDots"></div>
-        <div class="nav-controls">
-            <button class="nav-arrow prev" id="prevSection">
-                <svg viewBox="0 0 24 24">
-                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                </svg>
-            </button>
-            <button class="nav-arrow next" id="nextSection">
-                <svg viewBox="0 0 24 24">
-                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                </svg>
-            </button>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <div class="page-fade" id="pageFade"></div>
+    <script src="recipes.js?v=1"></script>
+    <script src="script.js?v=7"></script>
 </body>
 </html>
