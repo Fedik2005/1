@@ -1,6 +1,6 @@
 const phrases1 = ["We cook", "We love"];
 const phrases2 = ["Recipe book", "Рецепты"];
-const phrases3 = ["Je t'aime", "i kiss you", "WE"];
+const phrases3 = ["Je t'aime", "cooking", "WE"];
 
 const text1 = document.getElementById('text1');
 const text2 = document.getElementById('text2');
@@ -8,19 +8,6 @@ const text3 = document.getElementById('text3');
 const photo = document.getElementById('photo');
 const button = document.getElementById('recipeButton');
 const pageFade = document.getElementById('pageFade');
-const homeNote = document.getElementById('homeNote');
-
-function plural(n, one, few, many) {
-    const m10 = n % 10, m100 = n % 100;
-    if (m10 === 1 && m100 !== 11) return one;
-    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
-    return many;
-}
-
-if (homeNote && typeof RECIPES !== 'undefined') {
-    const n = RECIPES.length;
-    homeNote.textContent = n + ' ' + plural(n, 'блюдо', 'блюда', 'блюд') + ' и немного любви';
-}
 
 // Плавное появление страницы и фото
 requestAnimationFrame(() => {
