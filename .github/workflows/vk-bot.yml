@@ -1,0 +1,42 @@
+# ВК-бот книги рецептов: Cloudflare-воркер (worker/worker.js) присылает сюда
+# сообщение из ВК, а bot/process.py обновляет рецепты, публикует сайт и отвечает в ВК.
+name: ВК-бот
+
+on:
+  repository_dispatch:
+    types: [vk-message]
+  workflow_dispatch:
+    inputs:
+      text:
+        description: Текст сообщения боту (для проверки без ВК, ответ будет в логе)
+        required: true
+
+permissions:
+  contents: write
+  pages: write
+
+# сообщения обрабатываются по одному, чтобы правки не наезжали друг на друга
+concurrency:
+  group: vk-bot
+  cancel-in-progress: false
+
+jobs:
+  message:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Установить Pillow для фото
+        run: pip install pillow==11.0.0
+
+      - name: Обработать сообщение
+        run: python bot/process.py
+        env:
+          PYTHONUTF8: '1'
+          VK_TOKEN: ${{ secrets.VK_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
