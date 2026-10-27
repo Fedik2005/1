@@ -55,7 +55,7 @@ HELP = """Как добавить рецепт: пришли одним сооб
 # ---------- ВК ----------
 
 def vk_send(peer_id, text):
-    token = os.environ.get('VK_TOKEN')
+    token = (os.environ.get('VK_TOKEN') or '').strip()
     if not token or not peer_id:
         print('--- ответ в ВК ---\n' + text)
         return
