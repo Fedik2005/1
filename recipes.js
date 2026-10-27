@@ -201,7 +201,7 @@ const RECIPES = [
         category: "second",
         image: "img/funchoza.webp", width: 676, height: 460,
         description: "Сочная курочка, нежная стеклянная лапша и яркий азиатский соус. Сладковатые нотки делают это блюдо настоящим взрывом вкуса — сытно, ароматно и безумно вкусно!",
-        nutrition: { protein: "21", fat: "18", carbs: "45", kcal: "420" },
+        nutrition: { protein: "9,4", fat: "7,2", carbs: "15", kcal: "162" },
         ingredients: [
             "Курица — 600г",
             "Чеснок — 5 зубчиков",
@@ -237,7 +237,7 @@ const RECIPES = [
         category: "second",
         image: "img/ris-s-kurochkoy.webp", width: 660, height: 543,
         description: "Нежнейшее куриное филе в золотистой корочке, томлёное с имбирём, чесноком и мексиканской смесью, в густом устрично-соевом соусе. Подаётся на подушке из рассыпчатого басмати — сочно, ароматно!",
-        nutrition: { protein: "28", fat: "12", carbs: "52", kcal: "430" },
+        nutrition: { protein: "9,1", fat: "1,6", carbs: "19", kcal: "129" },
         ingredients: [
             "Куриное филе — 700г",
             "Имбирь — 30г",
@@ -270,7 +270,7 @@ const RECIPES = [
         category: "second",
         image: "img/rublennye-kotletki.webp", width: 900, height: 730,
         description: "Сочнейшие куриные котлетки с хрустящей корочкой и нежным плавленным сыром. Кусочки грудки, сыр, творожок и ароматная зелень создают идеальный баланс вкуса, а томаты добавляют сочность. Настоящее домашнее тепло в каждой котлетке!",
-        nutrition: { protein: "22", fat: "14", carbs: "8", kcal: "260" },
+        nutrition: { protein: "21", fat: "8,7", carbs: "3", kcal: "177" },
         ingredients: [
             "Куриная грудка — 1кг",
             "Яйцо — 3шт",
@@ -298,7 +298,7 @@ const RECIPES = [
         category: "baking",
         image: "img/pizzasuper.webp", width: 645, height: 588,
         description: "Нежное филе грудки индейки, ароматный бекон и тягучая моцарелла на томатном соусе. Итальянские травы раскрывают каждый вкус, создавая идеальную гармонию. Настоящая мясная бомба!",
-        nutrition: { protein: "8,8", fat: "7,5", carbs: "18", kcal: "175" },
+        nutrition: { protein: "11", fat: "8,2", carbs: "17", kcal: "187" },
         ingredients: [
             "Тёплая вода — 310мл",
             "Соль — 10г",
@@ -589,7 +589,7 @@ const RECIPES = [
         category: "sweet",
         image: "img/merengovyy-rulet.webp", width: 567, height: 442,
         description: "Хрустящая меренга с нежной, тающей во рту сердцевиной. Ягодный конфитюр или свежие фрукты добавляют яркую кислинку и делают этот десерт настоящим произведением искусства — лёгкий, воздушный и невероятно изящный!",
-        nutrition: { protein: "5", fat: "8", carbs: "42", kcal: "260" },
+        nutrition: { protein: "7,6", fat: "11", carbs: "50", kcal: "324" },
         ingredients: [
             "Яичные белки — 5шт",
             "Сахар — 150г",
@@ -620,7 +620,7 @@ const RECIPES = [
         category: "sweet",
         image: "img/syrniki-s-makom.webp", width: 554, height: 437,
         description: "Нежные, воздушные сырники с хрустящей корочкой и бархатистой сердцевиной. Ароматный мак добавляет изысканную нотку и приятный хруст. Идеально со сметаной, ягодами или любым творожком!",
-        nutrition: { protein: "12", fat: "8", carbs: "28", kcal: "230" },
+        nutrition: { protein: "16", fat: "9,5", carbs: "18", kcal: "223" },
         ingredients: [
             "Творог — 600г",
             "Манная крупа — 60г",
@@ -645,7 +645,7 @@ const RECIPES = [
         category: "snacks",
         image: "img/kabachki.webp", width: 626, height: 463,
         description: "Нежные кабачки, запечённые с сочными томатами и шапкой из расплавленного сыра. Простое, но невероятно вкусное блюдо, которое тает во рту — идеальный вариант для лёгкой закуски.",
-        nutrition: { protein: "8", fat: "12", carbs: "10", kcal: "180" },
+        nutrition: { protein: "6", fat: "6,4", carbs: "4,7", kcal: "98" },
         ingredients: [
             "Кабачок — 1шт",
             "Томаты — 5шт",
