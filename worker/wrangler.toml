@@ -1,0 +1,8 @@
+name = "vk-recipe-bot"
+main = "worker.js"
+compatibility_date = "2025-09-01"
+# переменные и секреты, заданные в панели Cloudflare, не трогаем
+keep_vars = true
+
+[observability]
+enabled = true
