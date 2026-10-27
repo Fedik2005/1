@@ -112,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const favN = getFavorites().filter(name => RECIPES.some(r => r.name === name)).length;
         $('favCount').textContent = favN || '';
         $('favoriteIcon').setAttribute('aria-pressed', currentCategory === FAVORITES ? 'true' : 'false');
+        $('appTitle').textContent = viewName(currentCategory);
     }
 
     // ---------- Меню: всплывающие плашки ----------
@@ -121,10 +122,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const chips = views.map((v, i) => {
             const n = recipesFor(v).length;
             const cur = v === currentCategory;
-            return '<li><button class="chip' + (cur ? ' is-current' : '') + '" type="button" data-category="' + v + '" style="--i:' + i + '"' +
+            return '<li><button class="chip' + (cur ? ' is-current' : '') + (n || cur ? '' : ' is-empty') + '" type="button" data-category="' + v + '" style="--i:' + i + '"' +
                 (cur ? ' aria-current="true"' : '') + '>' + escapeHtml(viewName(v)) + ' <span class="count">' + n + '</span></button></li>';
         });
-        chips.push('<li><a class="chip is-light" href="index.html" style="--i:' + views.length + '">← на главную</a></li>');
+        chips.push('<li><a class="chip is-light" href="index.html" style="--i:' + views.length + '">← На главную</a></li>');
         $('menuList').innerHTML = chips.join('');
     }
 
@@ -195,8 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const caption = 34;
         const rowStep = cell + 10;
         const padX = mobile ? 20 : 60;
-        const padTop = mobile ? 70 : 80;
-        const padBottom = mobile ? 90 : 100;
+        const padTop = mobile ? 96 : 110;
+        const padBottom = mobile ? 100 : 110;
         const n = list.length;
         const rand = seeded(currentCategory + ':' + n);
 
@@ -255,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.style.width = canvasW + 'px';
         canvas.style.height = canvasH + 'px';
         canvas.innerHTML = items.map(it =>
-            '<button class="dish" type="button" data-id="' + it.recipe.id + '" style="left:' + it.x + 'px;top:' + it.y + 'px;width:' + it.width + 'px">' +
+            '<button class="dish" type="button" data-id="' + it.recipe.id + '" style="left:' + it.x + 'px;top:' + it.y + 'px;width:' + it.width + 'px;--f:' + it.recipe.field.color + '">' +
             '<img src="' + it.recipe.image + '" alt="" width="' + it.recipe.width + '" height="' + it.recipe.height + '" decoding="async">' +
             '<span class="dish-name">' + escapeHtml(it.recipe.name) + '</span></button>'
         ).join('');
@@ -300,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const step = Math.min(45, 700 / dishes.length);
         order.forEach((idx, k) => {
             dishes[idx].animate([
-                { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 },
+                { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 }, // taste-skill-ignore: вход «из точки», как у Palmer
                 { transform: 'translate(-50%, -50%) scale(1.08)', opacity: 1, offset: 0.65 },
                 { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 }
             ], { duration: 520, delay: 120 + k * step, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'backwards' });
@@ -337,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const anims = shuffle(dishes.slice()).map((d, k) => d.animate([
             { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
             { transform: 'translate(-50%, -50%) scale(0.03)', opacity: 1, offset: 0.85 },
-            { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 }
+            { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 } // taste-skill-ignore: блюда сжимаются в точку
         ], { duration: 520, delay: k * Math.min(18, 260 / dishes.length), easing: 'cubic-bezier(0.55, 0, 0.75, 0.2)', fill: 'forwards' }));
         return Promise.all(anims.map(a => a.finished.catch(() => {})));
     }
@@ -362,25 +363,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---------- Разделы (верхняя кнопка) ----------
 
     let sectionsOpen = false;
-    const ART = [
-        { x: 40, y: 44, w: 60 },
-        { x: 74, y: 64, w: 44 },
-        { x: 26, y: 76, w: 36 }
-    ];
+    let listObserver = null;
 
+    function kcalText(r) {
+        return r.nutrition && r.nutrition.kcal ? r.nutrition.kcal + ' ккал' : '';
+    }
+
+    // Меню в две колонки: у каждого блюда фото на квадрате цвета его ингредиента
     function buildSections() {
-        splitChars($('sectionsTitle'), 'Тёплые рецепты на каждый день');
-        $('sectionsGrid').innerHTML = allViews().map((v, ci) => {
-            const list = recipesFor(v).slice(0, 3);
-            const n = recipesFor(v).length;
-            const art = list.length
-                ? list.map((r, k) => '<img src="' + r.image + '" alt="" style="left:' + ART[k].x + '%;top:' + ART[k].y + '%;width:' + ART[k].w + '%;--d:' + (300 + ci * 70 + k * 90) + '">').join('')
-                : '<span class="placeholder"></span>';
-            return '<li><button class="section-card' + (v === currentCategory ? ' is-current' : '') + '" type="button" data-category="' + v + '">' +
-                '<span class="section-art">' + art + '</span>' +
-                '<span class="section-name">' + escapeHtml(viewName(v)) + '</span>' +
-                '<span class="section-count">' + (n ? dishesWord(n) : 'скоро') + '</span></button></li>';
-        }).join('');
+        splitChars($('sectionsTitle'), 'Что приготовить сегодня');
+        const views = CATEGORIES.map(c => c.id).filter(v => recipesFor(v).length);
+        if (recipesFor(FAVORITES).length) views.push(FAVORITES);
+        const soon = CATEGORIES.filter(c => !recipesFor(c.id).length).map(c => c.name);
+
+        $('sectionsJump').innerHTML = views.map(v =>
+            '<a class="jump-link" href="#cat-' + v + '">' + escapeHtml(viewName(v)) + ' <span class="count">' + recipesFor(v).length + '</span></a>'
+        ).join('');
+
+        $('sectionsGrid').innerHTML = views.map(v => {
+            const list = recipesFor(v);
+            return '<section class="menu-cat" id="cat-' + v + '" aria-labelledby="cat-title-' + v + '">' +
+                '<div class="menu-cat-head"><h3 class="menu-cat-title" id="cat-title-' + v + '">' + escapeHtml(viewName(v)) + '</h3>' +
+                '<span class="menu-cat-count">' + dishesWord(list.length) + '</span>' +
+                '<button class="text-link" type="button" data-category="' + v + '">Показать на полотне</button></div>' +
+                '<ul class="menu-items">' + list.map(r =>
+                    '<li><button class="menu-item" type="button" data-id="' + r.id + '" style="--f:' + r.field.color + '">' +
+                    '<span class="menu-thumb"><img src="' + r.image + '" alt="" loading="lazy"></span>' +
+                    '<span class="menu-name">' + escapeHtml(r.name) + '</span>' +
+                    '<span class="menu-kcal">' + kcalText(r) + '</span>' +
+                    '<span class="menu-desc">' + escapeHtml(r.description || '') + '</span>' +
+                    '<span class="menu-note">На цвете: ' + escapeHtml(r.field.name.toLowerCase()) + '</span>' +
+                    '</button></li>').join('') + '</ul></section>';
+        }).join('') + (soon.length ? '<p class="menu-soon">Скоро здесь появятся ' + escapeHtml(soon.join(', ').toLowerCase()) + '.</p>' : '');
+
+        // блюда поднимаются по мере прокрутки
+        if (listObserver) listObserver.disconnect();
+        const rows = Array.from($('sectionsGrid').querySelectorAll('.menu-item'));
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+            rows.forEach(el => el.classList.add('is-in'));
+            return;
+        }
+        listObserver = new IntersectionObserver((entries) => {
+            let k = 0;
+            entries.forEach(en => {
+                if (!en.isIntersecting) return;
+                en.target.style.transitionDelay = (k++ * 70) + 'ms';
+                en.target.classList.add('is-in');
+                listObserver.unobserve(en.target);
+            });
+        }, { root: sections, rootMargin: '0px 0px -8% 0px' });
+        rows.forEach(el => listObserver.observe(el));
     }
 
     function openSections() {
@@ -388,8 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sectionsOpen = true;
         closeMenu();
         viewToggle.setAttribute('aria-pressed', 'true');
-        viewToggle.setAttribute('aria-label', 'Все блюда на полотне');
-        $('viewToggleLabel').textContent = 'полотно';
+        $('viewToggleLabel').textContent = 'Полотно';
         body.classList.add('sections-open');
         buildSections();
         vanish().then(() => {
@@ -405,8 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!sectionsOpen) return;
         sectionsOpen = false;
         viewToggle.setAttribute('aria-pressed', 'false');
-        viewToggle.setAttribute('aria-label', 'Разделы');
-        $('viewToggleLabel').textContent = 'разделы';
+        $('viewToggleLabel').textContent = 'Список блюд';
         body.classList.remove('sections-open');
         sections.classList.remove('is-in');
         if (view && isKnownView(view)) {
@@ -424,8 +454,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     $('sectionsGrid').addEventListener('click', (e) => {
-        const card = e.target.closest('[data-category]');
-        if (card) closeSections(card.getAttribute('data-category'));
+        const item = e.target.closest('.menu-item');
+        if (item) {
+            openRecipe(item.getAttribute('data-id'), true, item);
+            return;
+        }
+        const link = e.target.closest('[data-category]');
+        if (link) closeSections(link.getAttribute('data-category'));
+    });
+
+    $('sectionsJump').addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (!a) return;
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
     });
 
     // ---------- Перетаскивание полотна, инерция, масштаб ----------
@@ -686,21 +729,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---------- Панель рецепта ----------
 
     let openId = null;
+    let openSource = null;
     let lastFocus = null;
     let flying = null;
 
+    function setField(recipe) {
+        document.documentElement.style.setProperty('--field', recipe.field.color);
+        document.documentElement.style.setProperty('--field-ink', recipe.field.ink);
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', recipe.field.color);
+    }
+
     function fillRecipe(recipe) {
+        setField(recipe);
         splitChars($('recipeName'), recipe.name);
+        $('recipeName').classList.toggle('is-long', recipe.name.length > 24);
         const photo = $('recipePhoto');
         photo.src = recipe.image;
         photo.alt = recipe.name;
         $('recipeDesc').textContent = recipe.description || '';
 
-        const labels = { protein: 'белки, г', fat: 'жиры, г', carbs: 'углеводы, г', kcal: 'ккал' };
         const n = recipe.nutrition || {};
-        const keys = Object.keys(labels).filter(k => n[k]);
-        $('nutritionWrap').hidden = keys.length === 0;
-        $('nutrition').innerHTML = keys.map(k => '<div><dt>' + labels[k] + '</dt><dd>' + escapeHtml(n[k]) + '</dd></div>').join('');
+        const parts = [];
+        if (n.kcal) parts.push(n.kcal + ' ккал');
+        if (n.protein) parts.push('белки ' + n.protein);
+        if (n.fat) parts.push('жиры ' + n.fat);
+        if (n.carbs) parts.push('углеводы ' + n.carbs);
+        $('recipeFacts').innerHTML = parts.length
+            ? escapeHtml(parts.join(' · ')) + '<span>на 100 г готового блюда, ' + escapeHtml(viewName(recipe.category).toLowerCase()) + '</span>'
+            : escapeHtml(viewName(recipe.category));
+        $('recipeSwatch').textContent = 'На цвете: ' + recipe.field.name.toLowerCase();
 
         $('ingredientsCount').textContent = recipe.ingredients.length;
         $('stepsCount').textContent = recipe.steps.length;
@@ -715,13 +773,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
 
         $('cookingList').innerHTML = recipe.steps.map((s, i) => {
-            const num = String(i + 1).padStart(2, '0');
+            const num = String(i + 1);
             const detail = s.detail && s.detail.length;
             return '<li><button class="cooking-item ' + (detail ? 'clickable' : 'no-click') + '" type="button" data-step="' + i + '"' +
                 (detail ? '' : ' aria-pressed="false"') + '>' +
                 '<span class="step-num">' + num + '</span>' +
                 '<span><span class="step-text">' + escapeHtml(s.text) + '</span>' +
-                (detail ? '<br><span class="step-more"><svg class="icon" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1v8M1 5h8"/></svg>что понадобится</span>' : '') +
+                (detail ? '<br><span class="step-more"><svg class="icon" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1v8M1 5h8"/></svg>Что понадобится</span>' : '') +
                 '</span></button></li>';
         }).join('');
 
@@ -783,6 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeMenu();
         const wasOpen = body.classList.contains('recipe-open');
         openId = id;
+        openSource = dish || null;
         store('selectedRecipe', recipe.name);
         if (!wasOpen) lastFocus = document.activeElement;
         stopInertia();
@@ -819,11 +878,12 @@ document.addEventListener('DOMContentLoaded', () => {
         endFlight();
 
         const photo = $('recipePhoto');
-        const dish = canvas.querySelector('.dish[data-id="' + id + '"]');
+        const fromList = sectionsOpen && openSource && openSource.isConnected && openSource.classList.contains('menu-item');
+        const dish = fromList ? openSource : canvas.querySelector('.dish[data-id="' + id + '"]');
         const dishImg = dish && dish.querySelector('img');
         if (!reduceMotion && dishImg && photo.classList.contains('is-shown')) {
             const from = fitContain(photo, photo.getBoundingClientRect());
-            const stageShift = stage.getBoundingClientRect().left;
+            const stageShift = fromList ? 0 : stage.getBoundingClientRect().left;
             const d = dishImg.getBoundingClientRect();
             const to = { left: d.left - stageShift, top: d.top, width: d.width, height: d.height };
             photo.classList.remove('is-shown');
@@ -864,7 +924,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateFavoriteButton(recipe) {
         const on = getFavorites().indexOf(recipe.name) !== -1;
         $('savePhoto').setAttribute('aria-pressed', on ? 'true' : 'false');
-        $('savePhotoLabel').textContent = on ? 'в избранном' : 'в избранное';
+        $('savePhotoLabel').textContent = on ? 'В избранном' : 'В избранное';
     }
 
     $('savePhoto').addEventListener('click', (e) => {
@@ -919,12 +979,12 @@ document.addEventListener('DOMContentLoaded', () => {
     $('saveIngredientsBtn').addEventListener('click', () => {
         const selected = document.querySelectorAll('.ingredient-item.selected');
         if (selected.length === 0) {
-            showCustomAlert('────୨ৎ────', 'Выберите ингредиенты, которые хотите сохранить');
+            showCustomAlert('Ничего не отмечено', 'Отметьте ингредиенты, которые хотите скопировать в список покупок.');
             return;
         }
         const text = Array.from(selected).map(el => el.getAttribute('data-ingredient')).join('\n');
         copyToClipboard(text).then(ok => {
-            if (ok) showCustomAlert('Ингредиенты скопированы!', text + '\n\n────୨ৎ────');
+            if (ok) showCustomAlert('Список скопирован', text);
             else showCustomAlert('Не получилось', 'Не удалось скопировать. Попробуйте ещё раз.');
         });
     });
@@ -1006,12 +1066,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ---------- Старт ----------
 
-    // Старые ссылки: favorites.html ведёт на menu.html#favorites
+    // Ссылки вида menu.html#favorites или #sweet открывают нужный раздел
     const startHash = decodeURIComponent(location.hash.slice(1));
-    if (startHash === FAVORITES) {
-        currentCategory = FAVORITES;
-        store('currentCategory', FAVORITES);
-        history.replaceState(null, '', location.pathname);
+    if (isKnownView(startHash)) {
+        currentCategory = startHash;
+        store('currentCategory', startHash);
+        history.replaceState(null, '', location.pathname + location.search);
     }
 
     render(!byId[startHash]);

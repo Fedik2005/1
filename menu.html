@@ -5,24 +5,21 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#f6efe6">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%23f5f6ee%22 stroke=%22%23222%22 stroke-width=%221.5%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%229%22 fill=%22none%22 stroke=%22%23222%22 stroke-width=%221%22/%3E%3C/svg%3E">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%231a4be0%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%229%22 fill=%22%23ffffff%22/%3E%3C/svg%3E">
     <title>Рецепты | Polkovniki Lubvi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter+Tight:wght@300;400;500;600&display=swap">
-    <link rel="stylesheet" href="style.css?v=12">
-    <link rel="stylesheet" href="menu.css?v=12">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="style.css?v=13">
+    <link rel="stylesheet" href="menu.css?v=13">
 </head>
 <body class="app">
-    <div class="backdrop" aria-hidden="true"><span class="blob blob-poppy"></span><span class="blob blob-saffron"></span><span class="blob blob-olive"></span><span class="blob blob-paprika"></span></div>
     <header class="app-top">
-        <a href="index.html" class="wordmark">Polkovniki Lubvi</a>
-        <button class="split view-toggle" id="viewToggle" type="button" aria-pressed="false" aria-label="Разделы">
-            <span class="split-icon">
-                <svg class="dots" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="1.5" r="1.3"/><circle cx="2.2" cy="4.2" r="1.3"/><circle cx="11.8" cy="4.2" r="1.3"/><circle cx="7" cy="7" r="1.3"/><circle cx="2.2" cy="9.8" r="1.3"/><circle cx="11.8" cy="9.8" r="1.3"/><circle cx="7" cy="12.5" r="1.3"/></svg>
-            </span>
-            <span class="split-label" id="viewToggleLabel">разделы</span>
+        <a href="index.html" class="wordmark app-mark">Polkovniki Lubvi</a>
+        <h1 class="app-title" id="appTitle">Все блюда</h1>
+        <button class="top-link" id="viewToggle" type="button" aria-pressed="false">
+            <span id="viewToggleLabel">Список блюд</span>
         </button>
     </header>
 
@@ -33,13 +30,14 @@
     <div class="empty" id="emptyState" hidden>
         <p class="empty-title" id="emptyTitle"></p>
         <p class="empty-text" id="emptyText"></p>
-        <button class="split" type="button" id="emptyButton"><span class="split-label">показать все блюда</span></button>
+        <button class="btn" type="button" id="emptyButton">Показать все блюда</button>
     </div>
 
-    <!-- Разделы: открываются верхней кнопкой -->
-    <section class="sections" id="sections" aria-label="Разделы" hidden>
-        <h1 class="sections-title" id="sectionsTitle">Тёплые рецепты на каждый день</h1>
-        <ul class="sections-grid" id="sectionsGrid"></ul>
+    <!-- Список блюд: открывается верхней кнопкой -->
+    <section class="sections" id="sections" aria-labelledby="sectionsTitle" hidden>
+        <h2 class="sections-title" id="sectionsTitle">Что приготовить сегодня</h2>
+        <nav class="sections-jump" id="sectionsJump" aria-label="Разделы"></nav>
+        <div class="sections-grid" id="sectionsGrid"></div>
     </section>
 
     <!-- Меню: всплывающие плашки с категориями -->
@@ -48,65 +46,63 @@
     </nav>
 
     <div class="controls">
-        <button class="split is-dark menu-toggle" id="menuButton" type="button" aria-expanded="false" aria-controls="menu">
-            <span class="split-icon">
-                <svg class="burger" viewBox="0 0 14 10" aria-hidden="true"><line class="l1" x1="0" y1="1" x2="14" y2="1"/><line class="l2" x1="0" y1="5" x2="14" y2="5"/><line class="l3" x1="0" y1="9" x2="14" y2="9"/></svg>
-            </span>
-            <span class="split-label">меню</span>
+        <button class="btn menu-toggle" id="menuButton" type="button" aria-expanded="false" aria-controls="menu">
+            <svg class="burger" viewBox="0 0 16 12" aria-hidden="true"><line class="l1" x1="0" y1="1" x2="16" y2="1"/><line class="l2" x1="0" y1="6" x2="16" y2="6"/><line class="l3" x1="0" y1="11" x2="16" y2="11"/></svg>
+            <span class="menu-toggle-label">Меню</span>
         </button>
-        <button class="split fav-toggle" id="favoriteIcon" type="button" aria-pressed="false">
-            <span class="split-icon">
-                <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5S1.5 9.6 1.5 5.4A3.1 3.1 0 0 1 8 4a3.1 3.1 0 0 1 6.5 1.4C14.5 9.6 8 13.5 8 13.5z"/></svg>
-            </span>
-            <span class="split-label">избранное <span class="count" id="favCount"></span></span>
+        <button class="btn btn-soft fav-toggle" id="favoriteIcon" type="button" aria-pressed="false">
+            <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5S1.5 9.6 1.5 5.4A3.1 3.1 0 0 1 8 4a3.1 3.1 0 0 1 6.5 1.4C14.5 9.6 8 13.5 8 13.5z"/></svg>
+            Избранное <span class="count" id="favCount"></span>
         </button>
     </div>
 
     <div class="zoom">
-        <p class="hint" id="dragHint">
-            <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v14M1 8h14M8 1 6 3M8 1l2 2M8 15l-2-2M8 15l2-2M1 8l2-2M1 8l2 2M15 8l-2-2M15 8l-2 2"/></svg>
-            тяните, чтобы смотреть
-        </p>
+        <p class="hint" id="dragHint">Тяните, чтобы смотреть</p>
         <button class="zoom-btn" id="zoomOut" type="button" aria-label="Отдалить"><svg class="icon" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 5h8"/></svg></button>
         <button class="zoom-btn" id="zoomIn" type="button" aria-label="Приблизить"><svg class="icon" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1v8M1 5h8"/></svg></button>
     </div>
 
-    <!-- Рецепт: панель слева, как карточка тарелки у Palmer -->
+    <!-- Рецепт: панель слева, блюдо крупно на поле своего ингредиента -->
     <aside class="recipe" id="recipe" role="dialog" aria-modal="true" aria-labelledby="recipeName">
         <div class="recipe-scroll" id="recipeScroll">
-            <h2 class="recipe-name" id="recipeName"></h2>
-            <div class="recipe-body">
+            <div class="recipe-hero">
+                <div class="recipe-hero-text">
+                    <h2 class="recipe-name" id="recipeName"></h2>
+                    <p class="recipe-facts" id="recipeFacts"></p>
+                    <div class="recipe-hero-row">
+                        <button class="btn fav-btn" id="savePhoto" type="button" aria-pressed="false">
+                            <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5S1.5 9.6 1.5 5.4A3.1 3.1 0 0 1 8 4a3.1 3.1 0 0 1 6.5 1.4C14.5 9.6 8 13.5 8 13.5z"/></svg>
+                            <span id="savePhotoLabel">В избранное</span>
+                        </button>
+                        <p class="recipe-swatch" id="recipeSwatch"></p>
+                    </div>
+                </div>
                 <div class="recipe-media">
                     <img class="recipe-photo" id="recipePhoto" src="data:," alt="">
                 </div>
-                <div class="recipe-info">
-                    <div class="recipe-meta">
-                        <p class="recipe-desc" id="recipeDesc"></p>
-                        <button class="split fav-btn" id="savePhoto" type="button" aria-pressed="false">
-                            <span class="split-icon"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.5S1.5 9.6 1.5 5.4A3.1 3.1 0 0 1 8 4a3.1 3.1 0 0 1 6.5 1.4C14.5 9.6 8 13.5 8 13.5z"/></svg></span>
-                            <span class="split-label" id="savePhotoLabel">в избранное</span>
-                        </button>
-                    </div>
-                    <div class="nutrition-wrap" id="nutritionWrap">
-                        <dl class="nutrition" id="nutrition"></dl>
-                        <p class="nutrition-note">на 100 г готового блюда</p>
-                    </div>
+            </div>
 
-                    <div class="tabs" role="tablist">
-                        <button class="tab-btn is-active" type="button" role="tab" data-tab="ingredients" id="tabIngredients" aria-selected="true">Ингредиенты <span class="count" id="ingredientsCount"></span></button>
-                        <button class="tab-btn" type="button" role="tab" data-tab="cooking" id="tabCooking" aria-selected="false">Приготовление <span class="count" id="stepsCount"></span></button>
-                    </div>
+            <div class="recipe-sheet">
+                <p class="recipe-desc" id="recipeDesc"></p>
 
-                    <div class="tab-pane" id="ingredients" role="tabpanel" aria-labelledby="tabIngredients">
-                        <ul class="ingredients-list" id="ingredientsList"></ul>
-                        <button class="split is-dark save-ingredients-btn" id="saveIngredientsBtn" type="button"><span class="split-label" id="saveIngredientsLabel">Скопировать выбранные</span><span class="split-icon"><svg class="icon" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h14M11 9l4-4-4-4"/></svg></span></button>
-                    </div>
-                    <div class="tab-pane" id="cooking" role="tabpanel" aria-labelledby="tabCooking" hidden>
-                        <ol class="cooking-list" id="cookingList"></ol>
-                        <p class="bon-appetit">Приятного аппетита!</p>
-                    </div>
+                <div class="tabs" role="tablist">
+                    <button class="tab-btn is-active" type="button" role="tab" data-tab="ingredients" id="tabIngredients" aria-selected="true">Ингредиенты <span class="count" id="ingredientsCount"></span></button>
+                    <button class="tab-btn" type="button" role="tab" data-tab="cooking" id="tabCooking" aria-selected="false">Приготовление <span class="count" id="stepsCount"></span></button>
+                </div>
+
+                <div class="tab-pane" id="ingredients" role="tabpanel" aria-labelledby="tabIngredients">
+                    <ul class="ingredients-list" id="ingredientsList"></ul>
+                    <button class="btn btn-accent save-ingredients-btn" id="saveIngredientsBtn" type="button">
+                        <span id="saveIngredientsLabel">Скопировать выбранные</span>
+                        <svg class="icon" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h14M11 9l4-4-4-4"/></svg>
+                    </button>
+                </div>
+                <div class="tab-pane" id="cooking" role="tabpanel" aria-labelledby="tabCooking" hidden>
+                    <ol class="cooking-list" id="cookingList"></ol>
                 </div>
             </div>
+
+            <p class="bon-appetit">Приятного аппетита!</p>
         </div>
     </aside>
     <button class="close-square" id="closeRecipe" type="button" aria-label="Закрыть рецепт">
@@ -117,7 +113,7 @@
         <div class="dialog-card">
             <p class="dialog-title" id="customAlertTitle"></p>
             <p class="dialog-text" id="customAlertText"></p>
-            <button class="split is-dark" id="customAlertBtn" type="button"><span class="split-label">Хорошо</span></button>
+            <button class="btn btn-accent" id="customAlertBtn" type="button">Хорошо</button>
         </div>
     </div>
 
@@ -125,13 +121,13 @@
         <div class="dialog-card">
             <p class="dialog-title" id="stepDetailTitle">Для этого шага</p>
             <ul class="dialog-list" id="stepDetailList"></ul>
-            <button class="split is-dark" id="stepDetailBtn" type="button"><span class="split-label">Понятно!</span></button>
+            <button class="btn btn-accent" id="stepDetailBtn" type="button">Понятно!</button>
         </div>
     </div>
 
     <div class="page-fade" id="pageFade"></div>
 
-    <script src="recipes.js?v=3"></script>
-    <script src="menu.js?v=9"></script>
+    <script src="recipes.js?v=4"></script>
+    <script src="menu.js?v=13"></script>
 </body>
 </html>
