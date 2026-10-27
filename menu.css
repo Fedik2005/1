@@ -1050,3 +1050,330 @@ body.app {
         animation-duration: 0.01s !important;
     }
 }
+
+/* =========================================================
+   Вкус: стекло и цвет (палитра «Мак и олива»)
+   Слой поверх базовых стилей - меняет только внешний вид
+   ========================================================= */
+
+/* блюда парят над фоном с мягкой тенью */
+.dish img {
+    filter: drop-shadow(0 18px 16px rgba(92, 46, 26, 0.2));
+}
+
+.dish-name {
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 250, 244, 0.55);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.empty-title {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--paprika);
+}
+
+/* разделы - матовое стекло, сквозь которое видно цвет */
+.sections {
+    background: rgba(246, 239, 230, 0.5);
+    -webkit-backdrop-filter: blur(34px) saturate(140%);
+    backdrop-filter: blur(34px) saturate(140%);
+}
+
+.sections-title .word:last-child .ch,
+.sections-title .word:nth-last-child(2) .ch {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--paprika);
+}
+
+.section-card {
+    padding: 12px 12px 16px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.35s var(--ease-out), box-shadow 0.35s;
+}
+
+.section-card:active {
+    transform: scale(0.97);
+}
+
+@media (hover: hover) {
+    .section-card:hover {
+        transform: translateY(-4px);
+    }
+}
+
+.section-art img {
+    filter: drop-shadow(0 12px 10px rgba(92, 46, 26, 0.18));
+}
+
+.section-card.is-current .section-name::before {
+    background: var(--paprika);
+}
+
+/* меню: стеклянные капсулы всплывают пузырьками */
+.chip {
+    height: 42px;
+    padding: 0 18px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-full);
+    background: var(--glass-dark-bg);
+    box-shadow: var(--glass-dark-shadow);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    font-size: 14px;
+}
+
+.chip.is-current {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: var(--glass-accent-bg);
+}
+
+.chip.is-current .count {
+    color: rgba(255, 250, 244, 0.75);
+}
+
+.chip.is-light {
+    text-decoration: none;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    color: var(--ink);
+}
+
+.menu-chips {
+    bottom: calc(env(safe-area-inset-bottom) + var(--edge) + 54px);
+}
+
+.menu-chips ul {
+    gap: 6px;
+}
+
+@media (hover: hover) {
+    .chip:not(.is-light):hover,
+    .chip.is-light:hover {
+        background: var(--glass-accent-bg);
+        color: var(--bone);
+    }
+}
+
+/* масштаб: стеклянные кружки */
+.zoom-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+}
+
+@media (hover: hover) {
+    .zoom-btn:not(:disabled):hover {
+        background: var(--glass-dark-bg);
+        color: var(--bone);
+    }
+}
+
+.zoom-btn:disabled {
+    opacity: 0.45;
+    color: var(--ink);
+}
+
+/* панель рецепта - толстое матовое стекло */
+.recipe {
+    background: rgba(246, 239, 230, 0.72);
+    -webkit-backdrop-filter: blur(40px) saturate(150%);
+    backdrop-filter: blur(40px) saturate(150%);
+}
+
+@media (min-width: 900px) {
+    .recipe {
+        border-right: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 30px 0 60px -40px rgba(92, 46, 26, 0.45);
+    }
+}
+
+.recipe-photo {
+    filter: drop-shadow(0 26px 22px rgba(92, 46, 26, 0.22));
+}
+
+.fly {
+    filter: drop-shadow(0 26px 22px rgba(92, 46, 26, 0.22));
+}
+
+/* КБЖУ - четыре стеклянные капсулы */
+.nutrition {
+    gap: 6px;
+    border: 0;
+}
+
+.nutrition div,
+.nutrition div + div {
+    align-items: center;
+    padding: 12px 6px 10px;
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    text-align: center;
+}
+
+.nutrition div:last-child {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: var(--glass-accent-bg);
+    color: var(--bone);
+}
+
+.nutrition div:last-child dt {
+    color: rgba(255, 250, 244, 0.8);
+}
+
+.nutrition-note {
+    text-align: center;
+}
+
+/* вкладки - стеклянные капсулы */
+.tab-btn {
+    height: 44px;
+    padding: 0 20px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-full);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    font-size: 14px;
+}
+
+.tab-btn.is-active {
+    border-color: rgba(255, 255, 255, 0.16);
+    background: var(--glass-dark-bg);
+    box-shadow: var(--glass-dark-shadow);
+    color: var(--bone);
+}
+
+/* списки - тонкие тёплые линии */
+.ingredients-list,
+.cooking-list {
+    border-top: 1px solid var(--line);
+}
+
+.ingredients-list li,
+.cooking-list li {
+    border-bottom: 1px solid var(--line);
+}
+
+.check {
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(44, 33, 27, 0.35);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.check svg {
+    inset: 4px;
+}
+
+.ingredient-item.selected .check {
+    border-color: transparent;
+    background: var(--glass-accent-bg);
+    box-shadow: 0 4px 10px -4px rgba(201, 84, 58, 0.8);
+}
+
+.ingredient-item.selected .ingredient-amount {
+    color: var(--paprika);
+}
+
+.save-ingredients-btn {
+    height: 50px;
+}
+
+.save-ingredients-btn .split-icon {
+    width: 50px;
+}
+
+.step-num {
+    color: var(--paprika);
+    font-weight: 500;
+}
+
+.step-more {
+    padding: 5px 12px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-full);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+}
+
+.cooking-item.selected-green {
+    color: var(--olive);
+}
+
+.bon-appetit {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 40px;
+    color: var(--paprika);
+}
+
+/* закрытие - стеклянный кружок */
+.close-square {
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-full);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+}
+
+@media (hover: hover) {
+    .close-square:hover {
+        background: var(--glass-dark-bg);
+        color: var(--bone);
+    }
+}
+
+/* окошки */
+.custom-alert,
+.step-detail-alert {
+    background: rgba(44, 33, 27, 0.18);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+.dialog-card {
+    padding: 20px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(255, 250, 244, 0.9), rgba(246, 239, 230, 0.78));
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+}
+
+.dialog-title {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 26px;
+}
+
+.dialog-list {
+    border-top: 1px solid var(--line);
+}
+
+.dialog-list li {
+    border-bottom: 1px solid var(--line);
+}
+
+/* меню-кнопка в открытом виде - стеклянный кружок с крестиком */
+.menu-toggle[aria-expanded="true"] .split-label {
+    box-shadow: none;
+}
